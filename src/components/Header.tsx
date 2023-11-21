@@ -11,10 +11,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import CottageOutlinedIcon from "@mui/icons-material/CottageOutlined";
 import MoreIcon from "@mui/icons-material/MoreVert";
-
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -57,6 +57,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const navigate = useNavigate();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -99,7 +101,7 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
       sx={{
         fontFamily: "Fira Sans",
-        fontSize: "0.5rem"
+        fontSize: "0.5rem",
       }}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
@@ -125,24 +127,24 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
       sx={{
         fontFamily: "Fira Sans",
-        fontSize: "0.5rem"
+        fontSize: "0.5rem",
       }}
     >
-      <MenuItem>
+      <MenuItem onClick={() => navigate("/cart")}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
-            < ShoppingCartCheckoutIcon/>
+            <ShoppingCartCheckoutIcon />
           </Badge>
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={() => navigate("/")}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
         >
-            <CottageOutlinedIcon />
+          <CottageOutlinedIcon />
         </IconButton>
         <p>Home</p>
       </MenuItem>
@@ -174,39 +176,43 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            fontFamily={"Fira Sans"}
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            E-COMMERCE
-          </Typography>
+          <div onClick={() => navigate("/")}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              fontFamily={"Fira Sans"}
+              sx={{ display: { xs: "none", sm: "block" }, cursor: "pointer" }}
+            >
+              E-COMMERCE
+            </Typography>
+          </div>
           <Search>
-            <SearchIconWrapper >
-              <SearchIcon/>
+            <SearchIconWrapper>
+              <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               sx={{
-                fontFamily: "Fira Sans"
+                fontFamily: "Fira Sans",
               }}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}> 
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               size="large"
               color="inherit"
+              onClick={() => navigate("/")}
             >
-                <CottageOutlinedIcon />
+              <CottageOutlinedIcon />
             </IconButton>
             <IconButton
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
+              onClick={() => navigate("/cart")}
             >
               <Badge badgeContent={4} color="error">
                 <ShoppingCartCheckoutIcon />
