@@ -16,6 +16,8 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
 import Cart from "./Cart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Login from "../pages/Login";
+import SignUp from "../pages/SignUp";
 
 
 const Search = styled("div")(({ theme }) => ({
@@ -194,6 +196,8 @@ export default function PrimarySearchAppBar() {
               }}
             />
           </Search>
+          <Login/>
+          <SignUp/>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton

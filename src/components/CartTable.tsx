@@ -8,12 +8,19 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, Button, CardMedia, Typography } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../rtk/hooks";
-import { decrement, increment, removeProduct } from "../rtk/cartSlice";
+import {
+  CartProduct,
+  decrement,
+  increment,
+  removeProduct,
+} from "../rtk/cartSlice";
 import { Product } from "../rtk/interface";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
-import RemoveIcon from '@mui/icons-material/Remove';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-
+import RemoveIcon from "@mui/icons-material/Remove";
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import axios from "axios";
+import { useEffect } from "react";
+import React from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,7 +43,40 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function CartTable() {
+  const [productForCart, setProductForCart] = React.useState<CartProduct[]>([]);
+
   const dispatch = useAppDispatch();
+
+  const getCartFromServer = async () => {
+    try {
+      const response = await axios.get(
+        `https://store-back-3.onrender.com/api/cart/`
+      );
+      if (response.data) {
+        return response.data;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    return [];
+  };
+
+  
+
+  const flag = useAppSelector((state) => state.userName.flag);
+  useEffect(() => {
+    const productFromRtk: CartProduct[] = useAppSelector(
+      (state) => state.cart.products
+    );
+    if (flag) {
+      getCartFromServer().then((productsFromServer) => {
+        if (productsFromServer) setProductForCart(productsFromServer);
+        else setProductForCart(productFromRtk);
+      });
+    }
+  }, [flag]);
+
+
 
   const incrementQuantity = (product: Product) => {
     dispatch(increment(product));
@@ -60,7 +100,7 @@ export default function CartTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {useAppSelector((state) => state.cart.products).map((row) => (
+          {productForCart.map((row) => (
             <StyledTableRow key={row.product.id}>
               <StyledTableCell component="th" scope="row">
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -82,7 +122,7 @@ export default function CartTable() {
               </StyledTableCell>
               <StyledTableCell align="right">
                 <Button onClick={() => removeProductFromCart(row.product)}>
-                  <DeleteTwoToneIcon/>
+                  <DeleteTwoToneIcon />
                 </Button>
                 <Button onClick={() => incrementQuantity(row.product)}>
                   <PlusOneIcon />
