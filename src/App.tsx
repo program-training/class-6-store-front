@@ -3,11 +3,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Layout from './pages/Layout'
-import { Home, Login } from '@mui/icons-material'
 import SignUp from './pages/SignUp'
 import Cart from './pages/Cart'
 import Products from './pages/Products'
 import Product from './pages/Product'
+import Home from './pages/Home'
+import Login from './pages/Login'
 
 function App() {
   
