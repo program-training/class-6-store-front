@@ -35,8 +35,6 @@ export default function CartTable() {
   const dispatch = useAppDispatch();
 
   const incrementQuantity = (product: Product) => {
-    console.log(product);
-
     dispatch(increment(product));
   };
   const decrementQuantity = (product: Product) => {
