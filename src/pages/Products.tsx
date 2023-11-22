@@ -1,8 +1,27 @@
 import { AddShoppingCart } from "@mui/icons-material"
 import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, Tooltip, IconButton, Stack, Paper, Link } from "@mui/material"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { Product } from "../interfaces/product"
 
 
 const Products = () => {
+
+
+  const [products, setProducts] = useState([])
+
+  useEffect(()=> {
+    (async()=> {
+      try {
+        const resp = await axios.get("https://store-back-3.onrender.com/api/products")
+        const {data} = resp
+        setProducts(data ? data: [])
+      } catch (error) {
+        console.log(error);
+        
+      }
+    })()
+  })
   // function imgURL() {
   //   throw new Error("Function not implemented.")
   // }
@@ -11,12 +30,13 @@ const Products = () => {
   //   throw new Error("Function not implemented.")
   // }
 
-  const sortedProducts: unknown = [1,2,3,4,5,6,7,8,9]
+  // const sortedProducts: unknown = [1,2,3,4,5,6,7,8,9]
+  const sortedProducts = products || [1,2,3,4,5,6,7,8,9]
 
   return (
     <Grid container spacing={2}>
-    {Array.isArray(sortedProducts) && sortedProducts.map((product) => (
-      <Grid item xs={12} sm={6} md={4} key={product}>
+    {Array.isArray(sortedProducts) && sortedProducts.map((product: Product) => (
+      <Grid item xs={12} sm={6} md={4} key={product.id}>
         <Card
           sx={{
             height: '100%',
@@ -28,7 +48,7 @@ const Products = () => {
         >
           <CardActionArea sx={{ flexGrow: 1 }}>
             <Link
-              href={`/products/${product}`}
+              href={`/product/${product}`}
               sx={{
                 textDecoration: 'none',
                 // color: (theme) => theme.palette.text.primary,
@@ -43,7 +63,7 @@ const Products = () => {
               />
               <CardContent>
                 <Typography gutterBottom variant="h6" component="h3">
-                  {product.title}
+                  {product?.title}
                 </Typography>
               </CardContent>
             </Link>
