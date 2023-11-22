@@ -17,7 +17,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const resp = await axios.get("http://localhost:3000/api/categories");
+        const resp = await axios.get("https://store-back-3.onrender.com/api/categories");
         const { data } = resp;
         setCategories(data);
       } catch (error) {
