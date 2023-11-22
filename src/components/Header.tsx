@@ -175,7 +175,7 @@ export default function PrimarySearchAppBar() {
         <Toolbar>
           <div onClick={() => navigate("/")}>
             <Typography
-              variant="h6"
+              variant="h2"
               noWrap
               component="div"
               fontFamily={"Fira Sans"}

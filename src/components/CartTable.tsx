@@ -73,7 +73,7 @@ export default function CartTable() {
         else setProductForCart(productFromRtk);
       });
     }
-  }, [flag]);
+  }, [flag, productFromRtk]);
 
 
 
