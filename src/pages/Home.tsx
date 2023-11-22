@@ -29,7 +29,7 @@ const Home = () => {
   return (
     <>
       <Typography
-        variant="h4"
+        variant="h1"
         align="center"
         gutterBottom
         style={{

@@ -64,17 +64,17 @@ export default function CartTable() {
   
 
   const flag = useAppSelector((state) => state.userName.flag);
+  const productFromRtk: CartProduct[] = useAppSelector(
+    (state) => state.cart.products
+  );
   useEffect(() => {
-    const productFromRtk: CartProduct[] = useAppSelector(
-      (state) => state.cart.products
-    );
     if (flag) {
       getCartFromServer().then((productsFromServer) => {
         if (productsFromServer) setProductForCart(productsFromServer);
         else setProductForCart(productFromRtk);
       });
     }
-  }, [flag]);
+  }, [flag, productFromRtk]);
 
 
 

@@ -48,7 +48,7 @@ const Products = () => {
         >
           <CardActionArea sx={{ flexGrow: 1 }}>
             <Link
-              href={`/product/${product}`}
+              href={`/product/${product.id}`}
               sx={{
                 textDecoration: 'none',
                 // color: (theme) => theme.palette.text.primary,
