@@ -10,6 +10,10 @@ import { Box, Button, CardMedia, Typography } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { decrement, increment, removeProduct } from "../rtk/cartSlice";
 import { Product } from "../rtk/interface";
+import PlusOneIcon from "@mui/icons-material/PlusOne";
+import RemoveIcon from '@mui/icons-material/Remove';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -78,13 +82,13 @@ export default function CartTable() {
               </StyledTableCell>
               <StyledTableCell align="right">
                 <Button onClick={() => removeProductFromCart(row.product)}>
-                  rem
+                  <DeleteTwoToneIcon/>
                 </Button>
                 <Button onClick={() => incrementQuantity(row.product)}>
-                  inc
+                  <PlusOneIcon />
                 </Button>
                 <Button onClick={() => decrementQuantity(row.product)}>
-                  dec
+                  <RemoveIcon />
                 </Button>
               </StyledTableCell>
             </StyledTableRow>

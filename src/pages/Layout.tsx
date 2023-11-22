@@ -11,14 +11,14 @@ const Layout = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#2A6478",
+          backgroundColor: "white",
           padding: "4rem 2rem 6rem 2rem"
         }}
       >
         <div
           style={{
             minHeight: "83vh",
-            backgroundColor: "#2A6478",
+            backgroundColor: "white",
             width: "92%",
           }}
         >

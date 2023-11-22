@@ -1,12 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Layout from './pages/Layout'
-import { Home, Login } from '@mui/icons-material'
 import SignUp from './pages/SignUp'
 // import Cart from './pages/Cart'
-import Cart from './components/Cart'
+// import Cart from './components/Cart'
 import Products from './pages/Products'
 import Product from './pages/Product'
+import Home from './pages/Home'
+import Login from './pages/Login'
 import { themeSettings } from "./palette/theme"
 import { createTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
@@ -23,7 +24,7 @@ function App() {
               <Route path='/' element={<Home />} />
               <Route path='/login' element={<Login />} />
               <Route path='/signUp' element={<SignUp />} />
-              <Route path='/cart' element={<Cart />} />
+              {/* <Route path='/cart' element={<Cart />} /> */}
               <Route path='/products' element={<Products />} />
               <Route path='/product:id' element={<Product />} />
             </Route>

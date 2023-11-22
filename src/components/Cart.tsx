@@ -2,12 +2,20 @@ import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import CartTable from "./CartTable";
 
-const Cart = () => {
-  const [open, setOpen] = React.useState(false);
+interface CartProps {
+  props: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
 
+const Cart: React.FC<CartProps> = ({ props }) => {
+  const [openCart, setOpenCart] = props;
   return (
     <React.Fragment key={"cart"}>
-      <Drawer open={open} onClose={() => setOpen(false)}>
+      <Drawer
+        anchor={"right"}
+        open={openCart}
+        onClose={() => setOpenCart(false)}
+        role="presentation"
+      >
         <CartTable />
       </Drawer>
     </React.Fragment>
