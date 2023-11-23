@@ -55,6 +55,7 @@ export default function CartTable() {
   const productFromRtk: CartProduct[] = useAppSelector(
     (state) => state.cart.products
   );
+
   useEffect(() => {
     if (flag) {
       getCartFromServer().then((productsFromServer) => {
@@ -76,7 +77,7 @@ export default function CartTable() {
       if (products.length) {
         setProductsCartFromData(products);
       }
-    }
+    } else setProductsCartFromData([]);
   };
 
   useEffect(() => {
@@ -105,39 +106,50 @@ export default function CartTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {productsCartFromData.map((product) => (
-            <StyledTableRow key={product.id}>
-              <StyledTableCell component="th" scope="row">
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <CardMedia
-                    sx={{ maxWidth: "12rem", minWidth: "12rem" }}
-                    component="img"
-                    height="75em"
-                    image={product.image}
-                    alt={product.title}
-                  />
-                  <Box sx={{ width: "1em" }}></Box>
-                  <Typography variant="body1">{product.title}</Typography>
-                </Box>
-              </StyledTableCell>
-              {/* <StyledTableCell align="center">{quantity}</StyledTableCell> */}
-              <StyledTableCell align="center">{}</StyledTableCell>
-              {/* <StyledTableCell align="center">
-                {product.price * quantity}
-              </StyledTableCell> */}
-              <StyledTableCell align="right">
-                <Button onClick={() => removeProductFromCart(product)}>
-                  <DeleteTwoToneIcon />
-                </Button>
-                <Button onClick={() => incrementQuantity(product)}>
-                  <PlusOneIcon />
-                </Button>
-                <Button onClick={() => decrementQuantity(product)}>
-                  <RemoveIcon />
-                </Button>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {productsCartFromData.map((product) => {
+            const quantity: CartProduct | undefined = productForCart.find(
+              (item) => item.productId === product.id
+            );
+            return (
+              <StyledTableRow key={product.id}>
+                <StyledTableCell component="th" scope="row">
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <CardMedia
+                      sx={{ maxWidth: "12rem", minWidth: "12rem" }}
+                      component="img"
+                      height="75em"
+                      image={product.image}
+                      alt={product.title}
+                    />
+                    <Box sx={{ width: "1em" }}></Box>
+                    <Typography variant="body1">{product.title}</Typography>
+                  </Box>
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {quantity?.quantity}
+                </StyledTableCell>
+                <StyledTableCell align="center">{}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <StyledTableCell align="center">
+                    {quantity && quantity.quantity
+                      ? product.price * quantity.quantity
+                      : null}
+                  </StyledTableCell>
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  <Button onClick={() => removeProductFromCart(product)}>
+                    <DeleteTwoToneIcon />
+                  </Button>
+                  <Button onClick={() => incrementQuantity(product)}>
+                    <PlusOneIcon />
+                  </Button>
+                  <Button onClick={() => decrementQuantity(product)}>
+                    <RemoveIcon />
+                  </Button>
+                </StyledTableCell>
+              </StyledTableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

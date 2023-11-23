@@ -11,6 +11,8 @@ import { filterProducts } from './function';
 import { addProductToCart } from "../rtk/cartSlice"
 import { useAppDispatch } from "../rtk/hooks";
 import {  getUniqueAttributes } from './function';
+
+
 export interface Product {
   id: number;
   title: string;

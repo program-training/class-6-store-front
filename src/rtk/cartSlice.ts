@@ -157,33 +157,22 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
-      console.log('added 1');
-
       state.products = getItemFromLocalStorage();
       const { productId: newProductId, quantity } = action.payload;
       if (quantity > 0) {
-      console.log('added 2');
-
         const upsertProduct = state.products.find(
           (productInCart) => productInCart.productId === newProductId
         );
         if (upsertProduct) {
-      console.log('added 3');
-
           upsertProduct.quantity = quantity;
         } else {
-          console.log('added 4');
-          
           state.products.push({ productId: newProductId, quantity });
-          console.log(state.products);
-          
         }
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
     },
     increment: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
-
       const upsertProduct = state.products.find(
         (productInCart) => productInCart.productId === action.payload
       );
@@ -195,7 +184,6 @@ const cartSlice = createSlice({
 
     decrement: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
-
       const existingProduct = state.products.find(
         (productInCart) => productInCart.productId === action.payload
       );
@@ -212,17 +200,16 @@ const cartSlice = createSlice({
 
     setCart: (state, action: PayloadAction<CartProduct[]>) => {
       state.products = action.payload;
+      localStorage.setItem("cart", JSON.stringify(state.products));
     },
     removeProduct: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
-
       state.products = removeProductFunc(state.products, action.payload);
       localStorage.setItem("cart", JSON.stringify(state.products));
     },
 
     setQuantity: (state, action: PayloadAction<CartProduct>) => {
       state.products = getItemFromLocalStorage();
-
       const { productId: newProductId, quantity } = action.payload;
       const productToUpdateQuantity = state.products.find(
         (productInCart) => productInCart.productId === newProductId
