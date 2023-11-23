@@ -32,27 +32,20 @@ export function filterProducts(name: string, value: string | number, products: P
         });
       });
     });
-  
     return newFilteredProducts ?? null;
   }
-
-
   export function getUniqueAttributes(products: Product[]): Record<string, (string | number)[]> {
     const groupedAttributes: Record<string, (string | number)[]> = {};
-  
     products?.forEach((product) => {
       product.attributes.forEach((attribute) => {
         const { key, value } = attribute;
-  
         if (!groupedAttributes[key]) {
           groupedAttributes[key] = [];
         }
-  
         if (!groupedAttributes[key].includes(value)) {
           groupedAttributes[key].push(value);
         }
       });
     });
-  
     return groupedAttributes;
   }

@@ -1,4 +1,15 @@
-import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Stack, useTheme, Box, Slider, CardActionArea } from "@mui/material"
+import {
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  IconButton,
+  Stack,
+  useTheme,
+  Box,
+  CardActionArea,
+} from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { themeSettings } from "../palette/theme";
@@ -27,14 +38,8 @@ export interface Attributes {
   value: number | string;
 }
 
-interface Prices {
-  minPrice: number;
-  maxPrice: number;
-}
-
-
 const Products = () => {
-  const { palette } = useTheme()
+  const { palette } = useTheme();
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[] | null>()
   const [filteredProducts, setFilteredProducts] = useState<Product[] | null | undefined>(null);
@@ -47,7 +52,7 @@ const Products = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/products?category=${category}`
+          `https://store-back-3.onrender.com/api/products?category=${category}`
         );
         setProducts(response.data);
       } catch (error) {
@@ -58,9 +63,8 @@ const Products = () => {
   }
 
   useEffect(() => {
-    connectToData()
-  }, [])
-
+    connectToData();
+  }, []);
   useEffect(() => {
     if (products) {
       setAttributes(getUniqueAttributes(products));
@@ -83,12 +87,9 @@ const Products = () => {
       setFilteredProducts(newFilteredProducts);
     }
   };
-
   const addToCart = (id: number) => {
     dispatch(addProductToCart({ productId: id, quantity: 1 }));
   };
-
-
   return (
     <Stack spacing={2} direction="row">
       <Box width={"15em"}>
