@@ -222,6 +222,9 @@ const cartSlice = createSlice({
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
     },
+    render:(state)=>{
+      state.products = getItemFromLocalStorage()
+    }
   },
 });
 
@@ -232,5 +235,6 @@ export const {
   addProductToCart,
   removeProduct,
   setQuantity,
+  render,
 } = cartSlice.actions;
 export default cartSlice.reducer;
