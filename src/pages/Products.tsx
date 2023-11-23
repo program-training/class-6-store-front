@@ -74,7 +74,9 @@ const Products = () => {
 
   useEffect(() => {
     connectToData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
   useEffect(() => {
     if (products) {
       setAttributes(getUniqueAttributes(products));
