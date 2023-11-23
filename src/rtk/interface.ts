@@ -1,5 +1,4 @@
 export interface Product {
-    [x: string]: any;
     id: number;
     title: string;
     image:string;
@@ -17,10 +16,10 @@ export interface Product {
   }
 
   export interface UserRegister {
-    _id?: string
     firstName: string;
     lastName: string;
     username: string;
     email: string;
     password: string;
+    confirmPassword: string
   }
