@@ -26,10 +26,13 @@ export interface Attributes {
   key: string;
   value: number | string;
 }
+
 interface Prices {
   minPrice: number;
   maxPrice: number;
 }
+
+
 const Products = () => {
   const { palette } = useTheme()
   const navigate = useNavigate();
@@ -38,6 +41,8 @@ const Products = () => {
   const [attributes, setAttributes] = useState<Record<string, (string | number)[]>>({});
   const {category} = useParams()
   const dispatch = useAppDispatch()
+
+
   function connectToData() {
     const fetchData = async () => {
       try {
@@ -51,6 +56,7 @@ const Products = () => {
     };
     fetchData();
   }
+  
   useEffect(() => {
     connectToData()
   }, [])
