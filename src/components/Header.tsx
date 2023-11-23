@@ -11,10 +11,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import CottageOutlinedIcon from "@mui/icons-material/CottageOutlined";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
+import Cart from "./Cart";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Login from "../pages/Login";
+import SignUp from "../pages/SignUp";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -57,6 +61,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const [openCart, setOpenCart] = React.useState(false);
+
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -130,10 +136,10 @@ export default function PrimarySearchAppBar() {
         fontSize: "0.5rem",
       }}
     >
-      <MenuItem onClick={() => navigate("/cart")}>
+      <MenuItem onClick={() => setOpenCart(true)}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
-            <ShoppingCartCheckoutIcon />
+            <ShoppingCartIcon />
           </Badge>
         </IconButton>
         <p>Cart</p>
@@ -167,18 +173,9 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="default">
         <Toolbar>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
           <div onClick={() => navigate("/")}>
             <Typography
-              variant="h6"
+              variant="h2"
               noWrap
               component="div"
               fontFamily={"Fira Sans"}
@@ -199,6 +196,8 @@ export default function PrimarySearchAppBar() {
               }}
             />
           </Search>
+          <Login/>
+          <SignUp/>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
@@ -212,10 +211,10 @@ export default function PrimarySearchAppBar() {
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
-              onClick={() => navigate("/cart")}
+              onClick={() => setOpenCart(true)}
             >
               <Badge badgeContent={4} color="error">
-                <ShoppingCartCheckoutIcon />
+                <ShoppingCartIcon />
               </Badge>
             </IconButton>
             <IconButton
@@ -246,6 +245,7 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {openCart && <Cart props={[openCart, setOpenCart]}/>}
     </Box>
   );
 }

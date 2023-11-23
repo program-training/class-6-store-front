@@ -11,14 +11,15 @@ const Layout = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#2A6478",
+          backgroundImage: "url('https://t3.ftcdn.net/jpg/00/86/56/12/360_F_86561234_8HJdzg2iBlPap18K38mbyetKfdw1oNrm.jpg')",
+          backgroundPosition: "fixed",
+          backgroundSize: "cover",
           padding: "4rem 2rem 6rem 2rem"
         }}
       >
         <div
           style={{
             minHeight: "83vh",
-            backgroundColor: "#2A6478",
             width: "92%",
           }}
         >

@@ -34,6 +34,7 @@ interface Prices {
   maxPrice: number;
 }
 
+
 const Products = () => {
   const { palette } = useTheme()
   const navigate = useNavigate();
