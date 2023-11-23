@@ -47,6 +47,7 @@ export default function CartTable() {
   const [productsCartFromData, setProductsCartFromData] = React.useState<
     Product[]
   >([]);
+  const [totalPrice, setTotalPrice] = React.useState<number | null>(null);
 
   const dispatch = useAppDispatch();
   const dataProduct = useAppSelector((state) => state.products.products);
@@ -84,6 +85,19 @@ export default function CartTable() {
     comparison();
   }, [productForCart]);
 
+  useEffect(() => {
+    let total = 0;
+    for (const product of productsCartFromData) {
+      const quantity: CartProduct | undefined = productForCart.find(
+        (item) => item.productId === product.id
+      );
+      if (quantity && quantity.quantity) {
+        total += product.price * quantity.quantity;
+      }
+    }
+    setTotalPrice(total);
+  }, [productsCartFromData, productForCart]);
+
   const incrementQuantity = (product: Product) => {
     dispatch(increment(product.id));
   };
@@ -94,15 +108,15 @@ export default function CartTable() {
     dispatch(removeProduct(product.id));
   };
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+    <TableContainer component={Paper} >
+      <Table sx={{ minWidth: 700 }} aria-label="customized table" >
         <TableHead>
           <TableRow>
             <StyledTableCell>ITEMS</StyledTableCell>
             <StyledTableCell align="center">QUANTITY</StyledTableCell>
-            <StyledTableCell align="center">זמינות</StyledTableCell>
+            <StyledTableCell align="center">AVAILABILITY</StyledTableCell>
             <StyledTableCell align="right">TOTAL PRICE</StyledTableCell>
-            <StyledTableCell align="right">פעולות נוספות</StyledTableCell>
+            <StyledTableCell align="right">ADDITIONAL ACTIONS</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -132,7 +146,7 @@ export default function CartTable() {
                 <StyledTableCell align="center">
                   <StyledTableCell align="center">
                     {quantity && quantity.quantity
-                      ? product.price * quantity.quantity
+                      ? product.price * quantity.quantity + "$"
                       : null}
                   </StyledTableCell>
                 </StyledTableCell>
@@ -152,6 +166,28 @@ export default function CartTable() {
           })}
         </TableBody>
       </Table>
+      {productsCartFromData.length ? (
+        <div
+          style={{
+            backgroundColor: "#f0f0f0",
+            padding: "10px",
+            borderRadius: "5px",
+            marginTop: "10px",
+            display: "flex",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Typography variant="h3" style={{ color: "#333" }}>
+            TOTAL PRICE: {totalPrice}$
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{ color: "white", backgroundColor: "#37474f" }}
+          >
+            to make an order
+          </Button>
+        </div>
+      ) : null}
     </TableContainer>
   );
 }
