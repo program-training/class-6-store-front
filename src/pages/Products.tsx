@@ -20,9 +20,10 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { filterProducts } from "./function";
-import { addProductToCart } from "../rtk/cartSlice";
+import { addProductToCart, render } from "../rtk/cartSlice";
 import { useAppDispatch } from "../rtk/hooks";
 import { getUniqueAttributes } from "./function";
+
 export interface Product {
   id: number;
   title: string;
@@ -111,6 +112,7 @@ const Products = () => {
   const addToCart = (id: number) => {
     dispatch(addProductToCart({ productId: id, quantity: 1 }));
   };
+  dispatch(render());
   return (
     <Stack spacing={2} direction="row">
       <Box width={"15em"}>
