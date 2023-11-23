@@ -7,15 +7,17 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
-import { useAppDispatch } from "../rtk/hooks";
-import { setOpen as setOpenInRtk } from "../rtk/flagSignUp.slice";
+import { useAppDispatch, useAppSelector } from "../rtk/hooks";
+import { setOpen as setOpenSignUp } from "../rtk/flagSignUp.slice";
+import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { setUserName } from "../rtk/userNameSlice";
 
 const LogIn = () => {
-  const [open, setOpen] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const dispatch = useAppDispatch();
+
+const open = useAppSelector((state) => state.openLogIn.flag);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,11 +34,13 @@ const LogIn = () => {
   };
 
   const handleClickOpen = () => {
-    setOpen(true);
+    dispatch(setOpenLogIn(true));
+
   };
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch(setOpenLogIn(false));
+
   };
 
   const handleLogIn = async () => {
@@ -56,9 +60,10 @@ const LogIn = () => {
         }
       } catch (error) {
         console.error("Error during registration:", error);
-        dispatch(setOpenInRtk(true));
+        dispatch(setOpenSignUp(true));
       }
-      setOpen(false);
+    dispatch(setOpenLogIn(false));
+
     } else if (validateEmail(email) && !validatePassword(password)) {
       window.alert("סיסמא לא תקינה");
     } else if (!validateEmail(email) && validatePassword(password)) {
@@ -67,8 +72,9 @@ const LogIn = () => {
   };
 
   const handleRegistration = () => {
-    dispatch(setOpenInRtk(true));
-    setOpen(false);
+    dispatch(setOpenSignUp(true));
+    dispatch(setOpenLogIn(false));
+
   };
 
   return (

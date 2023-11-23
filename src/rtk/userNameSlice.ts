@@ -1,23 +1,26 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
+import { UserRegister } from "./interface";
 
 interface UserNameSlice {
   flag: boolean;
-  userName: string;
+  userName: string | null;
+  userId: string | null;
 }
 
 const initialState: UserNameSlice = {
   flag: false,
-  userName: "",
+  userName: null,
+  userId: null,
 };
 
-export const productsSlice = createSlice({
+export const userNameSlice = createSlice({
   name: "userName",
   initialState,
   reducers: {
-    setUserName: (state, action: PayloadAction<string>) => {
-      state.userName = action.payload;
+    setUserName: (state, action: PayloadAction<UserRegister>) => {
+      state.userName = action.payload.username;
       state.flag = true;
+      state.userId = action.payload._id ? action.payload._id : null;
     },
     resetUserName: (state) => {
       state = initialState;
@@ -25,5 +28,5 @@ export const productsSlice = createSlice({
   },
 });
 
-export const {setUserName, resetUserName} = productsSlice.actions;
-export default productsSlice.reducer;
+export const { setUserName, resetUserName } = userNameSlice.actions;
+export default userNameSlice.reducer;

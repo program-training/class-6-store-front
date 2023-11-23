@@ -3,12 +3,15 @@ import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography, CardAct
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Product } from "../interfaces/product"
+import { useAppDispatch } from "../rtk/hooks";
+import { addProductToCart } from "../rtk/cartSlice"
 
 
 const Products = () => {
 
 
   const [products, setProducts] = useState([])
+  const dispatch = useAppDispatch()
 
   useEffect(()=> {
     (async()=> {
@@ -33,10 +36,16 @@ const Products = () => {
   // const sortedProducts: unknown = [1,2,3,4,5,6,7,8,9]
   const sortedProducts = products || [1,2,3,4,5,6,7,8,9]
 
+  const addToCart = (id:number) => {
+      dispatch(addProductToCart({ productId: id, quantity: 1 }));
+      console.log('add to cart');
+      
+  };
+
   return (
     <Grid container spacing={2}>
     {Array.isArray(sortedProducts) && sortedProducts.map((product: Product) => (
-      <Grid item xs={12} sm={6} md={4} key={product.id}>
+      <Grid item xs={12} sm={6} md={4}>
         <Card
           sx={{
             height: '100%',
@@ -69,7 +78,7 @@ const Products = () => {
           </CardActionArea>
           <CardActions sx={{ justifyContent: 'space-between' }}>
             <Tooltip title="Add to Cart">
-              <IconButton color="primary">
+              <IconButton color="primary" onClick={()=>addToCart(product.id)}>
                 <AddShoppingCart />
               </IconButton>
             </Tooltip>

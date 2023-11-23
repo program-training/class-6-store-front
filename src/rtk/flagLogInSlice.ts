@@ -1,16 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 
-interface SignUpSlice {
+interface LogInSlice {
   flag: boolean;
 }
 
-const initialState: SignUpSlice = {
+const initialState: LogInSlice = {
   flag: false,
 };
 
-export const signUpSlice = createSlice({
-  name: "flagSignUP",
+export const logInSlice = createSlice({
+  name: "flagLogIn",
   initialState,
   reducers: {
     setOpen: (state, action: PayloadAction<boolean>) => {
@@ -19,5 +19,5 @@ export const signUpSlice = createSlice({
   },
 });
 
-export const {setOpen} = signUpSlice.actions;
-export default signUpSlice.reducer;
+export const {setOpen} = logInSlice.actions;
+export default logInSlice.reducer;

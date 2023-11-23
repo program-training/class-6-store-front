@@ -18,9 +18,9 @@ import { Product } from "../rtk/interface";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import axios from "axios";
 import { useEffect } from "react";
 import React from "react";
+import { getCartFromServer } from "../functions";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,24 +44,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function CartTable() {
   const [productForCart, setProductForCart] = React.useState<CartProduct[]>([]);
+  const [productsCartFromData, setProductsCartFromData] = React.useState<
+    Product[]
+  >([]);
 
   const dispatch = useAppDispatch();
+  const dataProduct = useAppSelector((state) => state.products.products);
 
-  const getCartFromServer = async () => {
-    try {
-      const response = await axios.get(
-        `https://store-back-3.onrender.com/api/cart/`
-      );
-      if (response.data) {
-        return response.data;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    return [];
-  };
-
-  
   const flag = useAppSelector((state) => state.userName.flag);
   const productFromRtk: CartProduct[] = useAppSelector(
     (state) => state.cart.products
@@ -70,21 +59,38 @@ export default function CartTable() {
     if (flag) {
       getCartFromServer().then((productsFromServer) => {
         if (productsFromServer) setProductForCart(productsFromServer);
-        else setProductForCart(productFromRtk);
       });
+    } else {
+      setProductForCart(productFromRtk);
     }
   }, [flag, productFromRtk]);
 
+  const comparison = () => {
+    if (productForCart.length) {
+      const products = productForCart.flatMap((item) => {
+        const product = dataProduct.find(
+          (product) => product.id === item.productId
+        );
+        return product ? [product] : [];
+      });
+      if (products.length) {
+        setProductsCartFromData(products);
+      }
+    }
+  };
 
+  useEffect(() => {
+    comparison();
+  }, [productForCart]);
 
   const incrementQuantity = (product: Product) => {
-    dispatch(increment(product));
+    dispatch(increment(product.id));
   };
   const decrementQuantity = (product: Product) => {
-    dispatch(decrement(product));
+    dispatch(decrement(product.id));
   };
   const removeProductFromCart = (product: Product) => {
-    dispatch(removeProduct(product));
+    dispatch(removeProduct(product.id));
   };
   return (
     <TableContainer component={Paper}>
@@ -99,34 +105,34 @@ export default function CartTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {productForCart.map((row) => (
-            <StyledTableRow key={row.product.id}>
+          {productsCartFromData.map((product) => (
+            <StyledTableRow key={product.id}>
               <StyledTableCell component="th" scope="row">
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <CardMedia
                     sx={{ maxWidth: "12rem", minWidth: "12rem" }}
                     component="img"
                     height="75em"
-                    image={row.product.image}
-                    alt={row.product.title}
+                    image={product.image}
+                    alt={product.title}
                   />
                   <Box sx={{ width: "1em" }}></Box>
-                  <Typography variant="body1">{row.product.title}</Typography>
+                  <Typography variant="body1">{product.title}</Typography>
                 </Box>
               </StyledTableCell>
-              <StyledTableCell align="center">{row.quantity}</StyledTableCell>
+              {/* <StyledTableCell align="center">{quantity}</StyledTableCell> */}
               <StyledTableCell align="center">{}</StyledTableCell>
-              <StyledTableCell align="center">
-                {row.product.price * row.quantity}
-              </StyledTableCell>
+              {/* <StyledTableCell align="center">
+                {product.price * quantity}
+              </StyledTableCell> */}
               <StyledTableCell align="right">
-                <Button onClick={() => removeProductFromCart(row.product)}>
+                <Button onClick={() => removeProductFromCart(product)}>
                   <DeleteTwoToneIcon />
                 </Button>
-                <Button onClick={() => incrementQuantity(row.product)}>
+                <Button onClick={() => incrementQuantity(product)}>
                   <PlusOneIcon />
                 </Button>
-                <Button onClick={() => decrementQuantity(row.product)}>
+                <Button onClick={() => decrementQuantity(product)}>
                   <RemoveIcon />
                 </Button>
               </StyledTableCell>
