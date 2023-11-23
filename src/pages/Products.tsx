@@ -86,7 +86,6 @@ const Products = () => {
 
   const [value, setValue] = useState<number | null>(null);
   const [activeFilters, setActiveFilters] = useState<{ [name: string]: string | number }>({});
-  setActiveFilters({"david":5})
 
 
   const handleAttributeToggle = (name: string, value: string | number) => {
