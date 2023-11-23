@@ -47,7 +47,7 @@ const Products = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/products?category=${category}`
+          `https://store-back-3.onrender.com/api/products?category=${category}`
         );
         setProducts(response.data);
       } catch (error) {
