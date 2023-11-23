@@ -17,7 +17,9 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const resp = await axios.get("https://store-back-3.onrender.com/api/categories");
+        const resp = await axios.get(
+          "https://store-back-3.onrender.com/api/categories"
+        );
         const { data } = resp;
         setCategories(data);
       } catch (error) {
@@ -28,19 +30,19 @@ const Home = () => {
 
   return (
     <>
-      <Typography
+      {/* <Typography
         variant="h1"
         align="center"
         gutterBottom
         style={{
           fontFamily: "Fira Sans, sans-serif",
           fontWeight: "bold",
-          color: "whitesmoke",
+          color: "rgb(33,47,58)",
           marginBottom: "3rem",
         }}
       >
         Categories
-      </Typography>
+      </Typography> */}
       <Grid container spacing={2}>
         {Array.isArray(categories) &&
           categories.map((cat: Category) => (
@@ -59,6 +61,18 @@ const Home = () => {
                 }}
               >
                 <CardActionArea sx={{ flexGrow: 1 }}>
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h2"
+                      component="h3"
+                      fontFamily="Fira Sans, sans-serif"
+                      fontWeight="bold"
+                      color="rgb(33,47,58)"
+                    >
+                      {cat.name}
+                    </Typography>
+                  </CardContent>
                   <Link
                     href={`/products/${cat.name}`}
                     sx={{
@@ -71,11 +85,6 @@ const Home = () => {
                       image={cat.image}
                       alt={cat.name}
                     />
-                    <CardContent>
-                      <Typography gutterBottom variant="h6" component="h3">
-                        {cat.name}
-                      </Typography>
-                    </CardContent>
                   </Link>
                 </CardActionArea>
               </Card>

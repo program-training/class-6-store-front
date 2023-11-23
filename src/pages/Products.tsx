@@ -1,4 +1,4 @@
-import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, Tooltip, IconButton, Stack, Paper, Link, useTheme, Box, Slider } from "@mui/material"
+import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Stack, useTheme, Box, Slider } from "@mui/material"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { themeSettings } from "../palette/theme";
@@ -68,30 +68,9 @@ const Products = () => {
       setFilteredProducts(products);
     }
   }, [products])
-  // useEffect(() => {
-  //   const handleUniqueAttributes = () => {
-  //     const groupedAttributes: Record<string, (string | number)[]> = {};
+ 
 
-  //     products?.forEach((product) => {
-  //       product.attributes.forEach((attribute) => {
-  //         const { key, value } = attribute;
-
-  //         if (!groupedAttributes[key]) {
-  //           groupedAttributes[key] = [];
-  //         }
-
-  //         if (!groupedAttributes[key].includes(value)) {
-  //           groupedAttributes[key].push(value);
-  //         }
-  //       });
-  //     });
-
-  //     setAttributes(groupedAttributes);
-  //   };
-
-  //   handleUniqueAttributes();
-  //   setFilteredProducts(products);
-  // }, [products]);
+ 
 
   const handleClick = (productId: string) => {
     navigate(`/product/${productId}`);
@@ -107,37 +86,8 @@ const Products = () => {
 
   const [value, setValue] = useState<number | null>(null);
   const [activeFilters, setActiveFilters] = useState<{ [name: string]: string | number }>({});
+  setActiveFilters({"david":5})
 
-  // const handleAttributeToggle = (name: string, value: string | number) => {
-  //   setValue(value ? +value : null);
-  //   console.log(name, value);
-  //   let filterByPrice = products
-  //   if (name === "price") {
-  //     filterByPrice = products?.filter(product => {
-  //       return product.price < +value
-  //     })
-  //     setFilteredProducts(filterByPrice)
-  //   }
-
-  //   if (name !== "price") {
-  //     const filterKey = `${name}_${value}`;
-  //     if (activeFilters[filterKey]) {
-  //       delete activeFilters[filterKey];
-  //     } else {
-  //       activeFilters[filterKey] = filterKey;
-  //     }
-  //   }
-
-  //   const newFilteredProducts = filterByPrice?.filter(product => {
-  //     return Object.keys(activeFilters).every(filter => {
-  //       const [filterName, filterValue] = filter.split('_');
-  //       return product.attributes.some(attribute => {
-  //         return attribute.key === filterName && attribute.value === filterValue;
-  //       });
-  //     });
-  //   });
-  //   setFilteredProducts(newFilteredProducts.length > 0 ? newFilteredProducts : null);
-  // };
 
   const handleAttributeToggle = (name: string, value: string | number) => {
     if(products) {
@@ -272,4 +222,4 @@ const Products = () => {
   )
 }
 
-export default Products
+export default Products;

@@ -12,6 +12,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.Fragment>
     <CssBaseline/>
     <App />
-  </React.Fragment>,
+  </React.Fragment>
   </Provider>
 )
