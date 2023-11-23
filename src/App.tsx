@@ -10,7 +10,8 @@ import { useMemo } from 'react'
 import { ThemeProvider } from "@mui/material"
 
 function App() {
-  const theme = useMemo(() => createTheme(themeSettings), [])
+  const theme = useMemo(() => createTheme(themeSettings), []);
+  
   return (
     <>
       <BrowserRouter>
@@ -25,7 +26,8 @@ function App() {
         </ThemeProvider>
       </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+
