@@ -47,7 +47,7 @@ export default function SignIn() {
           username: userName,
           email,
           password,
-          // confirmPassword: passwordVerification
+          confirmPassword: passwordVerification
         };
         const response = await axios.post(
           "https://store-back-3.onrender.com/api/users/register",
