@@ -1,9 +1,9 @@
-import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, Tooltip, IconButton, Stack, Paper, Link, useTheme, Box, Slider } from "@mui/material"
+import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Stack, useTheme, Box, Slider } from "@mui/material"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { themeSettings } from "../palette/theme";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -41,14 +41,14 @@ const Products = () => {
   const [products, setProducts] = useState<Product[] | null>()
   const [filteredProducts, setFilteredProducts] = useState<Product[] | null | undefined>(null);
   const [attributes, setAttributes] = useState<Record<string, (string | number)[]>>({});
-
+  const {category} = useParams()
 
 
   function connectToData() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/products?category=tops"
+          `http://localhost:3000/api/products?category=${category}`
         );
         setProducts(response.data);
       } catch (error) {
@@ -68,30 +68,6 @@ const Products = () => {
       setFilteredProducts(products);
     }
   }, [products])
-  // useEffect(() => {
-  //   const handleUniqueAttributes = () => {
-  //     const groupedAttributes: Record<string, (string | number)[]> = {};
-
-  //     products?.forEach((product) => {
-  //       product.attributes.forEach((attribute) => {
-  //         const { key, value } = attribute;
-
-  //         if (!groupedAttributes[key]) {
-  //           groupedAttributes[key] = [];
-  //         }
-
-  //         if (!groupedAttributes[key].includes(value)) {
-  //           groupedAttributes[key].push(value);
-  //         }
-  //       });
-  //     });
-
-  //     setAttributes(groupedAttributes);
-  //   };
-
-  //   handleUniqueAttributes();
-  //   setFilteredProducts(products);
-  // }, [products]);
 
   const handleClick = (productId: string) => {
     navigate(`/product/${productId}`);
@@ -108,36 +84,6 @@ const Products = () => {
   const [value, setValue] = useState<number | null>(null);
   const [activeFilters, setActiveFilters] = useState<{ [name: string]: string | number }>({});
 
-  // const handleAttributeToggle = (name: string, value: string | number) => {
-  //   setValue(value ? +value : null);
-  //   console.log(name, value);
-  //   let filterByPrice = products
-  //   if (name === "price") {
-  //     filterByPrice = products?.filter(product => {
-  //       return product.price < +value
-  //     })
-  //     setFilteredProducts(filterByPrice)
-  //   }
-
-  //   if (name !== "price") {
-  //     const filterKey = `${name}_${value}`;
-  //     if (activeFilters[filterKey]) {
-  //       delete activeFilters[filterKey];
-  //     } else {
-  //       activeFilters[filterKey] = filterKey;
-  //     }
-  //   }
-
-  //   const newFilteredProducts = filterByPrice?.filter(product => {
-  //     return Object.keys(activeFilters).every(filter => {
-  //       const [filterName, filterValue] = filter.split('_');
-  //       return product.attributes.some(attribute => {
-  //         return attribute.key === filterName && attribute.value === filterValue;
-  //       });
-  //     });
-  //   });
-  //   setFilteredProducts(newFilteredProducts.length > 0 ? newFilteredProducts : null);
-  // };
 
   const handleAttributeToggle = (name: string, value: string | number) => {
     if(products) {
@@ -148,8 +94,9 @@ const Products = () => {
 
 
   return (
-    <Grid container spacing={2} direction="row">
-      <Box sx={{ width: 300 }}>
+    <Stack spacing={2} direction="row">
+      <Box width={"15em"}>
+      <Box sx={{ width: "15em" }}>
         <Slider
           aria-label="Default"
           value={value ? value : maxPrice}
@@ -160,11 +107,11 @@ const Products = () => {
           valueLabelDisplay="auto"
         />
       </Box>
-      <Grid item spacing={2}
-        direction="column"
+      <Box
+        // direction="column"
         justifyContent="flex-end"
         alignItems="flex-start"
-      >
+        >
 
         {Object.entries(attributes).map(([key, value]) => (
           <Grid item sx={{ border: "black solid 2px" }}>
@@ -175,20 +122,21 @@ const Products = () => {
                   control={<Checkbox />}
                   label={item}
                   onChange={() => handleAttributeToggle(key, item)}
-                />
+                  />
               </FormGroup>
-
-            ))}
+))}
           </Grid>
         ))}
-      </Grid>
-      <Grid spacing={2} direction="row" >
+        </Box>
+        </Box>
+      
+      <Box sx={{ border: "yellow solid 2px", display: "flex", flexWrap: "wrap"}}>
 
         {filteredProducts?.map((product) => (
-          <Grid item key={product.id}>
+          <Grid key={product.id} direction={"row"} sx={{ border: "black solid 2px" }}>
             <Card onClick={() => handleClick(product.id.toString())}
               sx={{
-                margin: "1em",
+                margin: "0.5em",
                 width: "15em",
                 display: "flex",
                 flexDirection: "column",
@@ -199,13 +147,15 @@ const Products = () => {
                   transform: "translateY(-10px)",
                 },
               }}
-            >
+              >
               <CardMedia
                 component="img"
-                height="150em"
+                height="180em"
+                sx={{position: ""}}
                 image={product.image}
                 alt={product.title}
-              />
+                />
+          
 
               <CardContent>
                 <Typography
@@ -213,7 +163,7 @@ const Products = () => {
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    height: "2em",
+                    height: "1.5em",
                     color: themeSettings.palette.grey[800],
                   }}
                 >
@@ -225,7 +175,7 @@ const Products = () => {
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    height: "2em",
+                    height: "3.5em",
                   }}
                 >
                   {product.title}
@@ -245,7 +195,7 @@ const Products = () => {
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    height: "1em",
+                    height: "1.1em",
                     color: themeSettings.palette.teal[700],
                   }}
                 >
@@ -260,15 +210,15 @@ const Products = () => {
                       color: themeSettings.palette.teal[100],
                     },
                   }}
-                >
+                  >
                   <AddShoppingCartIcon />
                 </IconButton>
               </Stack>
             </Card>
           </Grid>
         ))}
-      </Grid>
-    </Grid>
+      </Box>
+    </Stack>
   )
 }
 
