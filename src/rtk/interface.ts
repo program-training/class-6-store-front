@@ -15,3 +15,12 @@ export interface Product {
     key: string;
     value: number | string;
   }
+
+  export interface UserRegister {
+    _id?: string
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    password: string;
+  }

@@ -8,8 +8,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
-import { setOpen } from "../rtk/flagSignUp.slice";
-import { setUserName as setUserNameInRtk } from "../rtk/userNameSlice";
+import { setOpen as setOpenSignUp } from "../rtk/flagSignUp.slice";
+import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
+import { UserRegister } from "../rtk/interface";
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
@@ -18,20 +19,16 @@ export default function SignIn() {
   const [userName, setUserName] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
-  console.log(email, password, userName);
 
   const dispatch = useAppDispatch();
-  // const [flag, setFlag] = React.useState(false);
   const open = useAppSelector((state) => state.openSignUp.flag);
 
   const handleClickOpen = () => {
-    dispatch(setOpen(true));
-    // setFlag(true);
+    dispatch(setOpenSignUp(true));
   };
 
   const handleClose = () => {
-    dispatch(setOpen(false));
-    // setFlag(false);
+    dispatch(setOpenSignUp(false));
   };
 
   const handleRegistration = async () => {
@@ -44,20 +41,21 @@ export default function SignIn() {
       lastName.length > 0
     ) {
       try {
-        const userData = {
+        const userData:UserRegister = {
           firstName,
           lastName,
-          userName,
+          username: userName,
           email,
           password,
+          // confirmPassword: passwordVerification
         };
         const response = await axios.post(
           "https://store-back-3.onrender.com/api/users/register",
           userData
         );
         if (response.data) {
-          dispatch(setOpen(false));
-          dispatch(setUserNameInRtk(userName))
+          dispatch(setOpenSignUp(false));
+          dispatch(setOpenLogIn(true));
         }
       } catch (error) {
         console.error("Error during registration:", error);

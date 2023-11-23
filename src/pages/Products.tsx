@@ -1,18 +1,16 @@
-import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Stack, useTheme, Box, Slider } from "@mui/material"
+import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Stack, useTheme, Box, Slider, CardActionArea } from "@mui/material"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { themeSettings } from "../palette/theme";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { filterProducts } from './function';
+import { addProductToCart } from "../rtk/cartSlice"
+import { useAppDispatch } from "../rtk/hooks";
 import {  getUniqueAttributes } from './function';
-
-
-
-
 export interface Product {
   id: number;
   title: string;
@@ -41,14 +39,15 @@ const Products = () => {
   const [products, setProducts] = useState<Product[] | null>()
   const [filteredProducts, setFilteredProducts] = useState<Product[] | null | undefined>(null);
   const [attributes, setAttributes] = useState<Record<string, (string | number)[]>>({});
-
+  const {category} = useParams()
+  const dispatch = useAppDispatch()
 
 
   function connectToData() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/products?category=tops"
+          `https://store-back-3.onrender.com/api/products?category=${category}`
         );
         setProducts(response.data);
       } catch (error) {
@@ -57,25 +56,19 @@ const Products = () => {
     };
     fetchData();
   }
-
+  
   useEffect(() => {
     connectToData()
   }, [])
-
   useEffect(() => {
     if (products) {
       setAttributes(getUniqueAttributes(products));
       setFilteredProducts(products);
     }
   }, [products])
- 
-
- 
-
   const handleClick = (productId: string) => {
     navigate(`/product/${productId}`);
   };
-
   const { minPrice, maxPrice }: Prices = products?.reduce(
     (acc, product) => ({
       minPrice: Math.min(acc.minPrice, product.price),
@@ -83,22 +76,21 @@ const Products = () => {
     }),
     { minPrice: Infinity, maxPrice: -Infinity }
   ) ?? { minPrice: 0, maxPrice: 0 };
-
   const [value, setValue] = useState<number | null>(null);
   const [activeFilters, setActiveFilters] = useState<{ [name: string]: string | number }>({});
-
-
   const handleAttributeToggle = (name: string, value: string | number) => {
     if(products) {
     const newFilteredProducts = filterProducts(name, value, products, activeFilters, setValue);
     setFilteredProducts(newFilteredProducts);
     }
   };
-
-
+  const addToCart = (id:number) => {
+    dispatch(addProductToCart({ productId: id, quantity: 1 }));
+};
   return (
-    <Grid container spacing={2} direction="row">
-      <Box sx={{ width: 300 }}>
+    <Stack spacing={2} direction="row">
+      <Box width={"15em"}>
+      <Box sx={{ width: "15em" }}>
         <Slider
           aria-label="Default"
           value={value ? value : maxPrice}
@@ -109,12 +101,11 @@ const Products = () => {
           valueLabelDisplay="auto"
         />
       </Box>
-      <Grid item spacing={2}
-        direction="column"
+      <Box
+        // direction="column"
         justifyContent="flex-end"
         alignItems="flex-start"
-      >
-
+        >
         {Object.entries(attributes).map(([key, value]) => (
           <Grid item sx={{ border: "black solid 2px" }}>
             <Typography variant="subtitle1">{key}</Typography>
@@ -124,20 +115,19 @@ const Products = () => {
                   control={<Checkbox />}
                   label={item}
                   onChange={() => handleAttributeToggle(key, item)}
-                />
+                  />
               </FormGroup>
-
-            ))}
+))}
           </Grid>
         ))}
-      </Grid>
-      <Grid spacing={2} direction="row" >
-
+        </Box>
+        </Box>
+      <Box sx={{  display: "flex", flexWrap: "wrap", height: ""}}>
         {filteredProducts?.map((product) => (
-          <Grid item key={product.id}>
-            <Card onClick={() => handleClick(product.id.toString())}
+          <Grid key={product.id} direction={"row"} >
+            <Card
               sx={{
-                margin: "1em",
+                margin: "0.5em",
                 width: "15em",
                 display: "flex",
                 flexDirection: "column",
@@ -148,21 +138,23 @@ const Products = () => {
                   transform: "translateY(-10px)",
                 },
               }}
-            >
+              >
+              <CardActionArea onClick={() => handleClick(product.id.toString())}
+              >
               <CardMedia
                 component="img"
-                height="150em"
+                height="180em"
+                sx={{position: ""}}
                 image={product.image}
                 alt={product.title}
-              />
-
+                />
               <CardContent>
                 <Typography
                   variant="h2"
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    height: "2em",
+                    height: "1.5em",
                     color: themeSettings.palette.grey[800],
                   }}
                 >
@@ -174,12 +166,13 @@ const Products = () => {
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    height: "2em",
+                    height: "3.5em",
                   }}
                 >
                   {product.title}
                 </Typography>
               </CardContent>
+              </CardActionArea>
               <Stack
                 direction="row"
                 alignItems="center"
@@ -194,13 +187,13 @@ const Products = () => {
                   sx={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    height: "1em",
+                    height: "1.1em",
                     color: themeSettings.palette.teal[700],
                   }}
                 >
                   ${product.price}
                 </Typography>
-                <IconButton
+                <IconButton onClick={()=>addToCart(product.id)}
                   sx={{
                     color: themeSettings.palette.teal[800],
                     justifySelf: "top",
@@ -209,16 +202,15 @@ const Products = () => {
                       color: themeSettings.palette.teal[100],
                     },
                   }}
-                >
+                  >
                   <AddShoppingCartIcon />
                 </IconButton>
               </Stack>
             </Card>
           </Grid>
         ))}
-      </Grid>
-    </Grid>
+      </Box>
+    </Stack>
   )
 }
-
 export default Products;
