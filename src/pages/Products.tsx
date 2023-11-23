@@ -1,4 +1,5 @@
 import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Stack, useTheme, Box, Slider } from "@mui/material"
+import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Stack, useTheme, Box, Slider } from "@mui/material"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { themeSettings } from "../palette/theme";
@@ -222,4 +223,4 @@ const Products = () => {
   )
 }
 
-export default Products
+export default Products;

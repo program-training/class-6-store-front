@@ -171,7 +171,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="default">
+      <AppBar position="static" color="default" sx={{background: "rgb(35,47,62)", color: "rgb(255,255,255)"}}>
         <Toolbar>
           <div onClick={() => navigate("/")}>
             <Typography
