@@ -1,18 +1,6 @@
-export interface Product {
-  id: number;
-  title: string;
-  image: string;
-  price: number;
-  description: string;
-  category: string;
-  clickCount: number;
-  quantity: number;
-  attributes: Attributes[];
-}
-export interface Attributes {
-  key: string;
-  value: number | string;
-}
+
+
+import { Product } from '../interfaces/product'
 
 
 export function filterProducts(name: string, value: string | number, products: Product[], activeFilters: { [name: string]: string | number }) {

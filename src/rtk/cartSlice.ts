@@ -128,7 +128,7 @@ export interface CartProduct {
   quantity: number;
 }
 
-interface CartState {
+export interface CartState {
   userId: string;
   products: CartProduct[];
 }

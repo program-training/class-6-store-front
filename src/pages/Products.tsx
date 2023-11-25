@@ -65,6 +65,7 @@ const Products = () => {
   useEffect(() => {
     connectToData();
   }, []);
+  
   useEffect(() => {
     if (products) {
       setAttributes(getUniqueAttributes(products));
