@@ -47,6 +47,7 @@ export default function CartTable() {
   const [productsCartFromData, setProductsCartFromData] = React.useState<
     Product[]
   >([]);
+  const [totalPrice, setTotalPrice] = React.useState<number | null>(null);
 
   const dispatch = useAppDispatch();
   const dataProduct = useAppSelector((state) => state.products.products);
@@ -55,6 +56,7 @@ export default function CartTable() {
   const productFromRtk: CartProduct[] = useAppSelector(
     (state) => state.cart.products
   );
+
   useEffect(() => {
     if (flag) {
       getCartFromServer().then((productsFromServer) => {
@@ -76,12 +78,25 @@ export default function CartTable() {
       if (products.length) {
         setProductsCartFromData(products);
       }
-    }
+    } else setProductsCartFromData([]);
   };
 
   useEffect(() => {
     comparison();
   }, [productForCart]);
+
+  useEffect(() => {
+    let total = 0;
+    for (const product of productsCartFromData) {
+      const quantity: CartProduct | undefined = productForCart.find(
+        (item) => item.productId === product.id
+      );
+      if (quantity && quantity.quantity) {
+        total += product.price * quantity.quantity;
+      }
+    }
+    setTotalPrice(total);
+  }, [productsCartFromData, productForCart]);
 
   const incrementQuantity = (product: Product) => {
     dispatch(increment(product.id));
@@ -93,53 +108,86 @@ export default function CartTable() {
     dispatch(removeProduct(product.id));
   };
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+    <TableContainer component={Paper} >
+      <Table sx={{ minWidth: 700 }} aria-label="customized table" >
         <TableHead>
           <TableRow>
             <StyledTableCell>ITEMS</StyledTableCell>
             <StyledTableCell align="center">QUANTITY</StyledTableCell>
-            <StyledTableCell align="center">זמינות</StyledTableCell>
+            <StyledTableCell align="center">AVAILABILITY</StyledTableCell>
             <StyledTableCell align="right">TOTAL PRICE</StyledTableCell>
-            <StyledTableCell align="right">פעולות נוספות</StyledTableCell>
+            <StyledTableCell align="right">ADDITIONAL ACTIONS</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {productsCartFromData.map((product) => (
-            <StyledTableRow key={product.id}>
-              <StyledTableCell component="th" scope="row">
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <CardMedia
-                    sx={{ maxWidth: "12rem", minWidth: "12rem" }}
-                    component="img"
-                    height="75em"
-                    image={product.image}
-                    alt={product.title}
-                  />
-                  <Box sx={{ width: "1em" }}></Box>
-                  <Typography variant="body1">{product.title}</Typography>
-                </Box>
-              </StyledTableCell>
-              {/* <StyledTableCell align="center">{quantity}</StyledTableCell> */}
-              <StyledTableCell align="center">{}</StyledTableCell>
-              {/* <StyledTableCell align="center">
-                {product.price * quantity}
-              </StyledTableCell> */}
-              <StyledTableCell align="right">
-                <Button onClick={() => removeProductFromCart(product)}>
-                  <DeleteTwoToneIcon />
-                </Button>
-                <Button onClick={() => incrementQuantity(product)}>
-                  <PlusOneIcon />
-                </Button>
-                <Button onClick={() => decrementQuantity(product)}>
-                  <RemoveIcon />
-                </Button>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {productsCartFromData.map((product) => {
+            const quantity: CartProduct | undefined = productForCart.find(
+              (item) => item.productId === product.id
+            );
+            return (
+              <StyledTableRow key={product.id}>
+                <StyledTableCell component="th" scope="row">
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <CardMedia
+                      sx={{ maxWidth: "12rem", minWidth: "12rem" }}
+                      component="img"
+                      height="75em"
+                      image={product.image}
+                      alt={product.title}
+                    />
+                    <Box sx={{ width: "1em" }}></Box>
+                    <Typography variant="body1">{product.title}</Typography>
+                  </Box>
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {quantity?.quantity}
+                </StyledTableCell>
+                <StyledTableCell align="center">{}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <StyledTableCell align="center">
+                    {quantity && quantity.quantity
+                      ? product.price * quantity.quantity + "$"
+                      : null}
+                  </StyledTableCell>
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  <Button onClick={() => removeProductFromCart(product)}>
+                    <DeleteTwoToneIcon />
+                  </Button>
+                  <Button onClick={() => incrementQuantity(product)}>
+                    <PlusOneIcon />
+                  </Button>
+                  <Button onClick={() => decrementQuantity(product)}>
+                    <RemoveIcon />
+                  </Button>
+                </StyledTableCell>
+              </StyledTableRow>
+            );
+          })}
         </TableBody>
       </Table>
+      {productsCartFromData.length ? (
+        <div
+          style={{
+            backgroundColor: "#f0f0f0",
+            padding: "10px",
+            borderRadius: "5px",
+            marginTop: "10px",
+            display: "flex",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Typography variant="h3" style={{ color: "#333" }}>
+            TOTAL PRICE: {totalPrice}$
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{ color: "white", backgroundColor: "#37474f" }}
+          >
+            to make an order
+          </Button>
+        </div>
+      ) : null}
     </TableContainer>
   );
 }

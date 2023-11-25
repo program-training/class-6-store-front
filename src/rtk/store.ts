@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import productsReducer from "./productsSlice";
 import cartReducer from "./cartSlice";
 import userNameReducer from "./userNameSlice";
-import signUpReducer from "./flagSignUp.slice";
+import signUpReducer from "./flagSignUpSlice";
 import logInReducer from "./flagLogInSlice";
 
 export const store = configureStore({

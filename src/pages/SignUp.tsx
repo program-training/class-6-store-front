@@ -8,7 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
-import { setOpen as setOpenSignUp } from "../rtk/flagSignUp.slice";
+import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { UserRegister } from "../rtk/interface";
 

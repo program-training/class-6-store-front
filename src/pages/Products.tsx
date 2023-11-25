@@ -8,6 +8,7 @@ import {
   Stack,
   useTheme,
   Box,
+  Slider,
   CardActionArea,
 } from "@mui/material";
 import axios from "axios";
@@ -15,13 +16,14 @@ import { useEffect, useState } from "react";
 import { themeSettings } from "../palette/theme";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useNavigate, useParams } from "react-router-dom";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { filterProducts } from './function';
-import { addProductToCart } from "../rtk/cartSlice"
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { filterProducts } from "./function";
+import { addProductToCart, render } from "../rtk/cartSlice";
 import { useAppDispatch } from "../rtk/hooks";
-import { getUniqueAttributes } from './function';
+import { getUniqueAttributes } from "./function";
+
 export interface Product {
   id: number;
   title: string;
@@ -38,15 +40,23 @@ export interface Attributes {
   value: number | string;
 }
 
+interface Prices {
+  minPrice: number;
+  maxPrice: number;
+}
+
 const Products = () => {
   const { palette } = useTheme();
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[] | null>()
-  const [filteredProducts, setFilteredProducts] = useState<Product[] | null | undefined>(null);
-  const [attributes, setAttributes] = useState<Record<string, (string | number)[]>>({});
-  const { category } = useParams()
-  const dispatch = useAppDispatch()
-
+  const [products, setProducts] = useState<Product[] | null>();
+  const [filteredProducts, setFilteredProducts] = useState<
+    Product[] | null | undefined
+  >(null);
+  const [attributes, setAttributes] = useState<
+    Record<string, (string | number)[]>
+  >({});
+  const { category } = useParams();
+  const dispatch = useAppDispatch();
 
   function connectToData() {
     const fetchData = async () => {
@@ -64,6 +74,7 @@ const Products = () => {
 
   useEffect(() => {
     connectToData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   useEffect(() => {
@@ -71,49 +82,62 @@ const Products = () => {
       setAttributes(getUniqueAttributes(products));
       setFilteredProducts(products);
     }
-  }, [products])
-
+  }, [products]);
   const handleClick = (productId: string) => {
     navigate(`/product/${productId}`);
   };
-
-  const [activeFilters, setActiveFilters] = useState<{ [name: string]: string | number }>({});
-  useEffect(() => {
-    setActiveFilters({})
-  }, [])
+  const { minPrice, maxPrice }: Prices = products?.reduce(
+    (acc, product) => ({
+      minPrice: Math.min(acc.minPrice, product.price),
+      maxPrice: Math.max(acc.maxPrice, product.price),
+    }),
+    { minPrice: Infinity, maxPrice: -Infinity }
+  ) ?? { minPrice: 0, maxPrice: 0 };
+  const [value, setValue] = useState<number | null>(null);
+  const [activeFilters, setActiveFilters] = useState<{
+    [name: string]: string | number;
+  }>({});
+  console.log(setActiveFilters);
 
   const handleAttributeToggle = (name: string, value: string | number) => {
     if (products) {
-      const newFilteredProducts = filterProducts(name, value, products, activeFilters);
+      const newFilteredProducts = filterProducts(
+        name,
+        value,
+        products,
+        activeFilters,
+        setValue
+      );
       setFilteredProducts(newFilteredProducts);
     }
   };
   const addToCart = (id: number) => {
     dispatch(addProductToCart({ productId: id, quantity: 1 }));
   };
+  dispatch(render());
   return (
     <Stack spacing={2} direction="row">
       <Box width={"15em"}>
-        {/* <Box sx={{ width: "15em" }}>
+        <Box sx={{ width: "15em" }}>
           <Slider
             aria-label="Default"
-            value={currentPrice ? currentPrice : maxPrice}
+            value={value ? value : maxPrice}
             min={minPrice}
             max={maxPrice}
-            onChange={(_e, value) => handleAttributeToggle("price", value as number)}
+            onChange={(_e, value) =>
+              handleAttributeToggle("price", value as number)
+            }
             aria-labelledby="dynamic-range-slider"
             valueLabelDisplay="auto"
           />
-        </Box> */}
-        
+        </Box>
         <Box
-          // direction="column"
+          key={Date.now() * Math.random()}
           justifyContent="flex-end"
           alignItems="flex-start"
         >
-
           {Object.entries(attributes).map(([key, value]) => (
-            <Grid item >
+            <Grid item>
               <Typography variant="subtitle1">{key}</Typography>
               {value.map((item) => (
                 <FormGroup key={item}>
@@ -128,11 +152,9 @@ const Products = () => {
           ))}
         </Box>
       </Box>
-
       <Box sx={{ display: "flex", flexWrap: "wrap", height: "" }}>
-
         {filteredProducts?.map((product) => (
-          <Grid key={product.id} direction={"row"} >
+          <Grid key={product.id} direction={"row"}>
             <Card
               sx={{
                 margin: "0.5em",
@@ -147,7 +169,8 @@ const Products = () => {
                 },
               }}
             >
-              <CardActionArea onClick={() => handleClick(product.id.toString())}
+              <CardActionArea
+                onClick={() => handleClick(product.id.toString())}
               >
                 <CardMedia
                   component="img"
@@ -156,8 +179,6 @@ const Products = () => {
                   image={product.image}
                   alt={product.title}
                 />
-
-
                 <CardContent>
                   <Typography
                     variant="h2"
@@ -203,7 +224,8 @@ const Products = () => {
                 >
                   ${product.price}
                 </Typography>
-                <IconButton onClick={() => addToCart(product.id)}
+                <IconButton
+                  onClick={() => addToCart(product.id)}
                   sx={{
                     color: themeSettings.palette.teal[800],
                     justifySelf: "top",
@@ -221,7 +243,6 @@ const Products = () => {
         ))}
       </Box>
     </Stack>
-  )
-}
-
+  );
+};
 export default Products;

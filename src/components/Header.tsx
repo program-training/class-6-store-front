@@ -18,7 +18,7 @@ import Cart from "./Cart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
-
+import { useAppSelector } from "../rtk/hooks";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -68,6 +68,19 @@ export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
+
+  const [numOfItemsInCart, setNumOfItemsInCart] = React.useState<number>(
+    useAppSelector((state) => state.cart.products.length)
+  );
+
+  const newNum = useAppSelector((state) => state.cart.products.length);
+
+  React.useEffect(() => {
+    setNumOfItemsInCart(newNum);
+  }, [useAppSelector((state) => state.cart.products.length)]);
+
+  console.log(newNum);
+  console.log(numOfItemsInCart);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -138,7 +151,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={() => setOpenCart(true)}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+          <Badge badgeContent={numOfItemsInCart} color="error">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
@@ -171,7 +184,11 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="default" sx={{background: "rgb(35,47,62)", color: "rgb(255,255,255)"}}>
+      <AppBar
+        position="static"
+        color="default"
+        sx={{ background: "rgb(35,47,62)", color: "rgb(255,255,255)" }}
+      >
         <Toolbar>
           <div onClick={() => navigate("/")}>
             <Typography
@@ -196,8 +213,8 @@ export default function PrimarySearchAppBar() {
               }}
             />
           </Search>
-          <Login/>
-          <SignUp/>
+          <Login />
+          <SignUp />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
@@ -213,7 +230,7 @@ export default function PrimarySearchAppBar() {
               color="inherit"
               onClick={() => setOpenCart(true)}
             >
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={numOfItemsInCart} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -245,7 +262,7 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {openCart && <Cart props={[openCart, setOpenCart]}/>}
+      {openCart && <Cart props={[openCart, setOpenCart]} />}
     </Box>
   );
 }
