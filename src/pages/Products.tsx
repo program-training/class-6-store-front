@@ -109,8 +109,15 @@ const Products = () => {
       setFilteredProducts(newFilteredProducts);
     }
   };
-  const addToCart = (id: number) => {
-    dispatch(addProductToCart({ productId: id, quantity: 1 }));
+  const addToCart = (product: Product) => {
+    dispatch(
+      addProductToCart({
+        productId: product.id,
+        quantity: 1,
+        price: product.price,
+        description: product.description,
+      })
+    );
   };
   dispatch(render());
   return (
@@ -223,7 +230,7 @@ const Products = () => {
                   ${product.price}
                 </Typography>
                 <IconButton
-                  onClick={() => addToCart(product.id)}
+                  onClick={() => addToCart(product)}
                   sx={{
                     color: themeSettings.palette.teal[800],
                     justifySelf: "top",

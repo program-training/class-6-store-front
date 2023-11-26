@@ -41,7 +41,7 @@ export default function SignIn() {
       lastName.length > 0
     ) {
       try {
-        const userData:UserRegister = {
+        const userData = {
           firstName,
           lastName,
           username: userName,
@@ -66,7 +66,7 @@ export default function SignIn() {
   return (
     <React.Fragment>
       <Button variant="outlined" onClick={handleClickOpen}>
-        sign IN
+        sign up
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>registration</DialogTitle>
