@@ -11,13 +11,14 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { setUserName } from "../rtk/userNameSlice";
+import { setUserNameInCart } from "../rtk/cartSlice";
 
 const LogIn = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const dispatch = useAppDispatch();
 
-const open = useAppSelector((state) => state.openLogIn.flag);
+  const open = useAppSelector((state) => state.openLogIn.flag);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,12 +36,10 @@ const open = useAppSelector((state) => state.openLogIn.flag);
 
   const handleClickOpen = () => {
     dispatch(setOpenLogIn(true));
-
   };
 
   const handleClose = () => {
     dispatch(setOpenLogIn(false));
-
   };
 
   const handleLogIn = async () => {
@@ -57,15 +56,17 @@ const open = useAppSelector((state) => state.openLogIn.flag);
         if (response.data) {
           const userName = response.data.user;
           dispatch(setUserName(userName));
-          setEmail('')
-          setPassword('')
+          dispatch(
+            setUserNameInCart(`${userName.firstName} ${userName.lastName}`)
+          );
+          setEmail("");
+          setPassword("");
         }
       } catch (error) {
         console.error("Error during registration:", error);
         dispatch(setOpenSignUp(true));
       }
-    dispatch(setOpenLogIn(false));
-
+      dispatch(setOpenLogIn(false));
     } else if (validateEmail(email) && !validatePassword(password)) {
       window.alert("סיסמא לא תקינה");
     } else if (!validateEmail(email) && validatePassword(password)) {
@@ -76,7 +77,6 @@ const open = useAppSelector((state) => state.openLogIn.flag);
   const handleRegistration = () => {
     dispatch(setOpenSignUp(true));
     dispatch(setOpenLogIn(false));
-
   };
 
   return (

@@ -104,8 +104,7 @@ export default function CartTable() {
   const removeProductFromCart = (product: Product) => {
     dispatch(removeProduct(product.id));
   };
-  console.log(flag);
-  
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
