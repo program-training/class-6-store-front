@@ -47,15 +47,17 @@ interface SendOrderDetails {
     userId: string;
   }
 
+interface Total {
+    total: number | null;
+}
 
-
-export default function Payment() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [contactNumber, setContactNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const { userId, products } = useAppSelector((state) => state.cart);
+ const Payment: React.FC<Total>= ({total})=>  {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const [contactNumber, setContactNumber] = useState("");
+    const [address, setAddress] = useState("");
+    const { userId, products } = useAppSelector((state) => state.cart)
 
   console.log(userId);
 
@@ -70,7 +72,7 @@ export default function Payment() {
   const orderDetails: SendOrderDetails = {
     userId,
     cartItems: temp,
-    price: 0,
+    price: total,
     status: "processing",
     orderTime: "2023-11-20T09:30:34.245Z",
     shippingDetails: {
