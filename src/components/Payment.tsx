@@ -33,7 +33,11 @@ interface OrderDetails {
     userId: string;
 }
 
-export default function Payment() {
+interface Total {
+    total: number | null;
+}
+
+ const Payment: React.FC<Total>= ({total})=>  {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -54,7 +58,7 @@ export default function Payment() {
     const orderDetails: OrderDetails = {
         userId,
         cartItems: temp,
-        price: 0,
+        price: total,
         status: "processing",
         orderTime: "2023-11-20T09:30:34.245Z",
         shippingDetails: {
@@ -139,3 +143,5 @@ export default function Payment() {
         </Box>
     );
 }
+
+export default Payment

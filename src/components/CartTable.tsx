@@ -185,7 +185,7 @@ export default function CartTable() {
           >
             to make an order
           </Button> */}
-          <Payment/>
+          <Payment total={totalPrice}/>
         </div>
       ) : null}
     </TableContainer>
