@@ -33,11 +33,16 @@ export const userNameSlice = createSlice({
       state.lastName = action.payload.lastName ? action.payload.lastName : null;
       state.email = action.payload.email ? action.payload.email : null
     },
-    // resetUserName: (state) => {
-    //   state = initialState;
-    // },
+    resetUserName: (state) => {
+      state.flag = false
+      state.userName = null
+      state.userId = null
+      state.firstName = null
+      state.lastName = null
+      state.email = null
+    },
   },
 });
 
-export const { setUserName } = userNameSlice.actions;
+export const { setUserName, resetUserName } = userNameSlice.actions;
 export default userNameSlice.reducer;
