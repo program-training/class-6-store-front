@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
 export interface CartProduct {
-  productId: number;
+  name: number;
   quantity: number;
   price: number;
   description: string;
@@ -19,7 +19,7 @@ const initialState: CartState = {
 };
 
 const removeProductFunc = (products: CartProduct[], id: number) => {
-  return products.filter((item) => item.productId !== id);
+  return products.filter((item) => item.name !== id);
 };
 
 const getItemFromLocalStorage = () => {
@@ -39,20 +39,20 @@ const cartSlice = createSlice({
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
       state.products = getItemFromLocalStorage();
       const {
-        productId: newProductId,
+        name: newProductId,
         quantity,
         price,
         description,
       } = action.payload;
       if (quantity > 0) {
         const upsertProduct = state.products.find(
-          (productInCart) => productInCart.productId === newProductId
+          (productInCart) => productInCart.name === newProductId
         );
         if (upsertProduct) {
           upsertProduct.quantity = quantity;
         } else {
           state.products.push({
-            productId: newProductId,
+            name: newProductId,
             quantity,
             price,
             description,
@@ -66,7 +66,7 @@ const cartSlice = createSlice({
     increment: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
       const upsertProduct = state.products.find(
-        (productInCart) => productInCart.productId === action.payload
+        (productInCart) => productInCart.name === action.payload
       );
       if (upsertProduct) {
         upsertProduct.quantity += 1;
@@ -78,7 +78,7 @@ const cartSlice = createSlice({
     decrement: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
       const existingProduct = state.products.find(
-        (productInCart) => productInCart.productId === action.payload
+        (productInCart) => productInCart.name === action.payload
       );
       if (existingProduct?.quantity) {
         existingProduct.quantity -= 1;
@@ -107,9 +107,9 @@ const cartSlice = createSlice({
 
     setQuantity: (state, action: PayloadAction<CartProduct>) => {
       state.products = getItemFromLocalStorage();
-      const { productId: newProductId, quantity } = action.payload;
+      const { name: newProductId, quantity } = action.payload;
       const productToUpdateQuantity = state.products.find(
-        (productInCart) => productInCart.productId === newProductId
+        (productInCart) => productInCart.name === newProductId
       );
       if (productToUpdateQuantity?.quantity) {
         productToUpdateQuantity.quantity = quantity;
@@ -117,6 +117,12 @@ const cartSlice = createSlice({
       if (!productToUpdateQuantity?.quantity) {
         state.products = removeProductFunc(state.products, newProductId);
       }
+      localStorage.setItem("cart", JSON.stringify(state.products));
+      // postCart(state.products)
+    },
+
+    removeCart: (state) => {
+      state.products = []
       localStorage.setItem("cart", JSON.stringify(state.products));
       // postCart(state.products)
     },
@@ -134,6 +140,7 @@ export const {
   addProductToCart,
   removeProduct,
   setQuantity,
+  removeCart,
   render,
 } = cartSlice.actions;
 export default cartSlice.reducer;

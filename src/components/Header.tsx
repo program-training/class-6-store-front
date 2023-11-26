@@ -178,7 +178,9 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
     </Menu>
   );
-
+  // const userName = useAppSelector((state) => state.userName.flag)
+    // ? useAppSelector((state) => state.userName.userName)
+    // : null;
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -241,6 +243,7 @@ export default function PrimarySearchAppBar() {
               color="inherit"
             >
               <AccountCircle />
+              {/* {userName} */}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

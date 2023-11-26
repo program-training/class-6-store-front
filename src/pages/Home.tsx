@@ -7,15 +7,16 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  Link,
   Typography,
 } from "@mui/material";
-import { useAppDispatch} from '../rtk/hooks'
+import { useAppDispatch } from "../rtk/hooks";
 import { render } from "../rtk/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -32,6 +33,10 @@ const Home = () => {
   }, []);
 
   dispatch(render());
+
+  const clickToCard = (cat: string) => {
+    navigate(`/products/${cat}`);
+  };
 
   return (
     <>
@@ -78,19 +83,13 @@ const Home = () => {
                       {cat.name}
                     </Typography>
                   </CardContent>
-                  <Link
-                    href={`/products/${cat.name}`}
-                    sx={{
-                      textDecoration: "none",
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      sx={{ maxHeight: 210, objectFit: "" }}
-                      image={cat.image}
-                      alt={cat.name}
-                    />
-                  </Link>
+                  <CardMedia
+                    component="img"
+                    sx={{ maxHeight: 210, objectFit: "" }}
+                    image={cat.image}
+                    alt={cat.name}
+                    onClick={() => clickToCard(cat.name)}
+                  />
                 </CardActionArea>
               </Card>
             </Grid>
