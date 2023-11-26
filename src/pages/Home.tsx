@@ -51,7 +51,7 @@ const Home = () => {
           marginBottom: "3rem",
         }}
       >
-        Categories
+        categories
       </Typography> */}
       <Grid container spacing={2}>
         {Array.isArray(categories) &&

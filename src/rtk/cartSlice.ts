@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+// import { getCartFromServer } from "../functions";
 
+export interface SendCartProduct {
+  name: string;
+  quantity: number;
+  price: number;
+  description: string;
+}
 
 export interface CartProduct {
   name: number;
@@ -8,12 +15,6 @@ export interface CartProduct {
   description: string;
 }
 
-export interface SendCartProduct {
-  name: string;
-  quantity: number;
-  price: number;
-  description: string;
-}
 
 export interface CartState {
   userId: string;
@@ -39,6 +40,7 @@ const getItemFromLocalStorage = () => {
   }
 };
 
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -48,6 +50,7 @@ const cartSlice = createSlice({
     },
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
       state.products = getItemFromLocalStorage();
+      // state.products = await getCartFromServer();
       const {
         name: newProductId,
         quantity,
