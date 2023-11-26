@@ -50,7 +50,7 @@ export default function BasicModal() {
     const fetchUserDetails = async () => {
         try {
             const userDetails = await axios.post(
-                `https://store-back-3.onrender.com/api/users/${userId}`
+                `https://store-back-3.onrender.com/api/users/`
             );
             console.log(userDetails.data);
             if (userDetails.data) {
@@ -65,14 +65,6 @@ export default function BasicModal() {
     useEffect(() => {
         fetchUserDetails();
     }, [])
-
-    
-    const userName = details?.userName
-    const firstName = details?.firstName
-    const lastName = details?.lastName
-    const email = details?.email
-
-    console.log(firstName, lastName, userName);
 
     const orderDetails: OrderDetails = {
         userId,
