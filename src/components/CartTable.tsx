@@ -22,6 +22,7 @@ import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useEffect } from "react";
 import React from "react";
 import Payment from "./Payment";
+// import Payment from "./Payment";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -182,13 +183,7 @@ export default function CartTable() {
             <Typography variant="h3" style={{ color: "#333" }}>
               TOTAL PRICE: {totalPrice}$
             </Typography>
-            <Button
-              variant="contained"
-              onClick={payCart}
-              sx={{ color: "white", backgroundColor: "#37474f" }}
-            >
-              to make an order
-            </Button>
+            <Payment />
           </div>
         </TableContainer>
       ) : (

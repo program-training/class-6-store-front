@@ -8,6 +8,13 @@ export interface CartProduct {
   description: string;
 }
 
+export interface SendCartProduct {
+  name: string;
+  quantity: number;
+  price: number;
+  description: string;
+}
+
 export interface CartState {
   userId: string;
   products: CartProduct[];
