@@ -22,5 +22,4 @@ export interface Product {
     username: string;
     email: string;
     password: string;
-    confirmPassword: string
   }

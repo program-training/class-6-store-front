@@ -7,6 +7,7 @@ interface UserNameSlice {
   userId: string | null;
   firstName: string | null;
   lastName: string | null;
+  email: string | null;
 }
 
 const initialState: UserNameSlice = {
@@ -14,8 +15,8 @@ const initialState: UserNameSlice = {
   userName: null,
   userId: null,
   firstName: null,
-  lastName: null
-
+  lastName: null,
+  email: null
 };
 
 export const userNameSlice = createSlice({
@@ -26,8 +27,11 @@ export const userNameSlice = createSlice({
       state.userName = action.payload.username;
       state.flag = true;
       state.userId = action.payload._id ? action.payload._id : null;
-      state.firstName = action.payload.firstName? action.payload.firstName : null;
-      state.lastName = action.payload.lastName? action.payload.lastName : null;
+      state.firstName = action.payload.firstName
+        ? action.payload.firstName
+        : null;
+      state.lastName = action.payload.lastName ? action.payload.lastName : null;
+      state.email = action.payload.email ? action.payload.email : null
     },
     resetUserName: (state) => {
       state = initialState;
