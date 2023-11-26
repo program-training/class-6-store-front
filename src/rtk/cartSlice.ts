@@ -52,7 +52,7 @@ const cartSlice = createSlice({
           (productInCart) => productInCart.name === newProductId
         );
         if (upsertProduct) {
-          upsertProduct.quantity = quantity;
+          upsertProduct.quantity += quantity;
         } else {
           state.products.push({
             name: newProductId,
