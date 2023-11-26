@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { useAppSelector } from "../rtk/hooks";
-import { CartProduct, SendCartProduct } from "../rtk/cartSlice";
+import { SendCartProduct } from "../rtk/cartSlice";
 import axios from "axios";
 
 const style = {
@@ -72,7 +72,7 @@ interface Total {
   const orderDetails: SendOrderDetails = {
     userId,
     cartItems: temp,
-    price: total,
+    price: total ? total : 0,
     status: "processing",
     orderTime: "2023-11-20T09:30:34.245Z",
     shippingDetails: {
@@ -159,3 +159,5 @@ interface Total {
     </Box>
   );
 }
+
+export default Payment;

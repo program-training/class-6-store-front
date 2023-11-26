@@ -13,7 +13,7 @@ import {
   decrement,
   increment,
   removeProduct,
-  removeCart,
+  // removeCart,
 } from "../rtk/cartSlice";
 import { Product } from "../rtk/interface";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
@@ -92,9 +92,9 @@ export default function CartTable() {
     setTotalPrice(total);
   }, [productsCartFromData, productForCart]);
 
-  const payCart = () => {
-    dispatch(removeCart());
-  };
+  // const payCart = () => {
+  //   dispatch(removeCart());
+  // };
 
   const incrementQuantity = (product: Product) => {
     dispatch(increment(product.id));
@@ -183,7 +183,7 @@ export default function CartTable() {
             <Typography variant="h3" style={{ color: "#333" }}>
               TOTAL PRICE: {totalPrice}$
             </Typography>
-            <Payment />
+            <Payment total={totalPrice}/>
           </div>
         </TableContainer>
       ) : (
