@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { postCartToServer } from "../functions";
-import { useAppSelector } from "./hooks";
+
 
 export interface CartProduct {
   name: number;
@@ -30,21 +29,6 @@ const getItemFromLocalStorage = () => {
   } catch (error) {
     console.error("Failed to parse cart from localStorage", error);
     return [];
-  }
-};
-
-const postCart = (cart:CartProduct[]) => {
-  const flag = useAppSelector((state) => state.userName.flag)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    ? useAppSelector((state) => state.userName.flag)
-    : null;
-  if (flag) {
-    // eslint-disable-next-line no-useless-catch
-    try {
-      postCartToServer(cart);
-    } catch (err) {
-      throw err;
-    }
   }
 };
 
@@ -78,7 +62,7 @@ const cartSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state.products));
       // postCart(state.products)
     },
-    
+
     increment: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
       const upsertProduct = state.products.find(

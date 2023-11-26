@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { setProducts } from "./rtk/productsSlice";
 import { CartProduct } from "./rtk/cartSlice";
+import { store } from './rtk/store'; 
 
 export function connectToData() {
   const dispatch = useAppDispatch();
@@ -38,14 +39,13 @@ export const getCartFromServer = async () => {
   return [];
 };
 
-export const postCartToServer = async (cart:CartProduct[]) => {
-  const user = useAppSelector((state) => state.userName.flag)
-    ? useAppSelector((state) => state.userName.flag)
-    : null;
+
+export const postCartToServer = async (cart: CartProduct[]) => {
+  const state = store.getState();
+  const user = state.userName.flag;
+  const userId = state.userName.userId;
+
   if (user) {
-    const userId = useAppSelector((state) => state.userName.userId)
-      ? useAppSelector((state) => state.userName.userId)
-      : null;
     try {
       const response = await axios.post(
         `https://store-back-3.onrender.com/api/cart/${userId}`,
@@ -57,4 +57,17 @@ export const postCartToServer = async (cart:CartProduct[]) => {
     }
   }
   return [];
+};
+
+export const postCart = (cart: CartProduct[]) => {
+  const state = store.getState(); 
+  const flag = state.userName.flag;
+
+  if (flag) {
+    try {
+      postCartToServer(cart);
+    } catch (err) {
+      throw err;
+    }
+  }
 };
