@@ -3,7 +3,7 @@ import { postCartToServer } from "../functions";
 import { useAppSelector } from "./hooks";
 
 export interface CartProduct {
-  productId: number;
+  name: number;
   quantity: number;
   price: number;
   description: string;
@@ -20,7 +20,7 @@ const initialState: CartState = {
 };
 
 const removeProductFunc = (products: CartProduct[], id: number) => {
-  return products.filter((item) => item.productId !== id);
+  return products.filter((item) => item.name !== id);
 };
 
 const getItemFromLocalStorage = () => {
@@ -35,9 +35,11 @@ const getItemFromLocalStorage = () => {
 
 const postCart = (cart:CartProduct[]) => {
   const flag = useAppSelector((state) => state.userName.flag)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     ? useAppSelector((state) => state.userName.flag)
     : null;
   if (flag) {
+    // eslint-disable-next-line no-useless-catch
     try {
       postCartToServer(cart);
     } catch (err) {
@@ -53,20 +55,20 @@ const cartSlice = createSlice({
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
       state.products = getItemFromLocalStorage();
       const {
-        productId: newProductId,
+        name: newProductId,
         quantity,
         price,
         description,
       } = action.payload;
       if (quantity > 0) {
         const upsertProduct = state.products.find(
-          (productInCart) => productInCart.productId === newProductId
+          (productInCart) => productInCart.name === newProductId
         );
         if (upsertProduct) {
           upsertProduct.quantity = quantity;
         } else {
           state.products.push({
-            productId: newProductId,
+            name: newProductId,
             quantity,
             price,
             description,
@@ -74,25 +76,25 @@ const cartSlice = createSlice({
         }
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
     
     increment: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
       const upsertProduct = state.products.find(
-        (productInCart) => productInCart.productId === action.payload
+        (productInCart) => productInCart.name === action.payload
       );
       if (upsertProduct) {
         upsertProduct.quantity += 1;
       } else console.log("item not found");
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
 
     decrement: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
       const existingProduct = state.products.find(
-        (productInCart) => productInCart.productId === action.payload
+        (productInCart) => productInCart.name === action.payload
       );
       if (existingProduct?.quantity) {
         existingProduct.quantity -= 1;
@@ -101,7 +103,7 @@ const cartSlice = createSlice({
         state.products = removeProductFunc(state.products, action.payload);
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
 
       if (!existingProduct) console.log("item not pound");
     },
@@ -109,21 +111,21 @@ const cartSlice = createSlice({
     setCart: (state, action: PayloadAction<CartProduct[]>) => {
       state.products = action.payload;
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
 
     removeProduct: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
       state.products = removeProductFunc(state.products, action.payload);
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
 
     setQuantity: (state, action: PayloadAction<CartProduct>) => {
       state.products = getItemFromLocalStorage();
-      const { productId: newProductId, quantity } = action.payload;
+      const { name: newProductId, quantity } = action.payload;
       const productToUpdateQuantity = state.products.find(
-        (productInCart) => productInCart.productId === newProductId
+        (productInCart) => productInCart.name === newProductId
       );
       if (productToUpdateQuantity?.quantity) {
         productToUpdateQuantity.quantity = quantity;
@@ -132,7 +134,7 @@ const cartSlice = createSlice({
         state.products = removeProductFunc(state.products, newProductId);
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
 
     render: (state) => {

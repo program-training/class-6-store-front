@@ -114,7 +114,7 @@ const Products = () => {
   const addToCart = (product: Product) => {
     dispatch(
       addProductToCart({
-        productId: product.id,
+        name: product.id,
         quantity: 1,
         price: product.price,
         description: product.description,

@@ -71,7 +71,7 @@ export default function CartTable() {
     if (productForCart.length) {
       const products = productForCart.flatMap((item) => {
         const product = dataProduct.find(
-          (product) => product.id === item.productId
+          (product) => product.id === item.name
         );
         return product ? [product] : [];
       });
@@ -89,7 +89,7 @@ export default function CartTable() {
     let total = 0;
     for (const product of productsCartFromData) {
       const quantity: CartProduct | undefined = productForCart.find(
-        (item) => item.productId === product.id
+        (item) => item.name === product.id
       );
       if (quantity && quantity.quantity) {
         total += product.price * quantity.quantity;
@@ -122,7 +122,7 @@ export default function CartTable() {
         <TableBody>
           {productsCartFromData.map((product) => {
             const quantity: CartProduct | undefined = productForCart.find(
-              (item) => item.productId === product.id
+              (item) => item.name === product.id
             );
             return (
               <StyledTableRow key={product.id}>

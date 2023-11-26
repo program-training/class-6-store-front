@@ -241,6 +241,7 @@ export default function PrimarySearchAppBar() {
               color="inherit"
             >
               <AccountCircle />
+              <Typography>{useAppSelector((state) => (state.userName.userName))}</Typography>
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

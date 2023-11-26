@@ -2,13 +2,13 @@ import { DialogTitle, DialogContent, DialogContentText, TextField } from '@mui/m
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppSelector } from '../rtk/hooks';
 import { CartProduct } from '../rtk/cartSlice';
 import axios from 'axios';
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -20,16 +20,16 @@ const style = {
 };
 interface ShippingDetails {
     address: string,
-    contactNumber: number,
+    contactNumber: string | undefined,
     orderType: string
 }
 
 interface OrderDetails {
     cartItems: CartProduct[];
-    firstName: string;
-    lastName: string;
-    userName: string;
-    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    userName: string | null;
+    email: string | null;
     orderTime: string;
     price: number;
     status: string;
@@ -41,30 +41,10 @@ export default function BasicModal() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [contactNumber, setContactNumber] = useState<number>(0);
+    const [contactNumber, setContactNumber] = useState();
     const [address, setAddress] = useState("");
+    const { firstName, lastName, userName, email } = useAppSelector((state) => state.userName)
     const { userId, products } = useAppSelector((state) => state.cart)
-
-    const [details, setDetails] = useState()
-
-    const fetchUserDetails = async () => {
-        try {
-            const userDetails = await axios.post(
-                `https://store-back-3.onrender.com/api/users/`
-            );
-            console.log(userDetails.data);
-            if (userDetails.data) {
-                setDetails(userDetails.data)
-            }
-
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    useEffect(() => {
-        fetchUserDetails();
-    }, [])
 
     const orderDetails: OrderDetails = {
         userId,
@@ -82,6 +62,32 @@ export default function BasicModal() {
             orderType: "regular"
         }
     }
+
+    // const orderDetails: OrderDetails = {
+    //     cartItems: [
+    //       {
+    //         name: "Product 1",
+    //         description: "Description for Product 1",
+    //         price: 10.99,
+    //         quantity: 2
+    //       },
+    //       {
+    //         name: "Product 2",
+    //         description: "Description for Product 2",
+    //         price: 15.49,
+    //         quantity: 1
+    //       }
+    //     ],
+    //     orderTime: "2023-11-20T09:30:34.245Z",
+    //     status: "processing",
+    //     price: 26.47,
+    //     shippingDetails: {
+    //       address: "123 Main St",
+    //       contactNumber: "555-123-4567",
+    //       orderType: "regular"
+    //     },
+    //     userId: "555"
+    //   }
 
     function sendOrderDetails() {
         const fetchOrder = async () => {
