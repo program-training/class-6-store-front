@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import Modal from '../components/Payment';
+// import Modal from '../components/Payment';
 
 const Layout = () => {
   return (
