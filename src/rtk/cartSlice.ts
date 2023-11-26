@@ -36,6 +36,9 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setUserNameInCart:(state, action: PayloadAction<string>) => {
+      state.userId = action.payload
+    },
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
       state.products = getItemFromLocalStorage();
       const {
@@ -134,6 +137,7 @@ const cartSlice = createSlice({
 });
 
 export const {
+  setUserNameInCart,
   setCart,
   increment,
   decrement,

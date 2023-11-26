@@ -26,12 +26,10 @@ export const userNameSlice = createSlice({
     setUserName: (state, action: PayloadAction<UserRegister>) => {
       state.userName = action.payload.username;
       state.flag = true;
-      state.userId = action.payload._id ? action.payload._id : null;
+      state.userId = action.payload._id
       state.firstName = action.payload.firstName
-        ? action.payload.firstName
-        : null;
-      state.lastName = action.payload.lastName ? action.payload.lastName : null;
-      state.email = action.payload.email ? action.payload.email : null
+      state.lastName = action.payload.lastName
+      state.email = action.payload.email
     },
     resetUserName: (state) => {
       state.flag = false
