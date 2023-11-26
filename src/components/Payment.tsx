@@ -33,7 +33,7 @@ interface OrderDetails {
     userId: string;
 }
 
-export default function BasicModal() {
+export default function Payment() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -41,6 +41,8 @@ export default function BasicModal() {
     const [address, setAddress] = useState("");
     const { userId, products } = useAppSelector((state) => state.cart)
 
+    console.log(userId);
+    
     const temp: CartProduct[] = products.map((p) => {
         const temp = {
             ...p,
@@ -83,7 +85,13 @@ export default function BasicModal() {
 
     return (
         <Box>
-            <Button onClick={handleOpen}>Open modal</Button>
+                      <Button
+            variant="contained"
+            onClick={handleOpen}
+            sx={{ color: "white", backgroundColor: "#37474f" }}
+          >
+            to make an order
+          </Button>
             <Modal
                 open={open}
                 onClose={handleClose}

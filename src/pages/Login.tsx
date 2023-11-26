@@ -55,7 +55,7 @@ const open = useAppSelector((state) => state.openLogIn.flag);
           userData
         );
         if (response.data) {
-          const userName = response.data.user.username;
+          const userName = response.data.user;
           dispatch(setUserName(userName));
           setEmail('')
           setPassword('')
