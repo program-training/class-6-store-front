@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { postCartToServer } from "../functions";
-import { useAppSelector } from "./hooks";
+
 
 export interface CartProduct {
   productId: number;
@@ -33,19 +32,6 @@ const getItemFromLocalStorage = () => {
   }
 };
 
-const postCart = (cart:CartProduct[]) => {
-  const flag = useAppSelector((state) => state.userName.flag)
-    ? useAppSelector((state) => state.userName.flag)
-    : null;
-  if (flag) {
-    try {
-      postCartToServer(cart);
-    } catch (err) {
-      throw err;
-    }
-  }
-};
-
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -74,9 +60,9 @@ const cartSlice = createSlice({
         }
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
-    
+
     increment: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
       const upsertProduct = state.products.find(
@@ -86,7 +72,7 @@ const cartSlice = createSlice({
         upsertProduct.quantity += 1;
       } else console.log("item not found");
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
 
     decrement: (state, action: PayloadAction<number>) => {
@@ -101,7 +87,7 @@ const cartSlice = createSlice({
         state.products = removeProductFunc(state.products, action.payload);
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
 
       if (!existingProduct) console.log("item not pound");
     },
@@ -109,14 +95,14 @@ const cartSlice = createSlice({
     setCart: (state, action: PayloadAction<CartProduct[]>) => {
       state.products = action.payload;
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
 
     removeProduct: (state, action: PayloadAction<number>) => {
       state.products = getItemFromLocalStorage();
       state.products = removeProductFunc(state.products, action.payload);
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
 
     setQuantity: (state, action: PayloadAction<CartProduct>) => {
@@ -132,7 +118,7 @@ const cartSlice = createSlice({
         state.products = removeProductFunc(state.products, newProductId);
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
-      postCart(state.products)
+      // postCart(state.products)
     },
 
     render: (state) => {
