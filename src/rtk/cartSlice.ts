@@ -8,7 +8,7 @@ export interface CartProduct {
   description: string;
 }
 
-interface CartState {
+export interface CartState {
   userId: string;
   products: CartProduct[];
 }

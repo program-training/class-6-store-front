@@ -31,8 +31,8 @@ const Home = () => {
       }
     })();
   }, []);
-
   dispatch(render());
+  
 
   const clickToCard = (cat: string) => {
     navigate(`/products/${cat}`);
