@@ -20,7 +20,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { filterProducts } from "./function";
-import { addProductToCart, render } from "../rtk/cartSlice";
+import { addProductToCart } from "../rtk/cartSlice";
 import { useAppDispatch } from "../rtk/hooks";
 import { getUniqueAttributes } from "./function";
 
@@ -46,13 +46,17 @@ interface Prices {
 }
 
 const Products = () => {
-  const { palette } = useTheme();
-  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[] | null>();
-  const [filteredProducts, setFilteredProducts] = useState<Product[] | null | undefined>(null);
-  const [attributes, setAttributes] = useState<Record<string, (string | number)[]>>({});
+  const [filteredProducts, setFilteredProducts] = useState<
+  Product[] | null | undefined
+  >(null);
+  const [attributes, setAttributes] = useState<
+  Record<string, (string | number)[]>
+  >({});
   const { category } = useParams();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { palette } = useTheme();
 
   function connectToData() {
     const fetchData = async () => {
@@ -118,10 +122,6 @@ const Products = () => {
       })
     );
   };
-
-  dispatch(render());
-  
-
   return (
     <Stack spacing={2} direction="row">
       <Box width={"15em"}>

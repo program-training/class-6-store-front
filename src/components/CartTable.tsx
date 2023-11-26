@@ -13,6 +13,7 @@ import {
   decrement,
   increment,
   removeProduct,
+  removeCart,
 } from "../rtk/cartSlice";
 import { Product } from "../rtk/interface";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
@@ -20,7 +21,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useEffect } from "react";
 import React from "react";
-import { getCartFromServer } from "../functions";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -58,23 +58,13 @@ export default function CartTable() {
   );
 
   useEffect(() => {
-    if (flag) {
-      getCartFromServer().then((productsFromServer) => {
-        if (productsFromServer) {
-          setProductForCart(productsFromServer);
-        }
-      });
-    } else {
-      setProductForCart(productFromRtk);
-    }
+    setProductForCart(productFromRtk);
   }, [flag, productFromRtk]);
 
   const comparison = () => {
     if (productForCart.length) {
       const products = productForCart.flatMap((item) => {
-        const product = dataProduct.find(
-          (product) => product.id === item.name
-        );
+        const product = dataProduct.find((product) => product.id === item.name);
         return product ? [product] : [];
       });
       if (products.length) {
@@ -100,6 +90,10 @@ export default function CartTable() {
     setTotalPrice(total);
   }, [productsCartFromData, productForCart]);
 
+  const payCart = () => {
+    dispatch(removeCart());
+  };
+
   const incrementQuantity = (product: Product) => {
     dispatch(increment(product.id));
   };
@@ -112,8 +106,8 @@ export default function CartTable() {
   console.log(flag);
   
   return (
-    <TableContainer component={Paper} >
-      <Table sx={{ minWidth: 700 }} aria-label="customized table" >
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>ITEMS</StyledTableCell>
@@ -186,6 +180,7 @@ export default function CartTable() {
           </Typography>
           <Button
             variant="contained"
+            onClick={payCart}
             sx={{ color: "white", backgroundColor: "#37474f" }}
           >
             to make an order

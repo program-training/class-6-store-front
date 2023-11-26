@@ -17,23 +17,6 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { addProductToCart } from "../rtk/cartSlice";
 
-
-
-export interface Product {
-  id: number;
-  title: string;
-  image: string;
-  price: number;
-  description: string;
-  category: string;
-  attributes: Attributes[];
-}
-
-interface Attributes {
-  key: string;
-  value: number | string;
-}
-
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
 
