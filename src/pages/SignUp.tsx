@@ -10,7 +10,7 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
-import { UserRegister } from "../rtk/interface";
+
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
@@ -47,7 +47,7 @@ export default function SignIn() {
           username: userName,
           email,
           password,
-          confirmPassword: passwordVerification
+          confirmPassword: passwordVerification,
         };
         const response = await axios.post(
           "https://store-back-3.onrender.com/api/users/register",
@@ -56,6 +56,11 @@ export default function SignIn() {
         if (response.data) {
           dispatch(setOpenSignUp(false));
           dispatch(setOpenLogIn(true));
+          setEmail('')
+          setPassword('')
+          setUserName('')
+          setFirstName('')
+          setLastName('')
         }
       } catch (error) {
         console.error("Error during registration:", error);

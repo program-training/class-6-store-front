@@ -55,8 +55,10 @@ const open = useAppSelector((state) => state.openLogIn.flag);
           userData
         );
         if (response.data) {
-          const userName = response.data.userName;
+          const userName = response.data.user.username;
           dispatch(setUserName(userName));
+          setEmail('')
+          setPassword('')
         }
       } catch (error) {
         console.error("Error during registration:", error);
