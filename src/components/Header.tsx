@@ -64,7 +64,7 @@ export default function PrimarySearchAppBar() {
   const [openCart, setOpenCart] = React.useState(false);
 
   const navigate = useNavigate();
-
+  const userConnect = useAppSelector((state) => (state.userName.userName))
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -241,7 +241,7 @@ export default function PrimarySearchAppBar() {
               color="inherit"
             >
               <AccountCircle />
-              <Typography>{useAppSelector((state) => (state.userName.userName))}</Typography>
+              <Typography>{userConnect}</Typography>
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

@@ -20,16 +20,12 @@ const style = {
 };
 interface ShippingDetails {
     address: string,
-    contactNumber: string | undefined,
+    contactNumber: string,
     orderType: string
 }
 
 interface OrderDetails {
     cartItems: CartProduct[];
-    firstName: string | null;
-    lastName: string | null;
-    userName: string | null;
-    email: string | null;
     orderTime: string;
     price: number;
     status: string;
@@ -41,53 +37,30 @@ export default function BasicModal() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [contactNumber, setContactNumber] = useState();
+    const [contactNumber, setContactNumber] = useState("");
     const [address, setAddress] = useState("");
-    const { firstName, lastName, userName, email } = useAppSelector((state) => state.userName)
     const { userId, products } = useAppSelector((state) => state.cart)
+
+    const temp: CartProduct[] = products.map((p) => {
+        const temp = {
+            ...p,
+            name: ""+p.name
+        }
+        return temp
+    })
 
     const orderDetails: OrderDetails = {
         userId,
-        cartItems: products,
-        firstName,
-        lastName,
-        userName,
-        email,
+        cartItems: temp,
         price: 0,
         status: "processing",
-        orderTime: new Date().toLocaleDateString(),
+        orderTime: "2023-11-20T09:30:34.245Z",
         shippingDetails: {
             address,
-            contactNumber: contactNumber,
+            contactNumber,
             orderType: "regular"
         }
     }
-
-    // const orderDetails: OrderDetails = {
-    //     cartItems: [
-    //       {
-    //         name: "Product 1",
-    //         description: "Description for Product 1",
-    //         price: 10.99,
-    //         quantity: 2
-    //       },
-    //       {
-    //         name: "Product 2",
-    //         description: "Description for Product 2",
-    //         price: 15.49,
-    //         quantity: 1
-    //       }
-    //     ],
-    //     orderTime: "2023-11-20T09:30:34.245Z",
-    //     status: "processing",
-    //     price: 26.47,
-    //     shippingDetails: {
-    //       address: "123 Main St",
-    //       contactNumber: "555-123-4567",
-    //       orderType: "regular"
-    //     },
-    //     userId: "555"
-    //   }
 
     function sendOrderDetails() {
         const fetchOrder = async () => {
@@ -125,14 +98,14 @@ export default function BasicModal() {
                         </DialogContentText>
                         <TextField
                             onChange={(e) => {
-                                setContactNumber(+e.target.value);
+                                setContactNumber(e.target.value);
                             }}
                             value={contactNumber}
                             autoFocus
                             margin="dense"
-                            id="number"
+                            id="string"
                             label="Phone Number"
-                            type="number"
+                            type="string"
                             fullWidth
                             variant="standard"
                             required
@@ -152,7 +125,7 @@ export default function BasicModal() {
                             required
                         />
                     </DialogContent>
-                    <Button onClick={handelSendOrder}>בצע</Button>
+                    <Button onClick={handelSendOrder}>Submit</Button>
                 </Box>
             </Modal>
         </Box>

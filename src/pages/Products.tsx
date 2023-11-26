@@ -49,12 +49,8 @@ const Products = () => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[] | null>();
-  const [filteredProducts, setFilteredProducts] = useState<
-    Product[] | null | undefined
-  >(null);
-  const [attributes, setAttributes] = useState<
-    Record<string, (string | number)[]>
-  >({});
+  const [filteredProducts, setFilteredProducts] = useState<Product[] | null | undefined>(null);
+  const [attributes, setAttributes] = useState<Record<string, (string | number)[]>>({});
   const { category } = useParams();
   const dispatch = useAppDispatch();
 
@@ -74,7 +70,6 @@ const Products = () => {
 
   useEffect(() => {
     connectToData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   useEffect(() => {
@@ -83,9 +78,11 @@ const Products = () => {
       setFilteredProducts(products);
     }
   }, [products]);
+
   const handleClick = (productId: string) => {
     navigate(`/product/${productId}`);
   };
+
   const { minPrice, maxPrice }: Prices = products?.reduce(
     (acc, product) => ({
       minPrice: Math.min(acc.minPrice, product.price),
@@ -121,7 +118,10 @@ const Products = () => {
       })
     );
   };
+
   dispatch(render());
+  
+
   return (
     <Stack spacing={2} direction="row">
       <Box width={"15em"}>

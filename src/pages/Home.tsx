@@ -30,8 +30,8 @@ const Home = () => {
       }
     })();
   }, []);
-
   dispatch(render());
+  
 
   return (
     <>
