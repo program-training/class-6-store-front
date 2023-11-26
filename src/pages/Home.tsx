@@ -10,9 +10,12 @@ import {
   Link,
   Typography,
 } from "@mui/material";
+import { useAppDispatch} from '../rtk/hooks'
+import { render } from "../rtk/cartSlice";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     (async () => {
@@ -27,6 +30,8 @@ const Home = () => {
       }
     })();
   }, []);
+
+  dispatch(render());
 
   return (
     <>

@@ -16,6 +16,7 @@ export interface Product {
   }
 
   export interface UserRegister {
+    _id: string;
     firstName: string;
     lastName: string;
     username: string;

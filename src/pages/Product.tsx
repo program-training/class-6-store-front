@@ -53,8 +53,13 @@ const ProductDetails: React.FC = () => {
     setExpanded(!expanded);
   };
 
-  const addToCart = (id: number) => {
-    dispatch(addProductToCart({ productId: id, quantity: 1 }));
+  const addToCart = (id:number, price:number, description:string) => {
+    dispatch(addProductToCart({
+      productId:id,
+      quantity: 1,
+      price: price,
+      description: description,
+    }));
   };
 
   return (
@@ -84,7 +89,7 @@ const ProductDetails: React.FC = () => {
                     backgroundColor: "red",
                     color: "white",
                   }}
-                  onClick={()=> addToCart(Number(id))}
+                  onClick={()=> addToCart(Number(id), price, description)}
                 >
                   <ShoppingCartIcon />
                 </IconButton>
