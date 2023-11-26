@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Layout from "./pages/Layout";
 import Products from "./pages/Products";
-import Product from "./pages/Product2";
+import Product from "./pages/Product";
 import Home from "./pages/Home";
 import { themeSettings } from "./palette/theme";
 import { createTheme } from "@mui/material/styles";
