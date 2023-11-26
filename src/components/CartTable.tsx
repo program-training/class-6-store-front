@@ -21,6 +21,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useEffect } from "react";
 import React from "react";
+import Payment from "./Payment";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -118,6 +119,7 @@ export default function CartTable() {
                 <StyledTableCell align="right">
                   ADDITIONAL ACTIONS
                 </StyledTableCell>
+
               </TableRow>
             </TableHead>
             <TableBody>
@@ -197,5 +199,6 @@ export default function CartTable() {
         </Paper>
       )}
     </>
+
   );
 }

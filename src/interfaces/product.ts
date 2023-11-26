@@ -9,6 +9,7 @@ export interface Product {
     quantity: number;
     attributes: Attributes[];
   }
+  
   export interface Attributes {
     key: string;
     value: number | string;
