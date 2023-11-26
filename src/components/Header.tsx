@@ -79,9 +79,6 @@ export default function PrimarySearchAppBar() {
     setNumOfItemsInCart(newNum);
   }, [useAppSelector((state) => state.cart.products.length)]);
 
-  console.log(newNum);
-  console.log(numOfItemsInCart);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -198,7 +195,7 @@ export default function PrimarySearchAppBar() {
               fontFamily={"Fira Sans"}
               sx={{ display: { xs: "none", sm: "block" }, cursor: "pointer" }}
             >
-              E-COMMERCE
+              QuadBros Market
             </Typography>
           </div>
           <Search>
