@@ -43,7 +43,7 @@ const Home = () => {
 
   return (
     <>
-      {/* <Typography
+      <Typography
         variant="h1"
         align="center"
         gutterBottom
@@ -54,8 +54,8 @@ const Home = () => {
           marginBottom: "3rem",
         }}
       >
-        Categories
-      </Typography> */}
+        Hello
+      </Typography>
       <Grid container spacing={2}>
         {loading ? <HomeSkeleton /> :
           
