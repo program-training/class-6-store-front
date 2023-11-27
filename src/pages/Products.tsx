@@ -59,11 +59,13 @@ const Products = () => {
   const dispatch = useAppDispatch();
   const { palette } = useTheme();
 
+  const baseURL = import.meta.env.VITE_SERVER_API;
+
   function connectToData() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://store-back-3.onrender.com/api/products?category=${category}`
+          `${baseURL}/api/products?category=${category}`
         );
         setProducts(response.data);
         setLoading(false);
