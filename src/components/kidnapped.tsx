@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-const Hostages = () => {
+
+const Kidnapped = () => {
   useEffect(() => {
     const script = document.createElement("script");
     script.type = "text/javascript";
@@ -15,6 +16,6 @@ const Hostages = () => {
       document.getElementsByTagName("head")[0].removeChild(script);
     };
   }, []);
-  return <div id="bthn" lang="he"></div>;
+  return <div id="bthn" lang="en"></div>;
 };
-export default Hostages;
+export default Kidnapped;
