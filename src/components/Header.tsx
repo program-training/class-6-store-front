@@ -99,12 +99,16 @@ export default function PrimarySearchAppBar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
+  const flagUser = useAppSelector((state) => state.userName.flag);
+  
   const logOut = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-    dispatch(resetUserName());
+    if (flagUser) {
+      dispatch(resetUserName());
+      localStorage.removeItem("cart");
+    }
+    handleMenuClose();
   };
+
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);

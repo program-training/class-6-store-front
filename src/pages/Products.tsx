@@ -20,7 +20,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { filterProducts } from "../function";
-import { addProductToCart } from "../rtk/cartSlice";
+import { addProductToCart, render } from "../rtk/cartSlice";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { getUniqueAttributes } from "../function";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
@@ -58,9 +58,12 @@ const Products = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { palette } = useTheme();
-
   const baseURL = import.meta.env.VITE_SERVER_API;
 
+  useEffect(() => {
+ dispatch(render())
+  }, []);
+  
   function connectToData() {
     const fetchData = async () => {
       try {
@@ -127,7 +130,9 @@ const Products = () => {
       })
     );
   };
-  const productInCart = useAppSelector((state) => state.cart.products);
+  const productInCart = useAppSelector((state) => state.cart.products)
+
+
   return (
     <Stack spacing={2} direction="row">
       <Box width={"15em"}>
@@ -177,12 +182,9 @@ const Products = () => {
           <ProductSkeleton />
         ) : (
           filteredProducts?.map((product) => {
-            let addedToCart = false;
-            for (const item of productInCart) {
-              if (item.name === product.id) {
-                addedToCart = true;
-              }
-            }
+            const addedToCart =
+              Array.isArray(productInCart) &&
+              productInCart.some((item) => item.name === product.id);
             return (
               <Grid key={product.id}>
                 <Card

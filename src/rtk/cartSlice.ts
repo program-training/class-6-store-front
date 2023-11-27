@@ -15,7 +15,6 @@ export interface CartProduct {
   description: string;
 }
 
-
 export interface CartState {
   userId: string;
   products: CartProduct[];
@@ -33,23 +32,26 @@ const removeProductFunc = (products: CartProduct[], id: number) => {
 const getItemFromLocalStorage = () => {
   try {
     const item = localStorage.getItem("cart");
-    return item ? JSON.parse(item) : [];
+    if (item) {
+      return JSON.parse(item);
+    }
+    return [];
   } catch (error) {
     console.error("Failed to parse cart from localStorage", error);
     return [];
   }
 };
 
-
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    setUserNameInCart:(state, action: PayloadAction<string>) => {
-      state.userId = action.payload
+    setUserNameInCart: (state, action: PayloadAction<string>) => {
+      state.userId = action.payload;
     },
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
       state.products = getItemFromLocalStorage();
+
       // state.products = await getCartFromServer();
       const {
         name: newProductId,
@@ -135,7 +137,7 @@ const cartSlice = createSlice({
     },
 
     removeCart: (state) => {
-      state.products = []
+      state.products = [];
       localStorage.setItem("cart", JSON.stringify(state.products));
       // postCart(state.products)
     },

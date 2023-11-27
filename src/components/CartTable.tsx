@@ -41,18 +41,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
+interface CartProps {
+  props: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export default function CartTable() {
+const CartTable: React.FC<CartProps> = ({props}) => {
   const [productForCart, setProductForCart] = React.useState<CartProduct[]>([]);
   const [productsCartFromData, setProductsCartFromData] = React.useState<
-    Product[]
+  Product[]
   >([]);
   const navigate = useNavigate()
   const [totalPrice, setTotalPrice] = React.useState<number | null>(null);
-
+  
   const dispatch = useAppDispatch();
   const dataProduct = useAppSelector((state) => state.products.products);
-
+  const setOpenCart = props;
+  
   const flag = useAppSelector((state) => state.userName.flag);
   const productFromRtk: CartProduct[] = useAppSelector(
     (state) => state.cart.products
@@ -173,6 +177,8 @@ export default function CartTable() {
               marginTop: "10px",
               display: "flex",
               justifyContent: "space-evenly",
+              // position: "sticky",
+              // bottom: 0 
             }}
           >
             <Typography variant="h3" style={{ color: "#333" }}>
@@ -198,6 +204,7 @@ export default function CartTable() {
               color="primary"
               onClick={()=> {
                 navigate("/")
+                setOpenCart(false)
               }}
             >
               Start Shopping
@@ -208,3 +215,4 @@ export default function CartTable() {
     </>
   );
 }
+export default CartTable;

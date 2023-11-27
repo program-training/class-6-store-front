@@ -60,6 +60,7 @@ export default function SignIn() {
           setUserName("");
           setFirstName("");
           setLastName("");
+          setPasswordVerification("");
           dispatch(setOpenSignUp(false));
           dispatch(setOpenLogIn(true));
         }

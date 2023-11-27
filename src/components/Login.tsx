@@ -57,12 +57,12 @@ const LogIn = () => {
         );
         if (response.data) {
           const userName = response.data.user;
+          setEmail("");
+          setPassword("");
           dispatch(setUserName(userName));
           dispatch(
             setUserNameInCart(`${userName.firstName} ${userName.lastName}`)
           );
-          setEmail("");
-          setPassword("");
         }
       } catch (error) {
         console.error("Error during registration:", error);
@@ -105,6 +105,9 @@ const LogIn = () => {
             fullWidth
             variant="standard"
             required
+            error={email.length === 0}
+            helperText={email.length === 0 ? "This is a required field.": ""}
+
           />
           <TextField
             onChange={(e) => {
@@ -119,6 +122,9 @@ const LogIn = () => {
             fullWidth
             variant="standard"
             required
+            error={password.length === 0}
+            helperText={password.length === 0 ? "This is a required field.": ""}
+
           />
         </DialogContent>
         <DialogActions>

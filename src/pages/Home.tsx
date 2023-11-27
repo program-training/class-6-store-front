@@ -36,7 +36,10 @@ const Home = () => {
       }
     })();
   }, []);
-  dispatch(render());
+  
+  useEffect(() => {
+    dispatch(render())
+     }, []);
 
   const clickToCard = (cat: string) => {
     navigate(`/products/${cat}`);
