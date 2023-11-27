@@ -77,6 +77,7 @@ const Products = () => {
 
   useEffect(() => {
     connectToData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   useEffect(() => {
@@ -166,7 +167,7 @@ const Products = () => {
 
         {loading ? <ProductSkeleton/> : 
 
-        {filteredProducts?.map((product) => (
+        filteredProducts?.map((product) => (
           <Grid key={product.id} >
 
             <Card
