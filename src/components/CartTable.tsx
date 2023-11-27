@@ -22,7 +22,6 @@ import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useEffect } from "react";
 import React from "react";
 import Payment from "./Payment";
-// import Payment from "./Payment";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -105,7 +104,7 @@ export default function CartTable() {
   const removeProductFromCart = (product: Product) => {
     dispatch(removeProduct(product.id));
   };
-  console.log(productsCartFromData);
+
   return (
     <>
       {productsCartFromData.length ? (
@@ -120,7 +119,6 @@ export default function CartTable() {
                 <StyledTableCell align="right">
                   ADDITIONAL ACTIONS
                 </StyledTableCell>
-
               </TableRow>
             </TableHead>
             <TableBody>
@@ -183,7 +181,7 @@ export default function CartTable() {
             <Typography variant="h3" style={{ color: "#333" }}>
               TOTAL PRICE: {totalPrice}$
             </Typography>
-            <Payment total={totalPrice}/>
+            <Payment total={totalPrice} />
           </div>
         </TableContainer>
       ) : (
@@ -194,6 +192,5 @@ export default function CartTable() {
         </Paper>
       )}
     </>
-
   );
 }
