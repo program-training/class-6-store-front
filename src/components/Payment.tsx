@@ -12,6 +12,7 @@ import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { SendCartProduct, removeCart } from "../rtk/cartSlice";
 import axios from "axios";
 import { SendOrderDetails, Total } from "../interfaces/payment";
+import { setOpen as openLogin } from "../rtk/flagLogInSlice";
 
 const style = {
   position: "absolute",
@@ -70,12 +71,19 @@ const style = {
     };
     fetchOrder();
   }
+  
+  const flag = useAppSelector((state) => state.userName.flag)
 
   const handelSendOrder = () => {
-    dispatch(removeCart())
-    handleClose()
-    sendOrderDetails();
+    if(flag){
+      dispatch(removeCart())
+      handleClose()
+      sendOrderDetails();
+    }else{
+      dispatch(openLogin(true))
+    }
   };
+
 
   return (
     <Box>
@@ -129,7 +137,7 @@ const style = {
               required
             />
           </DialogContent>
-          <Button onClick={handelSendOrder}>Submit</Button>
+          <Button onClick={handelSendOrder}>for payment</Button>
         </Box>
       </Modal>
     </Box>
