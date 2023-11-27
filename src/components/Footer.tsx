@@ -6,9 +6,9 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 
 
 const socialMediaLinks = {
-  facebook: '#',
-  twitter: '#',
-  instagram: '#',
+  facebook: 'https://www.facebook.com/TikshuvIDF/?locale=he_IL',
+  twitter: 'https://twitter.com/TikshuvCharedim',
+  instagram: 'https://www.instagram.com/tikshuv.idf/?hl=he',
 };
 
 const Footer: React.FC = () => {
@@ -26,9 +26,9 @@ const Footer: React.FC = () => {
         <Grid container spacing={2} justifyContent="space-between">
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h2" color="color: 'rgb(255,255,255)'" gutterBottom>
-              Brand Name
+            QuadBros Market
             </Typography>
-            {/* Add your logo component or image here */}
+            <img src="../../public/footer-icon.svg" alt="Logo" width="120" />
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
             <Typography variant="subtitle1" color="color: 'rgb(255,255,255)'" gutterBottom>
@@ -60,13 +60,13 @@ const Footer: React.FC = () => {
             <Typography variant="subtitle1" color="color: 'rgb(255,255,255)'" gutterBottom>
               SOCIAL MEDIA
             </Typography>
-            <IconButton aria-label="Facebook" color="inherit" component="a" href={socialMediaLinks.facebook}>
+            <IconButton aria-label="Facebook" color="inherit" component="a" href={socialMediaLinks.facebook} target='_blanc'>
               <FacebookIcon />
             </IconButton>
-            <IconButton aria-label="Twitter" color="inherit" component="a" href={socialMediaLinks.twitter}>
+            <IconButton aria-label="Twitter" color="inherit" component="a" href={socialMediaLinks.twitter} target='_blanc'>
               <TwitterIcon />
             </IconButton>
-            <IconButton aria-label="Instagram" color="inherit" component="a" href={socialMediaLinks.instagram}>
+            <IconButton aria-label="Instagram" color="inherit" component="a" href={socialMediaLinks.instagram} target='_blanc'>
               <InstagramIcon />
             </IconButton>
           </Grid>
