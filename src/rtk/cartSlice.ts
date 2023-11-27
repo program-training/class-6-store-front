@@ -8,6 +8,13 @@ export interface CartProduct {
   description: string;
 }
 
+export interface SendCartProduct {
+  name: string;
+  quantity: number;
+  price: number;
+  description: string;
+}
+
 export interface CartState {
   userId: string;
   products: CartProduct[];
@@ -52,7 +59,7 @@ const cartSlice = createSlice({
           (productInCart) => productInCart.name === newProductId
         );
         if (upsertProduct) {
-          upsertProduct.quantity = quantity;
+          upsertProduct.quantity += quantity;
         } else {
           state.products.push({
             name: newProductId,

@@ -13,7 +13,7 @@ import {
   decrement,
   increment,
   removeProduct,
-  removeCart,
+  // removeCart,
 } from "../rtk/cartSlice";
 import { Product } from "../rtk/interface";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
@@ -22,6 +22,7 @@ import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useEffect } from "react";
 import React from "react";
 import Payment from "./Payment";
+// import Payment from "./Payment";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -91,9 +92,9 @@ export default function CartTable() {
     setTotalPrice(total);
   }, [productsCartFromData, productForCart]);
 
-  const payCart = () => {
-    dispatch(removeCart());
-  };
+  // const payCart = () => {
+  //   dispatch(removeCart());
+  // };
 
   const incrementQuantity = (product: Product) => {
     dispatch(increment(product.id));
@@ -104,90 +105,95 @@ export default function CartTable() {
   const removeProductFromCart = (product: Product) => {
     dispatch(removeProduct(product.id));
   };
-
+  console.log(productsCartFromData);
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>ITEMS</StyledTableCell>
-            <StyledTableCell align="center">QUANTITY</StyledTableCell>
-            <StyledTableCell align="center">AVAILABILITY</StyledTableCell>
-            <StyledTableCell align="right">TOTAL PRICE</StyledTableCell>
-            <StyledTableCell align="right">ADDITIONAL ACTIONS</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {productsCartFromData.map((product) => {
-            const quantity: CartProduct | undefined = productForCart.find(
-              (item) => item.name === product.id
-            );
-            return (
-              <StyledTableRow key={product.id}>
-                <StyledTableCell component="th" scope="row">
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <CardMedia
-                      sx={{ maxWidth: "12rem", minWidth: "12rem" }}
-                      component="img"
-                      height="75em"
-                      image={product.image}
-                      alt={product.title}
-                    />
-                    <Box sx={{ width: "1em" }}></Box>
-                    <Typography variant="body1">{product.title}</Typography>
-                  </Box>
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {quantity?.quantity}
-                </StyledTableCell>
-                <StyledTableCell align="center">{}</StyledTableCell>
-                <StyledTableCell align="center">
-                  <StyledTableCell align="center">
-                    {quantity && quantity.quantity
-                      ? product.price * quantity.quantity + "$"
-                      : null}
-                  </StyledTableCell>
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  <Button onClick={() => removeProductFromCart(product)}>
-                    <DeleteTwoToneIcon />
-                  </Button>
-                  <Button onClick={() => incrementQuantity(product)}>
-                    <PlusOneIcon />
-                  </Button>
-                  <Button onClick={() => decrementQuantity(product)}>
-                    <RemoveIcon />
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+    <>
       {productsCartFromData.length ? (
-        <div
-          style={{
-            backgroundColor: "#f0f0f0",
-            padding: "10px",
-            borderRadius: "5px",
-            marginTop: "10px",
-            display: "flex",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <Typography variant="h3" style={{ color: "#333" }}>
-            TOTAL PRICE: {totalPrice}$
-          </Typography>
-          {/* <Button
-            variant="contained"
-            onClick={payCart}
-            sx={{ color: "white", backgroundColor: "#37474f" }}
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>ITEMS</StyledTableCell>
+                <StyledTableCell align="center">QUANTITY</StyledTableCell>
+                <StyledTableCell align="center">AVAILABILITY</StyledTableCell>
+                <StyledTableCell align="right">TOTAL PRICE</StyledTableCell>
+                <StyledTableCell align="right">
+                  ADDITIONAL ACTIONS
+                </StyledTableCell>
+
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {productsCartFromData.map((product) => {
+                const quantity: CartProduct | undefined = productForCart.find(
+                  (item) => item.name === product.id
+                );
+                return (
+                  <StyledTableRow key={product.id}>
+                    <StyledTableCell component="th" scope="row">
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <CardMedia
+                          sx={{ maxWidth: "12rem", minWidth: "12rem" }}
+                          component="img"
+                          height="75em"
+                          image={product.image}
+                          alt={product.title}
+                        />
+                        <Box sx={{ width: "1em" }}></Box>
+                        <Typography variant="body1">{product.title}</Typography>
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {quantity?.quantity}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <StyledTableCell align="center">
+                        {quantity && quantity.quantity
+                          ? product.price * quantity.quantity + "$"
+                          : null}
+                      </StyledTableCell>
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      <Button onClick={() => removeProductFromCart(product)}>
+                        <DeleteTwoToneIcon />
+                      </Button>
+                      <Button onClick={() => incrementQuantity(product)}>
+                        <PlusOneIcon />
+                      </Button>
+                      <Button onClick={() => decrementQuantity(product)}>
+                        <RemoveIcon />
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          <div
+            style={{
+              backgroundColor: "#f0f0f0",
+              padding: "10px",
+              borderRadius: "5px",
+              marginTop: "10px",
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
           >
-            to make an order
-          </Button> */}
-          <Payment total={totalPrice}/>
-        </div>
-      ) : null}
-    </TableContainer>
+            <Typography variant="h3" style={{ color: "#333" }}>
+              TOTAL PRICE: {totalPrice}$
+            </Typography>
+            <Payment total={totalPrice}/>
+          </div>
+        </TableContainer>
+      ) : (
+        <Paper sx={{ padding: 2, width: 300, margin: "auto", marginTop: 4 }}>
+          <Typography variant="h1">
+            The cart is empty, please select a product to display
+          </Typography>
+        </Paper>
+      )}
+    </>
+
   );
 }
