@@ -42,6 +42,8 @@ const LogIn = () => {
     dispatch(setOpenLogIn(false));
   };
 
+  const baseURL = import.meta.env.VITE_SERVER_API;
+
   const handleLogIn = async () => {
     if (validateEmail(email) && validatePassword(password)) {
       try {
@@ -50,7 +52,7 @@ const LogIn = () => {
           password: password,
         };
         const response = await axios.post(
-          "https://store-back-3.onrender.com/api/users/login",
+          `${baseURL}/api/users/login`,
           userData
         );
         if (response.data) {

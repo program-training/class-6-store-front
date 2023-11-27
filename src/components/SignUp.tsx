@@ -30,6 +30,8 @@ export default function SignIn() {
     dispatch(setOpenSignUp(false));
   };
 
+  const baseURL = import.meta.env.VITE_SERVER_API;
+
   const handleRegistration = async () => {
     if (
       password === passwordVerification &&
@@ -49,7 +51,7 @@ export default function SignIn() {
           confirmPassword: passwordVerification,
         };
         const response = await axios.post(
-          "https://store-back-3.onrender.com/api/users/register",
+          `${baseURL}/api/users/register`,
           userData
         );
         if (response.data) {
