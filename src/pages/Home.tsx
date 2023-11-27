@@ -35,7 +35,7 @@ const Home = () => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [baseURL]);
   dispatch(render());
 
   const clickToCard = (cat: string) => {

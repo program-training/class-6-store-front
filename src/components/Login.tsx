@@ -82,7 +82,7 @@ const LogIn = () => {
   };
 
   return (
-    <React.Fragment>
+    <React.Fragment >
       <Button variant="outlined" onClick={handleClickOpen}>
         Log IN
       </Button>
