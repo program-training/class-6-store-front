@@ -68,10 +68,10 @@ const LogIn = () => {
       }
       dispatch(setOpenLogIn(false));
     } else if (validateEmail(email) && !validatePassword(password)) {
-      window.alert("סיסמא לא תקינה");
+      window.alert("Invalid password");
     } else if (!validateEmail(email) && validatePassword(password)) {
-      window.alert("מייל לא תקין");
-    } else window.alert("מייל וסיסמא לא תקינים");
+      window.alert("Invalid email");
+    } else window.alert("Email and password are incorrect");
   };
 
   const handleRegistration = () => {

@@ -50,7 +50,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -64,7 +63,6 @@ export default function PrimarySearchAppBar() {
   const [openCart, setOpenCart] = React.useState(false);
 
   const navigate = useNavigate();
-  // const userConnect = useAppSelector((state) => (state.userName.userName))
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -83,7 +81,7 @@ export default function PrimarySearchAppBar() {
 
   React.useEffect(() => {
     setNumOfItemsInCart(newNum);
-  }, [useAppSelector((state) => state.cart.products.length)]);
+  }, [newNum]);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
