@@ -12,7 +12,7 @@ import {
   CardActionArea,
 } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import { themeSettings } from "../palette/theme";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useNavigate, useParams } from "react-router-dom";
@@ -25,6 +25,18 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { getUniqueAttributes } from "../function";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
 import ProductSkeleton from "../components/ProductSkeleton";
+
+type State = Record<string, boolean>;
+type Action = { type: "toggle"; name: string | number};
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "toggle":
+      return { ...state, [action.name]: !state[action.name] };
+    default:
+      throw new Error();
+  }
+}
 
 export interface Product {
   id: number;
@@ -56,6 +68,7 @@ const Products = () => {
     Record<string, (string | number)[]>
   >({});
   const [loading, setLoading] = useState(true);
+  const [state, localDispatch] = useReducer(reducer, {});
   const { category } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -155,9 +168,16 @@ const Products = () => {
               {value.map((item) => (
                 <FormGroup key={Date.now() * Math.random()}>
                   <FormControlLabel
-                    control={<Checkbox />}
+                    control={
+                      <Checkbox
+                        checked={state[item] || false}
+                        onChange={() => {
+                          localDispatch({ type: "toggle", name: item });
+                          handleAttributeToggle(key, item);
+                        }}
+                      />
+                    }
                     label={item}
-                    onChange={() => handleAttributeToggle(key, item)}
                   />
                 </FormGroup>
               ))}
