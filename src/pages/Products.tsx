@@ -125,6 +125,8 @@ const Products = () => {
       })
     );
   };
+  const productInCart = useAppSelector((state) => state.cart.products);
+
   return (
     <Stack spacing={2} direction="row">
       <Box width={"15em"}>
