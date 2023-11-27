@@ -9,9 +9,9 @@ import { store } from './rtk/store.ts'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
 
-  <React.Fragment>
-    <CssBaseline/>
-    <App />
-  </React.Fragment>
+    <React.Fragment>
+      <CssBaseline />
+      <App />
+    </React.Fragment>
   </Provider>
 )
