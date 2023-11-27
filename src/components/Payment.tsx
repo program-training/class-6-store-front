@@ -8,9 +8,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
-import { useAppSelector } from "../rtk/hooks";
-import { SendCartProduct } from "../rtk/cartSlice";
+import { useAppSelector, useAppDispatch } from "../rtk/hooks";
+import { SendCartProduct, removeCart } from "../rtk/cartSlice";
 import axios from "axios";
+import { SendOrderDetails, Total } from "../interfaces/payment";
 
 const style = {
   position: "absolute",
@@ -23,33 +24,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-interface ShippingDetails {
-  address: string;
-  contactNumber: string;
-  orderType: string;
-}
 
-// interface OrderDetails {
-//   cartItems: CartProduct[];
-//   orderTime: string;
-//   price: number;
-//   status: string;
-//   shippingDetails: ShippingDetails;
-//   userId: string;
-// }
-
-interface SendOrderDetails {
-    cartItems: SendCartProduct[];
-    orderTime: string;
-    price: number;
-    status: string;
-    shippingDetails: ShippingDetails;
-    userId: string;
-  }
-
-interface Total {
-    total: number | null;
-}
 
  const Payment: React.FC<Total>= ({total})=>  {
     const [open, setOpen] = useState(false);
@@ -58,8 +33,7 @@ interface Total {
     const [contactNumber, setContactNumber] = useState("");
     const [address, setAddress] = useState("");
     const { userId, products } = useAppSelector((state) => state.cart)
-
-  console.log(userId);
+    const dispatch = useAppDispatch()
 
   const temp: SendCartProduct[] = products.map((p) => {
     const temp = {
@@ -89,7 +63,6 @@ interface Total {
           `https://store-back-3.onrender.com/api/orders`,
           orderDetails
         );
-        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -98,6 +71,8 @@ interface Total {
   }
 
   const handelSendOrder = () => {
+    dispatch(removeCart())
+    handleClose()
     sendOrderDetails();
   };
 

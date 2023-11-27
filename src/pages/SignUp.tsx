@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 
-
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -54,13 +53,13 @@ export default function SignIn() {
           userData
         );
         if (response.data) {
+          setEmail("");
+          setPassword("");
+          setUserName("");
+          setFirstName("");
+          setLastName("");
           dispatch(setOpenSignUp(false));
           dispatch(setOpenLogIn(true));
-          setEmail('')
-          setPassword('')
-          setUserName('')
-          setFirstName('')
-          setLastName('')
         }
       } catch (error) {
         console.error("Error during registration:", error);

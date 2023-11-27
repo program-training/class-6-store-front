@@ -13,10 +13,9 @@ import {
   decrement,
   increment,
   removeProduct,
-  // removeCart,
 } from "../rtk/cartSlice";
 import { Product } from "../rtk/interface";
-import PlusOneIcon from "@mui/icons-material/PlusOne";
+import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useEffect } from "react";
@@ -37,7 +36,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -90,10 +88,6 @@ export default function CartTable() {
     }
     setTotalPrice(total);
   }, [productsCartFromData, productForCart]);
-
-  // const payCart = () => {
-  //   dispatch(removeCart());
-  // };
 
   const incrementQuantity = (product: Product) => {
     dispatch(increment(product.id));
@@ -157,7 +151,7 @@ export default function CartTable() {
                         <DeleteTwoToneIcon />
                       </Button>
                       <Button onClick={() => incrementQuantity(product)}>
-                        <PlusOneIcon />
+                        <AddIcon />
                       </Button>
                       <Button onClick={() => decrementQuantity(product)}>
                         <RemoveIcon />

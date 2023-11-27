@@ -8,7 +8,7 @@ import { themeSettings } from "./palette/theme";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { ThemeProvider } from "@mui/material";
-import { connectToData } from "./functions";
+import { connectToData } from "./functionsForDB";
 
 function App() {
   connectToData();

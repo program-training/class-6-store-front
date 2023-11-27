@@ -12,11 +12,13 @@ import {
 import { useAppDispatch } from "../rtk/hooks";
 import { render } from "../rtk/cartSlice";
 import { useNavigate } from "react-router-dom";
+import HomeSkeleton from "../components/HomeSkeleton";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -26,13 +28,13 @@ const Home = () => {
         );
         const { data } = resp;
         setCategories(data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
     })();
   }, []);
   dispatch(render());
-  
 
   const clickToCard = (cat: string) => {
     navigate(`/products/${cat}`);
@@ -40,21 +42,11 @@ const Home = () => {
 
   return (
     <>
-      {/* <Typography
-        variant="h1"
-        align="center"
-        gutterBottom
-        style={{
-          fontFamily: "Fira Sans, sans-serif",
-          fontWeight: "bold",
-          color: "rgb(33,47,58)",
-          marginBottom: "3rem",
-        }}
-      >
-        categories
-      </Typography> */}
       <Grid container spacing={2}>
-        {Array.isArray(categories) &&
+        {loading ? (
+          <HomeSkeleton />
+        ) : (
+          Array.isArray(categories) &&
           categories.map((cat: Category) => (
             <Grid item xs={12} sm={6} md={4} key={cat._id}>
               <Card
@@ -93,7 +85,8 @@ const Home = () => {
                 </CardActionArea>
               </Card>
             </Grid>
-          ))}
+          ))
+        )}
       </Grid>
     </>
   );

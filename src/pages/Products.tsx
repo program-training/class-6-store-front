@@ -19,11 +19,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { filterProducts } from "./function";
+import { filterProducts } from "../function";
 import { addProductToCart } from "../rtk/cartSlice";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
-import { getUniqueAttributes } from "./function";
-import PlusOneIcon from '@mui/icons-material/PlusOne';
+import { getUniqueAttributes } from "../function";
+import PlusOneIcon from "@mui/icons-material/PlusOne";
+import ProductSkeleton from "../components/ProductSkeleton";
 
 export interface Product {
   id: number;
@@ -54,6 +55,7 @@ const Products = () => {
   const [attributes, setAttributes] = useState<
     Record<string, (string | number)[]>
   >({});
+  const [loading, setLoading] = useState(true);
   const { category } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -66,6 +68,7 @@ const Products = () => {
           `https://store-back-3.onrender.com/api/products?category=${category}`
         );
         setProducts(response.data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -75,6 +78,7 @@ const Products = () => {
 
   useEffect(() => {
     connectToData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -146,10 +150,10 @@ const Products = () => {
           alignItems="flex-start"
         >
           {Object.entries(attributes).map(([key, value]) => (
-            <Grid item>
+            <Grid item key={Date.now() * Math.random()}>
               <Typography variant="subtitle1">{key}</Typography>
               {value.map((item) => (
-                <FormGroup key={item}>
+                <FormGroup key={Date.now() * Math.random()}>
                   <FormControlLabel
                     control={<Checkbox />}
                     label={item}
@@ -162,103 +166,107 @@ const Products = () => {
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexWrap: "wrap", height: "" }}>
-        {filteredProducts?.map((product) => {
-          let addedToCart = false
-          for(const item of productInCart){
-            if(item.name === product.id){
-              addedToCart = true
+        {loading ? (
+          <ProductSkeleton />
+        ) : (
+          filteredProducts?.map((product) => {
+            let addedToCart = false;
+            for (const item of productInCart) {
+              if (item.name === product.id) {
+                addedToCart = true;
+              }
             }
-          }
-          return (
-            <Grid key={product.id} direction={"row"}>
-              <Card
-                sx={{
-                  margin: "0.5em",
-                  width: "15em",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  transition: "box-shadow 0.3s, transform 0.3s",
-                  ":hover": {
-                    boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.2)",
-                    transform: "translateY(-10px)",
-                  },
-                }}
-              >
-                <CardActionArea
-                  onClick={() => handleClick(product.id.toString())}
-                >
-                  <CardMedia
-                    component="img"
-                    height="180em"
-                    sx={{ position: "" }}
-                    image={product.image}
-                    alt={product.title}
-                  />
-                  <CardContent>
-                    <Typography
-                      variant="h2"
-                      sx={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        height: "1.5em",
-                        color: themeSettings.palette.grey[800],
-                      }}
-                    >
-                      {product.category}
-                    </Typography>
-                    <Typography
-                      variant="h3"
-                      color={palette.grey[800]}
-                      sx={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        height: "3.5em",
-                      }}
-                    >
-                      {product.title}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <Stack
-                  direction="row"
-                  alignItems="center"
+            return (
+              <Grid key={product.id} direction={"row"}>
+                <Card
                   sx={{
-                    width: "100%",
-                    justifyContent: "space-between",
-                    padding: "0.5em",
+                    margin: "0.5em",
+                    width: "15em",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    transition: "box-shadow 0.3s, transform 0.3s",
+                    ":hover": {
+                      boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.2)",
+                      transform: "translateY(-10px)",
+                    },
                   }}
                 >
-                  <Typography
-                    variant="h3"
+                  <CardActionArea
+                    onClick={() => handleClick(product.id.toString())}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="180em"
+                      sx={{ position: "" }}
+                      image={product.image}
+                      alt={product.title}
+                    />
+                    <CardContent>
+                      <Typography
+                        variant="h2"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          height: "1.5em",
+                          color: themeSettings.palette.grey[800],
+                        }}
+                      >
+                        {product.category}
+                      </Typography>
+                      <Typography
+                        variant="h3"
+                        color={palette.grey[800]}
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          height: "3.5em",
+                        }}
+                      >
+                        {product.title}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
                     sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      height: "1.1em",
-                      color: themeSettings.palette.teal[700],
+                      width: "100%",
+                      justifyContent: "space-between",
+                      padding: "0.5em",
                     }}
                   >
-                    ${product.price}
-                  </Typography>
-                  <IconButton
-                    onClick={() => addToCart(product)}
-                    sx={{
-                      color: themeSettings.palette.teal[800],
-                      justifySelf: "top",
-                      "&:hover": {
-                        backgroundColor: themeSettings.palette.teal[800],
-                        color: themeSettings.palette.teal[100],
-                      },
-                    }}
-                  >
-                    {!addedToCart && <AddShoppingCartIcon />}
-                    {addedToCart && <PlusOneIcon />}
-                  </IconButton>
-                </Stack>
-              </Card>
-            </Grid>
-          );
-        })}
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        height: "1.1em",
+                        color: themeSettings.palette.teal[700],
+                      }}
+                    >
+                      ${product.price}
+                    </Typography>
+                    <IconButton
+                      onClick={() => addToCart(product)}
+                      sx={{
+                        color: themeSettings.palette.teal[800],
+                        justifySelf: "top",
+                        "&:hover": {
+                          backgroundColor: themeSettings.palette.teal[800],
+                          color: themeSettings.palette.teal[100],
+                        },
+                      }}
+                    >
+                      {!addedToCart && <AddShoppingCartIcon />}
+                      {addedToCart && <PlusOneIcon />}
+                    </IconButton>
+                  </Stack>
+                </Card>
+              </Grid>
+            );
+          })
+        )}
       </Box>
     </Stack>
   );
