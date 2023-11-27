@@ -28,7 +28,7 @@ import ProductSkeleton from "../components/ProductSkeleton";
 import { Product } from "../interfaces/product";
 
 type State = Record<string, boolean>;
-type Action = { type: "toggle"; name: string | number};
+type Action = { type: "toggle"; name: string | number };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -184,7 +184,7 @@ const Products = () => {
               }
             }
             return (
-              <Grid key={product.id} >
+              <Grid key={product.id}>
                 <Card
                   sx={{
                     margin: "0.5em",
