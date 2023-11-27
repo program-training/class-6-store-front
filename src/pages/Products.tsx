@@ -24,6 +24,8 @@ import { addProductToCart } from "../rtk/cartSlice";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { getUniqueAttributes } from "./function";
 import PlusOneIcon from '@mui/icons-material/PlusOne';
+import ProductSkeleton from "../components/ProductSkeleton";
+
 
 export interface Product {
   id: number;
@@ -54,6 +56,7 @@ const Products = () => {
   const [attributes, setAttributes] = useState<
     Record<string, (string | number)[]>
   >({});
+  const [loading, setLoading] = useState(true)
   const { category } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -66,6 +69,7 @@ const Products = () => {
           `https://store-back-3.onrender.com/api/products?category=${category}`
         );
         setProducts(response.data);
+        setLoading(false)
       } catch (error) {
         console.error(error);
       }
@@ -146,10 +150,10 @@ const Products = () => {
           alignItems="flex-start"
         >
           {Object.entries(attributes).map(([key, value]) => (
-            <Grid item>
+            <Grid item key={Date.now() * Math.random()}>
               <Typography variant="subtitle1">{key}</Typography>
               {value.map((item) => (
-                <FormGroup key={item}>
+                <FormGroup key={Date.now() * Math.random()}>
                   <FormControlLabel
                     control={<Checkbox />}
                     label={item}
@@ -162,28 +166,36 @@ const Products = () => {
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexWrap: "wrap", height: "" }}>
-        {filteredProducts?.map((product) => {
+
+
+        {loading ? <ProductSkeleton/> : 
+
+        {filteredProducts?.map((product) => (
           let addedToCart = false
           for(const item of productInCart){
             if(item.name === product.id){
               addedToCart = true
             }
           }
-          return (
-            <Grid key={product.id} direction={"row"}>
-              <Card
-                sx={{
-                  margin: "0.5em",
-                  width: "15em",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  transition: "box-shadow 0.3s, transform 0.3s",
-                  ":hover": {
-                    boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.2)",
-                    transform: "translateY(-10px)",
-                  },
-                }}
+          <Grid key={product.id} >
+
+            <Card
+              sx={{
+                margin: "0.5em",
+                width: "15em",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                transition: "box-shadow 0.3s, transform 0.3s",
+                ":hover": {
+                  boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.2)",
+                  transform: "translateY(-10px)",
+                },
+              }}
+            >
+              <CardActionArea
+                onClick={() => handleClick(product.id.toString())}
+
               >
                 <CardActionArea
                   onClick={() => handleClick(product.id.toString())}
@@ -251,14 +263,51 @@ const Products = () => {
                       },
                     }}
                   >
-                    {!addedToCart && <AddShoppingCartIcon />}
+
+                    {product.title}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <Stack
+                direction="row"
+                alignItems="center"
+                sx={{
+                  width: "100%",
+                  justifyContent: "space-between",
+                  padding: "0.5em",
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    height: "1.1em",
+                    color: themeSettings.palette.teal[700],
+                  }}
+                >
+                  ${product.price}
+                </Typography>
+                <IconButton
+                  onClick={() => addToCart(product)}
+                  sx={{
+                    color: themeSettings.palette.teal[800],
+                    justifySelf: "top",
+                    "&:hover": {
+                      backgroundColor: themeSettings.palette.teal[800],
+                      color: themeSettings.palette.teal[100],
+                    },
+                  }}
+                >
+                
+                   {!addedToCart && <AddShoppingCartIcon />}
                     {addedToCart && <PlusOneIcon />}
-                  </IconButton>
-                </Stack>
-              </Card>
-            </Grid>
-          );
-        })}
+                </IconButton>
+              </Stack>
+            </Card>
+          </Grid> 
+        ))}
+
       </Box>
     </Stack>
   );
