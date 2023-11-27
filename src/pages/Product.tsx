@@ -18,31 +18,33 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { addProductToCart } from "../rtk/cartSlice";
 
 const ProductDetails: React.FC = () => {
+  const [expanded, setExpanded] = useState(false);
   const { id } = useParams();
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  const product = useAppSelector(
-    (state) => state.products.products
-  ).find((product) => product.id === Number(id));
-  
+  const product = useAppSelector((state) => state.products.products).find(
+    (product) => product.id === Number(id)
+  );
+
   const { title, image, price, attributes, description } = product
     ? product
     : { title: "", image: "", price: 0, attributes: {}, description: "" };
 
-  const [expanded, setExpanded] = useState(false);
 
   const handleExpand = () => {
     setExpanded(!expanded);
   };
 
-  const addToCart = (id:number, price:number, description:string) => {
-    dispatch(addProductToCart({
-      name:id,
-      quantity: 1,
-      price: price,
-      description: description,
-    }));
+  const addToCart = (id: number, price: number, description: string) => {
+    dispatch(
+      addProductToCart({
+        name: id,
+        quantity: 1,
+        price: price,
+        description: description,
+      })
+    );
   };
 
   return (
@@ -72,7 +74,7 @@ const ProductDetails: React.FC = () => {
                     backgroundColor: "red",
                     color: "white",
                   }}
-                  onClick={()=> addToCart(Number(id), price, description)}
+                  onClick={() => addToCart(Number(id), price, description)}
                 >
                   <ShoppingCartIcon />
                 </IconButton>
@@ -92,11 +94,12 @@ const ProductDetails: React.FC = () => {
               Attributes:
             </Typography>
             <ul>
-              {Array.isArray(attributes) &&  attributes.map((attr, index) => (
-                <li key={index}>
-                  {attr.key}: {attr.value}
-                </li>
-              ))}
+              {Array.isArray(attributes) &&
+                attributes.map((attr, index) => (
+                  <li key={index}>
+                    {attr.key}: {attr.value}
+                  </li>
+                ))}
             </ul>
             <Accordion
               expanded={expanded}

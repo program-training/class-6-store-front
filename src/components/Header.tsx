@@ -63,7 +63,6 @@ export default function PrimarySearchAppBar() {
   const [openCart, setOpenCart] = React.useState(false);
 
   const navigate = useNavigate();
-  // const userConnect = useAppSelector((state) => (state.userName.userName))
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -71,8 +70,14 @@ export default function PrimarySearchAppBar() {
   const [numOfItemsInCart, setNumOfItemsInCart] = React.useState<number>(
     useAppSelector((state) => state.cart.products.length)
   );
+  const [userName, setUserName] = React.useState<string | null>(null);
 
   const newNum = useAppSelector((state) => state.cart.products.length);
+
+  const userNameInLogin = useAppSelector((state) => state.userName.userName);
+  React.useEffect(() => {
+    setUserName(userNameInLogin);
+  }, [userNameInLogin]);
 
   React.useEffect(() => {
     setNumOfItemsInCart(newNum);
@@ -177,9 +182,7 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
     </Menu>
   );
-  // const userName = useAppSelector((state) => state.userName.flag)
-    // ? useAppSelector((state) => state.userName.userName)
-    // : null;
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -242,7 +245,7 @@ export default function PrimarySearchAppBar() {
               color="inherit"
             >
               <AccountCircle />
-              {/* {userName} */}
+              {userName}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
