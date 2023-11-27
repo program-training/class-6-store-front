@@ -14,7 +14,7 @@ import {
   increment,
   removeProduct,
 } from "../rtk/cartSlice";
-import { Product } from "../rtk/interface";
+import { Product } from "../interfaces/product"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";

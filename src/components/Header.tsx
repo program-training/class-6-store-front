@@ -16,9 +16,10 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
 import Cart from "./Cart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Login from "../pages/Login";
-import SignUp from "../pages/SignUp";
-import { useAppSelector } from "../rtk/hooks";
+import Login from "./Login";
+import SignUp from "./SignUp";
+import { useAppSelector, useAppDispatch } from "../rtk/hooks";
+import { resetUserName } from "../rtk/userNameSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,7 +63,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [openCart, setOpenCart] = React.useState(false);
 
-  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -71,10 +71,11 @@ export default function PrimarySearchAppBar() {
     useAppSelector((state) => state.cart.products.length)
   );
   const [userName, setUserName] = React.useState<string | null>(null);
-
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const newNum = useAppSelector((state) => state.cart.products.length);
-
   const userNameInLogin = useAppSelector((state) => state.userName.userName);
+
   React.useEffect(() => {
     setUserName(userNameInLogin);
   }, [userNameInLogin]);
@@ -97,6 +98,12 @@ export default function PrimarySearchAppBar() {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+
+  const logOut = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    dispatch(resetUserName());
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -125,7 +132,7 @@ export default function PrimarySearchAppBar() {
       }}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
+      <MenuItem onClick={logOut}>Log Out</MenuItem>
     </Menu>
   );
 
