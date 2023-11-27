@@ -42,6 +42,19 @@ const Home = () => {
 
   return (
     <>
+      <Typography
+        variant="h1"
+        align="center"
+        gutterBottom
+        style={{
+          fontFamily: "Fira Sans, sans-serif",
+          fontWeight: "bold",
+          color: "rgb(33,47,58)",
+          marginBottom: "3rem",
+        }}
+      >
+        Hello
+      </Typography>
       <Grid container spacing={2}>
         {loading ? (
           <HomeSkeleton />
