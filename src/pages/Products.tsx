@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { getUniqueAttributes } from "../function";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
 import ProductSkeleton from "../components/ProductSkeleton";
+import { Product } from "../interfaces/product";
 
 type State = Record<string, boolean>;
 type Action = { type: "toggle"; name: string | number};
@@ -36,22 +37,6 @@ function reducer(state: State, action: Action): State {
     default:
       throw new Error();
   }
-}
-
-export interface Product {
-  id: number;
-  title: string;
-  image: string;
-  price: number;
-  description: string;
-  category: string;
-  clickCount: number;
-  quantity: number;
-  attributes: Attributes[];
-}
-export interface Attributes {
-  key: string;
-  value: number | string;
 }
 
 interface Prices {

@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { addProductToCart } from "../rtk/cartSlice";
 
 const ProductDetails: React.FC = () => {
+  const [expanded, setExpanded] = useState(false);
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
@@ -30,7 +31,6 @@ const ProductDetails: React.FC = () => {
     ? product
     : { title: "", image: "", price: 0, attributes: {}, description: "" };
 
-  const [expanded, setExpanded] = useState(false);
 
   const handleExpand = () => {
     setExpanded(!expanded);
