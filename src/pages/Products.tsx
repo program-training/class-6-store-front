@@ -185,7 +185,7 @@ const Products = () => {
               }
             }
             return (
-              <Grid key={product.id} direction={"row"}>
+              <Grid key={product.id} >
                 <Card
                   sx={{
                     margin: "0.5em",
