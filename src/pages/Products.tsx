@@ -144,10 +144,10 @@ const Products = () => {
           alignItems="flex-start"
         >
           {Object.entries(attributes).map(([key, value]) => (
-            <Grid item>
+            <Grid item key={Date.now() * Math.random()}>
               <Typography variant="subtitle1">{key}</Typography>
               {value.map((item) => (
-                <FormGroup key={item}>
+                <FormGroup key={Date.now() * Math.random()}>
                   <FormControlLabel
                     control={<Checkbox />}
                     label={item}
@@ -161,7 +161,7 @@ const Products = () => {
       </Box>
       <Box sx={{ display: "flex", flexWrap: "wrap", height: "" }}>
         {filteredProducts?.map((product) => (
-          <Grid key={product.id} direction={"row"}>
+          <Grid key={product.id} >
             <Card
               sx={{
                 margin: "0.5em",
