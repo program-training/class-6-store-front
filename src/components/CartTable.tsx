@@ -14,13 +14,14 @@ import {
   increment,
   removeProduct,
 } from "../rtk/cartSlice";
-import { Product } from "../interfaces/product"
-import AddIcon from '@mui/icons-material/Add';
+import { Product } from "../interfaces/product";
+import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useEffect } from "react";
 import React from "react";
 import Payment from "./Payment";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,6 +47,7 @@ export default function CartTable() {
   const [productsCartFromData, setProductsCartFromData] = React.useState<
     Product[]
   >([]);
+  const navigate = useNavigate()
   const [totalPrice, setTotalPrice] = React.useState<number | null>(null);
 
   const dispatch = useAppDispatch();
@@ -74,6 +76,7 @@ export default function CartTable() {
 
   useEffect(() => {
     comparison();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productForCart]);
 
   useEffect(() => {
@@ -180,9 +183,26 @@ export default function CartTable() {
         </TableContainer>
       ) : (
         <Paper sx={{ padding: 2, width: 300, margin: "auto", marginTop: 4 }}>
-          <Typography variant="h1">
-            The cart is empty, please select a product to display
+          <Typography variant="h5" align="center">
+            Your cart is looking a little lonely...
           </Typography>
+
+          <Typography variant="subtitle1" align="center">
+            Browse our products and find something special to take home with you
+            today! We have lots of amazing options to suit your style.
+          </Typography>
+
+          <div style={{textAlign: "center"}}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={()=> {
+                navigate("/")
+              }}
+            >
+              Start Shopping
+            </Button>
+          </div>
         </Paper>
       )}
     </>
