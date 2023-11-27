@@ -79,8 +79,6 @@ export default function PrimarySearchAppBar() {
   React.useEffect(() => {
     setUserName(userNameInLogin);
   }, [userNameInLogin]);
-
-  console.log(userName);
   
 
   React.useEffect(() => {
