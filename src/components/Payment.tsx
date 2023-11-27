@@ -63,6 +63,7 @@ const style = {
           `https://store-back-3.onrender.com/api/orders`,
           orderDetails
         );
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
