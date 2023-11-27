@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { UserRegister } from "./interface";
+import { UserRegister } from "../interfaces/userRegister";
 
 interface UserNameSlice {
   flag: boolean;
