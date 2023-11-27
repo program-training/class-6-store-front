@@ -23,6 +23,7 @@ import { filterProducts } from "./function";
 import { addProductToCart } from "../rtk/cartSlice";
 import { useAppDispatch } from "../rtk/hooks";
 import { getUniqueAttributes } from "./function";
+import ProductSkeleton from "../components/ProductSkeleton";
 
 export interface Product {
   id: number;
@@ -53,6 +54,7 @@ const Products = () => {
   const [attributes, setAttributes] = useState<
   Record<string, (string | number)[]>
   >({});
+  const [loading, setLoading] = useState(true)
   const { category } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -65,6 +67,7 @@ const Products = () => {
           `https://store-back-3.onrender.com/api/products?category=${category}`
         );
         setProducts(response.data);
+        setLoading(false)
       } catch (error) {
         console.error(error);
       }
@@ -160,7 +163,8 @@ const Products = () => {
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexWrap: "wrap", height: "" }}>
-        {filteredProducts?.map((product) => (
+        {loading ? <ProductSkeleton/> : 
+        filteredProducts?.map((product) => (
           <Grid key={product.id} direction={"row"}>
             <Card
               sx={{
@@ -246,7 +250,7 @@ const Products = () => {
                 </IconButton>
               </Stack>
             </Card>
-          </Grid>
+          </Grid> 
         ))}
       </Box>
     </Stack>
