@@ -14,3 +14,8 @@ export interface Product {
     key: string;
     value: number | string;
   }
+
+  export interface Prices {
+    minPrice: number;
+    maxPrice: number;
+  }

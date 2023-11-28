@@ -13,6 +13,7 @@ import { SendCartProduct, removeCart } from "../rtk/cartSlice";
 import axios from "axios";
 import { SendOrderDetails, Total } from "../interfaces/payment";
 import { setOpen as openLogin } from "../rtk/flagLogInSlice";
+import { sendOrderDetails } from "../function";
 
 const style = {
   position: "absolute",
@@ -57,20 +58,20 @@ const style = {
     },
   };
 
-  function sendOrderDetails() {
-    const fetchOrder = async () => {
-      try {
-        const response = await axios.post(
-          `https://store-back-3.onrender.com/api/orders`,
-          orderDetails
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchOrder();
-  }
+  // function sendOrderDetails(order: SendOrderDetails) {
+  //   const fetchOrder = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         `https://store-back-3.onrender.com/api/orders`,
+  //         order
+  //       );
+  //       console.log(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchOrder();
+  // }
   
   const flag = useAppSelector((state) => state.userName.flag)
 
@@ -78,7 +79,7 @@ const style = {
     if(flag){
       dispatch(removeCart())
       handleClose()
-      sendOrderDetails();
+      sendOrderDetails(orderDetails);
     }else{
       dispatch(openLogin(true))
     }

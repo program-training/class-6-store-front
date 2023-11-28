@@ -11,9 +11,7 @@ import {
   Slider,
   CardActionArea,
 } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState, useReducer } from "react";
-import { themeSettings } from "../palette/theme";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useNavigate, useParams } from "react-router-dom";
 import FormGroup from "@mui/material/FormGroup";
@@ -25,7 +23,9 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { getUniqueAttributes } from "../function";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
 import ProductSkeleton from "../components/ProductSkeleton";
-import { Product } from "../interfaces/product";
+import { Product, Prices } from "../interfaces/product";
+import { connectToData } from "../function";
+import { buttonAddToCart, cardStyle, stackBottom, typographyH2Style, typographyH3PriceStyle, typographyH3Style } from "../style/products";
 
 type State = Record<string, boolean>;
 type Action = { type: "toggle"; name: string | number };
@@ -39,48 +39,21 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-interface Prices {
-  minPrice: number;
-  maxPrice: number;
-}
-
 const Products = () => {
   const [products, setProducts] = useState<Product[] | null>();
-  const [filteredProducts, setFilteredProducts] = useState<
-    Product[] | null | undefined
-  >(null);
-  const [attributes, setAttributes] = useState<
-    Record<string, (string | number)[]>
-  >({});
+  const [filteredProducts, setFilteredProducts] = useState<Product[] | null | undefined>(null);
+  const [attributes, setAttributes] = useState<Record<string, (string | number)[]>>({});
   const [loading, setLoading] = useState(true);
   const [state, localDispatch] = useReducer(reducer, {});
   const { category } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { palette } = useTheme();
-
-  const baseURL = import.meta.env.VITE_SERVER_API;
-
-  function connectToData() {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${baseURL}/api/products?category=${category}`
-        );
-        setProducts(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }
+  const { palette } = useTheme();  
 
   useEffect(() => {
-    connectToData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+    connectToData(category, setLoading, setProducts);
+  }, [category]);
+  
   useEffect(() => {
     if (products) {
       setAttributes(getUniqueAttributes(products));
@@ -100,9 +73,7 @@ const Products = () => {
     { minPrice: Infinity, maxPrice: -Infinity }
   ) ?? { minPrice: 0, maxPrice: 0 };
   const [value, setValue] = useState<number | null>(null);
-  const [activeFilters, setActiveFilters] = useState<{
-    [name: string]: string | number;
-  }>({});
+  const [activeFilters, setActiveFilters] = useState<{[name: string]: string | number }>({});
   console.log(setActiveFilters);
 
   const handleAttributeToggle = (name: string, value: string | number) => {
@@ -117,6 +88,7 @@ const Products = () => {
       setFilteredProducts(newFilteredProducts);
     }
   };
+
   const addToCart = (product: Product) => {
     dispatch(
       addProductToCart({
@@ -127,7 +99,9 @@ const Products = () => {
       })
     );
   };
+  
   const productInCart = useAppSelector((state) => state.cart.products);
+
   return (
     <Stack spacing={2} direction="row">
       <Box width={"15em"}>
@@ -150,10 +124,10 @@ const Products = () => {
           alignItems="flex-start"
         >
           {Object.entries(attributes).map(([key, value]) => (
-            <Grid item key={Date.now() * Math.random()}>
+            <Grid item>
               <Typography variant="subtitle1">{key}</Typography>
               {value.map((item) => (
-                <FormGroup key={Date.now() * Math.random()}>
+                <FormGroup key={item}>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -186,18 +160,7 @@ const Products = () => {
             return (
               <Grid key={product.id}>
                 <Card
-                  sx={{
-                    margin: "0.5em",
-                    width: "15em",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    transition: "box-shadow 0.3s, transform 0.3s",
-                    ":hover": {
-                      boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.2)",
-                      transform: "translateY(-10px)",
-                    },
-                  }}
+                  sx={cardStyle}
                 >
                   <CardActionArea
                     onClick={() => handleClick(product.id.toString())}
@@ -212,23 +175,14 @@ const Products = () => {
                     <CardContent>
                       <Typography
                         variant="h2"
-                        sx={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          height: "1.5em",
-                          color: themeSettings.palette.grey[800],
-                        }}
+                        sx={typographyH2Style}
                       >
                         {product.category}
                       </Typography>
                       <Typography
                         variant="h3"
                         color={palette.grey[800]}
-                        sx={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          height: "3.5em",
-                        }}
+                        sx={typographyH3Style}
                       >
                         {product.title}
                       </Typography>
@@ -237,33 +191,17 @@ const Products = () => {
                   <Stack
                     direction="row"
                     alignItems="center"
-                    sx={{
-                      width: "100%",
-                      justifyContent: "space-between",
-                      padding: "0.5em",
-                    }}
+                    sx={stackBottom}
                   >
                     <Typography
                       variant="h3"
-                      sx={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        height: "1.1em",
-                        color: themeSettings.palette.teal[700],
-                      }}
+                      sx={typographyH3PriceStyle}
                     >
                       ${product.price}
                     </Typography>
                     <IconButton
                       onClick={() => addToCart(product)}
-                      sx={{
-                        color: themeSettings.palette.teal[800],
-                        justifySelf: "top",
-                        "&:hover": {
-                          backgroundColor: themeSettings.palette.teal[800],
-                          color: themeSettings.palette.teal[100],
-                        },
-                      }}
+                      sx={buttonAddToCart}
                     >
                       {!addedToCart && <AddShoppingCartIcon />}
                       {addedToCart && <PlusOneIcon />}
