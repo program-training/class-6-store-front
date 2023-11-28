@@ -13,9 +13,11 @@ import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { setUserName } from "../rtk/userNameSlice";
 import { setUserNameInCart } from "../rtk/cartSlice";
 import { Alert, Collapse, IconButton, InputAdornment } from "@mui/material";
-import Visibility from '@mui/icons-material/Visibility'; 
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { styleButton } from "../style/login&Signin";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -41,10 +43,6 @@ const LogIn = () => {
     );
   };
 
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
   const handleClickOpen = () => {
     dispatch(setOpenLogIn(true));
   };
@@ -52,6 +50,12 @@ const LogIn = () => {
   const handleClose = () => {
     dispatch(setOpenLogIn(false));
   };
+
+  const notify = () => {
+    toast.success("You've logged in successfully!", {
+      theme: "colored"
+    })
+  }
 
   const baseURL = import.meta.env.VITE_SERVER_API;
 
@@ -74,6 +78,7 @@ const LogIn = () => {
           dispatch(
             setUserNameInCart(`${userName.firstName} ${userName.lastName}`)
           );
+          notify()
         }
       } catch (error) {
         console.error("Error during registration:", error);
@@ -145,8 +150,8 @@ const LogIn = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={handleTogglePasswordVisibility}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  <IconButton onClick={() => setShowPassword((prevShowPassword) => !prevShowPassword)}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -174,6 +179,19 @@ const LogIn = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </React.Fragment>
   );
 };

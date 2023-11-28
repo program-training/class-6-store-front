@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getCartFromServer } from "../functionsForDB";
+import { getCartFromServer } from "../utils/functionsForDB";
 
 export interface SendCartProduct {
   name: string;

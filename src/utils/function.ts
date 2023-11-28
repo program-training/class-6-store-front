@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Product } from "./interfaces/product";
-import { SendOrderDetails } from "./interfaces/payment";
+import { Product } from "../interfaces/product";
+import { SendOrderDetails } from "../interfaces/payment";
 
 export function filterProducts(
   name: string,

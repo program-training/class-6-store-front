@@ -1,12 +1,12 @@
-import { useAppSelector, useAppDispatch } from "./rtk/hooks";
+import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import axios from "axios";
 import { useEffect } from "react";
-import { setProducts } from "./rtk/productsSlice";
-import { CartProduct } from "./rtk/cartSlice";
-import { store } from "./rtk/store";
+import { setProducts } from "../rtk/productsSlice";
+import { CartProduct } from "../rtk/cartSlice";
+import { store } from "../rtk/store";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setCart } from "./rtk/cartSlice2";
+import { setCart } from "../rtk/cartSlice2";
 
 export function connectToData() {
   const dispatch = useAppDispatch();
