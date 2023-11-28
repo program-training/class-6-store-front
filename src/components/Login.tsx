@@ -16,6 +16,7 @@ import { Alert, Collapse, IconButton, InputAdornment } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { styleButton } from "../style/login&Signin";
+import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -101,9 +102,19 @@ const LogIn = () => {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      {/* <Button variant="outlined" onClick={handleClickOpen}>
         Log IN
-      </Button>
+      </Button> */}
+      <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+          onClick={handleClickOpen}
+        >
+          <VpnKeyOutlinedIcon/>
+        </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Log in</DialogTitle>
         <DialogContent>

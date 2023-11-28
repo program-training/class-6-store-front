@@ -17,6 +17,7 @@ import { cardCategory, pHello } from "../style/home";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
+  const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -37,8 +38,21 @@ const Home = () => {
   }, [baseURL]);
 
   useEffect(() => {
+    (async () => {
+      try {
+        const resp = await axios.get(`${baseURL}/api/banners`);
+        const { data } = resp;
+        setBanners(data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [baseURL]);
+  console.log(banners);
+
+  useEffect(() => {
     dispatch(render());
-  }, []);
+  }, [dispatch]);
 
   const clickToCard = (cat: string) => {
     navigate(`/products/${cat}`);

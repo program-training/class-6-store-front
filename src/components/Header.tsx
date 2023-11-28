@@ -20,6 +20,7 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { resetUserName } from "../rtk/userNameSlice";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -79,7 +80,6 @@ export default function PrimarySearchAppBar() {
   React.useEffect(() => {
     setUserName(userNameInLogin);
   }, [userNameInLogin]);
-  
 
   React.useEffect(() => {
     setNumOfItemsInCart(newNum);
@@ -101,7 +101,7 @@ export default function PrimarySearchAppBar() {
     handleMobileMenuClose();
   };
   const flagUser = useAppSelector((state) => state.userName.flag);
-  
+
   const logOut = () => {
     if (flagUser) {
       dispatch(resetUserName());
@@ -109,7 +109,6 @@ export default function PrimarySearchAppBar() {
     }
     handleMenuClose();
   };
-
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
@@ -136,8 +135,20 @@ export default function PrimarySearchAppBar() {
         fontSize: "0.5rem",
       }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={logOut}>Log Out</MenuItem>
+      <MenuItem>
+        <Login />
+        Login
+      </MenuItem>
+      <MenuItem>
+        <SignUp />
+        SignUp
+      </MenuItem>
+      <MenuItem onClick={logOut}>
+        <IconButton>
+          <LockOutlinedIcon />
+        </IconButton>
+        Log Out
+      </MenuItem>
     </Menu>
   );
 
@@ -226,13 +237,12 @@ export default function PrimarySearchAppBar() {
               }}
             />
           </Search>
-          
-
-          <Login />
-          <SignUp />
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Login />
+            <div style={{ width: "8px" }}></div>
+            <SignUp />
             <IconButton
               size="large"
               color="inherit"
