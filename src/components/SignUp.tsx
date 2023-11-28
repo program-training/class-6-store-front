@@ -13,6 +13,7 @@ import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import { styleButton } from "../style/login&Signin";
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
@@ -201,8 +202,16 @@ export default function SignIn() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleRegistration}>Sign up</Button>
+          <Button variant="contained" sx={styleButton} onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            sx={styleButton}
+            onClick={handleRegistration}
+          >
+            Sign up
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

@@ -11,14 +11,17 @@ import {
   Box,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { addProductToCart } from "../rtk/cartSlice";
+import PlusOneIcon from "@mui/icons-material/PlusOne";
+
 
 const ProductDetails: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
+  const [like, setLike] = useState<boolean>(false);
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
@@ -30,7 +33,6 @@ const ProductDetails: React.FC = () => {
   const { title, image, price, attributes, description } = product
     ? product
     : { title: "", image: "", price: 0, attributes: {}, description: "" };
-
 
   const handleExpand = () => {
     setExpanded(!expanded);
@@ -46,6 +48,11 @@ const ProductDetails: React.FC = () => {
       })
     );
   };
+  const productInCart = useAppSelector((state) => state.cart.products);
+
+  const addedToCart =
+  Array.isArray(productInCart) &&
+  productInCart.some((item) => item.name === Number(id));
 
   return (
     <Card style={{ backgroundColor: "cornsilk" }}>
@@ -60,10 +67,12 @@ const ProductDetails: React.FC = () => {
             <Grid container justifyContent="center" spacing={2}>
               <Grid item>
                 <IconButton
-                  sx={{
-                    backgroundColor: "red",
-                    color: "white",
-                  }}
+                  sx={
+                    like
+                      ? { backgroundColor: "green", color: "black" }
+                      : { backgroundColor: "red", color: "white" }
+                  }
+                  onClick={() => setLike(!like)}
                 >
                   <FavoriteIcon />
                 </IconButton>
@@ -76,7 +85,9 @@ const ProductDetails: React.FC = () => {
                   }}
                   onClick={() => addToCart(Number(id), price, description)}
                 >
-                  <ShoppingCartIcon />
+                  {/* <ShoppingCartIcon /> */}
+                  {!addedToCart && <AddShoppingCartIcon />}
+                      {addedToCart && <PlusOneIcon />}
                 </IconButton>
               </Grid>
             </Grid>

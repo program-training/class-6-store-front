@@ -1,4 +1,6 @@
+import axios from "axios";
 import { Product } from "./interfaces/product";
+import { SendOrderDetails } from "./interfaces/payment";
 
 export function filterProducts(
   name: string,
@@ -32,6 +34,7 @@ export function filterProducts(
   });
   return newFilteredProducts ?? null;
 }
+
 export function getUniqueAttributes(
   products: Product[]
 ): Record<string, (string | number)[]> {
@@ -48,4 +51,37 @@ export function getUniqueAttributes(
     });
   });
   return groupedAttributes;
+}
+
+const baseURL = import.meta.env.VITE_SERVER_API;
+
+export function connectToData(category: string | undefined, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setProducts: React.Dispatch<React.SetStateAction<Product[] | null | undefined>>) {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `${baseURL}/api/products?category=${category}`
+      );
+      setProducts(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  fetchData();
+}
+
+
+export function sendOrderDetails(order: SendOrderDetails) {
+  const fetchOrder = async () => {
+    try {
+      const response = await axios.post(
+        `https://store-back-3.onrender.com/api/orders`,
+        order
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  fetchOrder();
 }

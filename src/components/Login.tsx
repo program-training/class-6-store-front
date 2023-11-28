@@ -12,14 +12,18 @@ import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { setUserName } from "../rtk/userNameSlice";
 import { setUserNameInCart } from "../rtk/cartSlice";
-import { IconButton, InputAdornment } from "@mui/material";
+import { Alert, Collapse, IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import { styleButton } from "../style/login&Signin";
+import CloseIcon from "@mui/icons-material/Close";
 
 const LogIn = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
+  const [openAlertEmail, setOpenAlertEmail] = React.useState(false);
+  const [openAlertPassword, setOpenAlertPassword] = React.useState(false);
   const dispatch = useAppDispatch();
 
   const open = useAppSelector((state) => state.openLogIn.flag);
@@ -77,11 +81,13 @@ const LogIn = () => {
         dispatch(setOpenSignUp(true));
       }
       dispatch(setOpenLogIn(false));
-    } else if (validateEmail(email) && !validatePassword(password)) {
-      window.alert("Invalid password");
-    } else if (!validateEmail(email) && validatePassword(password)) {
-      window.alert("Invalid email");
-    } else window.alert("Email and password are incorrect");
+    }
+    if (!validatePassword(password)) {
+      setOpenAlertPassword(true);
+    }
+    if (!validateEmail(email)) {
+      setOpenAlertEmail(true);
+    }
   };
 
   const handleRegistration = () => {
@@ -103,6 +109,7 @@ const LogIn = () => {
           <TextField
             onChange={(e) => {
               setEmail(e.target.value);
+              setOpenAlertEmail(false);
             }}
             value={email}
             autoFocus
@@ -115,10 +122,13 @@ const LogIn = () => {
             error={email.length === 0}
             helperText={email.length === 0 ? "This is a required field." : ""}
           />
-
+          <Collapse in={openAlertEmail}>
+            <Alert severity="error" sx={{ margin: "0.5em" }}>Invalid email</Alert>
+          </Collapse>
           <TextField
             onChange={(e) => {
               setPassword(e.target.value);
+              setOpenAlertPassword(false);
             }}
             value={password}
             margin="dense"
@@ -141,11 +151,24 @@ const LogIn = () => {
               ),
             }}
           />
+          <Collapse in={openAlertPassword}>
+            <Alert severity="error" sx={{ margin: "0.5em" }}>
+              Invalid password
+            </Alert>
+          </Collapse>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleLogIn}>Sign in</Button>
-          <Button onClick={handleRegistration}>
+          <Button variant="contained" sx={styleButton} onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" sx={styleButton} onClick={handleLogIn}>
+            Sign in
+          </Button>
+          <Button
+            variant="contained"
+            sx={styleButton}
+            onClick={handleRegistration}
+          >
             Don't have a user account?
           </Button>
         </DialogActions>

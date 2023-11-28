@@ -10,21 +10,10 @@ import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { SendCartProduct, removeCart } from "../rtk/cartSlice";
-import axios from "axios";
 import { SendOrderDetails, Total } from "../interfaces/payment";
 import { setOpen as openLogin } from "../rtk/flagLogInSlice";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { sendOrderDetails } from "../function";
+import { stylePayment } from "../style/payment"; 
 
 
  const Payment: React.FC<Total>= ({total})=>  {
@@ -56,21 +45,6 @@ const style = {
       orderType: "regular",
     },
   };
-
-  function sendOrderDetails() {
-    const fetchOrder = async () => {
-      try {
-        const response = await axios.post(
-          `https://store-back-3.onrender.com/api/orders`,
-          orderDetails
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchOrder();
-  }
   
   const flag = useAppSelector((state) => state.userName.flag)
 
@@ -78,7 +52,7 @@ const style = {
     if(flag){
       dispatch(removeCart())
       handleClose()
-      sendOrderDetails();
+      sendOrderDetails(orderDetails);
     }else{
       dispatch(openLogin(true))
     }
@@ -100,7 +74,7 @@ const style = {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={stylePayment}>
           <DialogTitle variant="h3" color={"black"}>
             Order Details
           </DialogTitle>
