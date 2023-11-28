@@ -14,6 +14,7 @@ import { IconButton, InputAdornment } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility'; 
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { styleButton } from "../style/login&Signin";
+import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -88,9 +89,16 @@ export default function SignIn() {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        sign up
-      </Button>
+      <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+          onClick={handleClickOpen}
+        >
+          <HowToRegOutlinedIcon/>
+        </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>registration</DialogTitle>
         <DialogContent>
