@@ -33,6 +33,7 @@ import { connectToData } from "../utils/function";
 import {
   buttonAddToCart,
   cardStyle,
+  quantityOnCard,
   stackBottom,
   typographyH2Style,
   typographyH3PriceStyle,
@@ -129,7 +130,7 @@ const Products = () => {
     dispatch(decrement(product.id));
   };
 
-  const productInCart = useAppSelector((state) => state.cart.products);
+  const productsInCart = useAppSelector((state) => state.cart.products);
   const prices = [
     {
       value: minPrice,
@@ -141,7 +142,7 @@ const Products = () => {
     },
     {
       value: (minPrice + maxPrice) / 2,
-      label: (minPrice + maxPrice) / 2,
+      label: Math.ceil((minPrice + maxPrice) / 2),
     },
   ];
 
@@ -198,9 +199,8 @@ const Products = () => {
           <ProductSkeleton />
         ) : (
           filteredProducts?.map((product) => {
-            const addedToCart =
-              Array.isArray(productInCart) &&
-              productInCart.some((item) => item.name === product.id);
+            const itemInCart = Array.isArray(productsInCart) && productsInCart.find((item) => item.name === product.id);
+            const addedToCart = itemInCart ? true : false;
             return (
               <Grid key={product.id}>
                 <Card sx={cardStyle}>
@@ -237,6 +237,7 @@ const Products = () => {
                         <IconButton sx={buttonAddToCart} onClick={() => incrementQuantity(product)}>
                           <AddIcon />
                         </IconButton>
+                        {itemInCart && <IconButton sx={quantityOnCard}>{itemInCart.quantity}</IconButton>}
                         <IconButton sx={buttonAddToCart} onClick={() => decrementQuantity(product)}>
                           <RemoveIcon />
                         </IconButton>
