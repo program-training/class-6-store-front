@@ -25,7 +25,14 @@ import PlusOneIcon from "@mui/icons-material/PlusOne";
 import ProductSkeleton from "../components/ProductSkeleton";
 import { Product, Prices } from "../interfaces/product";
 import { connectToData } from "../function";
-import { buttonAddToCart, cardStyle, stackBottom, typographyH2Style, typographyH3PriceStyle, typographyH3Style } from "../style/products";
+import {
+  buttonAddToCart,
+  cardStyle,
+  stackBottom,
+  typographyH2Style,
+  typographyH3PriceStyle,
+  typographyH3Style,
+} from "../style/products";
 
 type State = Record<string, boolean>;
 type Action = { type: "toggle"; name: string | number };
@@ -41,21 +48,27 @@ function reducer(state: State, action: Action): State {
 
 const Products = () => {
   const [products, setProducts] = useState<Product[] | null>();
-  const [filteredProducts, setFilteredProducts] = useState<Product[] | null | undefined>(null);
-  const [attributes, setAttributes] = useState<Record<string, (string | number)[]>>({});
+  const [filteredProducts, setFilteredProducts] = useState<
+    Product[] | null | undefined
+  >(null);
+  const [attributes, setAttributes] = useState<
+    Record<string, (string | number)[]>
+  >({});
   const [value, setValue] = useState<number | null>(null);
-  const [activeFilters, setActiveFilters] = useState<{[name: string]: string | number }>({});
+  const [activeFilters, setActiveFilters] = useState<{
+    [name: string]: string | number;
+  }>({});
   const [loading, setLoading] = useState(true);
   const [state, localDispatch] = useReducer(reducer, {});
   const { category } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { palette } = useTheme();  
+  const { palette } = useTheme();
 
   useEffect(() => {
     connectToData(category, setLoading, setProducts);
   }, [category]);
-  
+
   useEffect(() => {
     if (products) {
       setAttributes(getUniqueAttributes(products));
@@ -64,7 +77,7 @@ const Products = () => {
   }, [products]);
 
   useEffect(() => {
-    dispatch(render())
+    dispatch(render());
   }, []);
 
   const handleClick = (productId: string) => {
@@ -104,7 +117,7 @@ const Products = () => {
       })
     );
   };
-  
+
   const productInCart = useAppSelector((state) => state.cart.products);
 
   return (
@@ -136,9 +149,12 @@ const Products = () => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={state[item] || false}
+                        checked={state[`${item} ${key}`] || false}
                         onChange={() => {
-                          localDispatch({ type: "toggle", name: item });
+                          localDispatch({
+                            type: "toggle",
+                            name: `${item} ${key}`,
+                          });
                           handleAttributeToggle(key, item);
                         }}
                       />
@@ -161,9 +177,7 @@ const Products = () => {
               productInCart.some((item) => item.name === product.id);
             return (
               <Grid key={product.id}>
-                <Card
-                  sx={cardStyle}
-                >
+                <Card sx={cardStyle}>
                   <CardActionArea
                     onClick={() => handleClick(product.id.toString())}
                   >
@@ -175,10 +189,7 @@ const Products = () => {
                       alt={product.title}
                     />
                     <CardContent>
-                      <Typography
-                        variant="h2"
-                        sx={typographyH2Style}
-                      >
+                      <Typography variant="h2" sx={typographyH2Style}>
                         {product.category}
                       </Typography>
                       <Typography
@@ -190,15 +201,8 @@ const Products = () => {
                       </Typography>
                     </CardContent>
                   </CardActionArea>
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    sx={stackBottom}
-                  >
-                    <Typography
-                      variant="h3"
-                      sx={typographyH3PriceStyle}
-                    >
+                  <Stack direction="row" alignItems="center" sx={stackBottom}>
+                    <Typography variant="h3" sx={typographyH3PriceStyle}>
                       ${product.price}
                     </Typography>
                     <IconButton

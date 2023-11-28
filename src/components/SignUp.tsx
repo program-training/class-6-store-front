@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -16,14 +16,14 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { styleButton } from "../style/login&Signin";
 
 export default function SignIn() {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [passwordVerification, setPasswordVerification] = React.useState("");
-  const [userName, setUserName] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordVerification, setPasswordVerification] = useState("");
+  const [userName, setUserName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);

@@ -13,21 +13,20 @@ import { useAppDispatch } from "../rtk/hooks";
 import { render } from "../rtk/cartSlice";
 import { useNavigate } from "react-router-dom";
 import HomeSkeleton from "../components/HomeSkeleton";
+import { cardCategory, pHello } from "../style/home";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
 
   const baseURL = import.meta.env.VITE_SERVER_API;
 
   useEffect(() => {
     (async () => {
       try {
-        const resp = await axios.get(
-          `${baseURL}/api/categories`
-        );
+        const resp = await axios.get(`${baseURL}/api/categories`);
         const { data } = resp;
         setCategories(data);
         setLoading(false);
@@ -35,14 +34,11 @@ const Home = () => {
         console.log(error);
       }
     })();
+  }, [baseURL]);
 
-    }, [baseURL]);
-    
   useEffect(() => {
-    dispatch(render())
-     }, []);
-
-
+    dispatch(render());
+  }, []);
 
   const clickToCard = (cat: string) => {
     navigate(`/products/${cat}`);
@@ -50,17 +46,7 @@ const Home = () => {
 
   return (
     <>
-      <Typography
-        variant="h1"
-        align="center"
-        gutterBottom
-        style={{
-          fontFamily: "Fira Sans, sans-serif",
-          fontWeight: "bold",
-          color: "rgb(33,47,58)",
-          marginBottom: "3rem",
-        }}
-      >
+      <Typography variant="h1" align="center" gutterBottom style={pHello}>
         Hello
       </Typography>
       <Grid container spacing={2}>
@@ -70,19 +56,7 @@ const Home = () => {
           Array.isArray(categories) &&
           categories.map((cat: Category) => (
             <Grid item xs={12} sm={6} md={4} key={cat._id}>
-              <Card
-                sx={{
-                  height: "100%",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  position: "relative",
-                  boxShadow:
-                    "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
-                  WebkitBoxShadow:
-                    "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
-                }}
-              >
+              <Card sx={cardCategory}>
                 <CardActionArea sx={{ flexGrow: 1 }}>
                   <CardContent>
                     <Typography

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -16,14 +16,13 @@ import { Alert, Collapse, IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { styleButton } from "../style/login&Signin";
-import CloseIcon from "@mui/icons-material/Close";
 
 const LogIn = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [openAlertEmail, setOpenAlertEmail] = React.useState(false);
-  const [openAlertPassword, setOpenAlertPassword] = React.useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [openAlertEmail, setOpenAlertEmail] = useState(false);
+  const [openAlertPassword, setOpenAlertPassword] = useState(false);
   const dispatch = useAppDispatch();
 
   const open = useAppSelector((state) => state.openLogIn.flag);
@@ -123,7 +122,9 @@ const LogIn = () => {
             helperText={email.length === 0 ? "This is a required field." : ""}
           />
           <Collapse in={openAlertEmail}>
-            <Alert severity="error" sx={{ margin: "0.5em" }}>Invalid email</Alert>
+            <Alert severity="error" sx={{ margin: "0.5em" }}>
+              Invalid email
+            </Alert>
           </Collapse>
           <TextField
             onChange={(e) => {

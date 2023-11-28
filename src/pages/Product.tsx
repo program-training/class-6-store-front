@@ -18,7 +18,6 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { addProductToCart } from "../rtk/cartSlice";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
 
-
 const ProductDetails: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const [like, setLike] = useState<boolean>(false);
@@ -51,8 +50,8 @@ const ProductDetails: React.FC = () => {
   const productInCart = useAppSelector((state) => state.cart.products);
 
   const addedToCart =
-  Array.isArray(productInCart) &&
-  productInCart.some((item) => item.name === Number(id));
+    Array.isArray(productInCart) &&
+    productInCart.some((item) => item.name === Number(id));
 
   return (
     <Card style={{ backgroundColor: "cornsilk" }}>
@@ -85,9 +84,8 @@ const ProductDetails: React.FC = () => {
                   }}
                   onClick={() => addToCart(Number(id), price, description)}
                 >
-                  {/* <ShoppingCartIcon /> */}
                   {!addedToCart && <AddShoppingCartIcon />}
-                      {addedToCart && <PlusOneIcon />}
+                  {addedToCart && <PlusOneIcon />}
                 </IconButton>
               </Grid>
             </Grid>
@@ -115,8 +113,7 @@ const ProductDetails: React.FC = () => {
             <Accordion
               expanded={expanded}
               onChange={handleExpand}
-              sx={{ width: "25vw" }}
-              style={{ backgroundColor: "cornsilk" }}
+              sx={{ width: "25vw", backgroundColor: "cornsilk" }}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}

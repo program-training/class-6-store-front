@@ -13,17 +13,17 @@ import { SendCartProduct, removeCart } from "../rtk/cartSlice";
 import { SendOrderDetails, Total } from "../interfaces/payment";
 import { setOpen as openLogin } from "../rtk/flagLogInSlice";
 import { sendOrderDetails } from "../function";
-import { stylePayment } from "../style/payment"; 
+import { stylePayment } from "../style/payment";
+import { styleButton } from "../style/login&Signin";
 
-
- const Payment: React.FC<Total>= ({total})=>  {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const [contactNumber, setContactNumber] = useState("");
-    const [address, setAddress] = useState("");
-    const { userId, products } = useAppSelector((state) => state.cart)
-    const dispatch = useAppDispatch()
+const Payment: React.FC<Total> = ({ total }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [contactNumber, setContactNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const { userId, products } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const temp: SendCartProduct[] = products.map((p) => {
     const temp = {
@@ -45,27 +45,22 @@ import { stylePayment } from "../style/payment";
       orderType: "regular",
     },
   };
-  
-  const flag = useAppSelector((state) => state.userName.flag)
+
+  const flag = useAppSelector((state) => state.userName.flag);
 
   const handelSendOrder = () => {
-    if(flag){
-      dispatch(removeCart())
-      handleClose()
+    if (flag) {
+      dispatch(removeCart());
+      handleClose();
       sendOrderDetails(orderDetails);
-    }else{
-      dispatch(openLogin(true))
+    } else {
+      dispatch(openLogin(true));
     }
   };
 
-
   return (
     <Box>
-      <Button
-        variant="contained"
-        onClick={handleOpen}
-        sx={{ color: "white", backgroundColor: "#37474f" }}
-      >
+      <Button variant="contained" onClick={handleOpen} sx={styleButton}>
         to make an order
       </Button>
       <Modal
@@ -93,7 +88,6 @@ import { stylePayment } from "../style/payment";
               label="Phone Number"
               type="string"
               fullWidth
-              variant="standard"
               required
             />
             <TextField
@@ -107,15 +101,20 @@ import { stylePayment } from "../style/payment";
               label="Address"
               type="address"
               fullWidth
-              variant="standard"
               required
             />
           </DialogContent>
-          <Button onClick={handelSendOrder}>for payment</Button>
+          <Button
+            variant="contained"
+            sx={styleButton}
+            onClick={handelSendOrder}
+          >
+            for payment
+          </Button>
         </Box>
       </Modal>
     </Box>
   );
-}
+};
 
 export default Payment;
