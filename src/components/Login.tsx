@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -12,10 +12,17 @@ import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { setUserName } from "../rtk/userNameSlice";
 import { setUserNameInCart } from "../rtk/cartSlice";
+import { Alert, Collapse, IconButton, InputAdornment } from "@mui/material";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import { styleButton } from "../style/login&Signin";
 
 const LogIn = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [openAlertEmail, setOpenAlertEmail] = useState(false);
+  const [openAlertPassword, setOpenAlertPassword] = useState(false);
   const dispatch = useAppDispatch();
 
   const open = useAppSelector((state) => state.openLogIn.flag);
@@ -32,6 +39,10 @@ const LogIn = () => {
       /\d/.test(password) &&
       /[!@#$%^&*(),.?":{}|<>]/.test(password)
     );
+  };
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const handleClickOpen = () => {
@@ -57,23 +68,25 @@ const LogIn = () => {
         );
         if (response.data) {
           const userName = response.data.user;
+          setEmail("");
+          setPassword("");
           dispatch(setUserName(userName));
           dispatch(
             setUserNameInCart(`${userName.firstName} ${userName.lastName}`)
           );
-          setEmail("");
-          setPassword("");
         }
       } catch (error) {
         console.error("Error during registration:", error);
         dispatch(setOpenSignUp(true));
       }
       dispatch(setOpenLogIn(false));
-    } else if (validateEmail(email) && !validatePassword(password)) {
-      window.alert("Invalid password");
-    } else if (!validateEmail(email) && validatePassword(password)) {
-      window.alert("Invalid email");
-    } else window.alert("Email and password are incorrect");
+    }
+    if (!validatePassword(password)) {
+      setOpenAlertPassword(true);
+    }
+    if (!validateEmail(email)) {
+      setOpenAlertEmail(true);
+    }
   };
 
   const handleRegistration = () => {
@@ -82,7 +95,7 @@ const LogIn = () => {
   };
 
   return (
-    <React.Fragment >
+    <React.Fragment>
       <Button variant="outlined" onClick={handleClickOpen}>
         Log IN
       </Button>
@@ -95,6 +108,7 @@ const LogIn = () => {
           <TextField
             onChange={(e) => {
               setEmail(e.target.value);
+              setOpenAlertEmail(false);
             }}
             value={email}
             autoFocus
@@ -103,28 +117,61 @@ const LogIn = () => {
             label="Email Address"
             type="email"
             fullWidth
-            variant="standard"
             required
+            error={email.length === 0}
+            helperText={email.length === 0 ? "This is a required field." : ""}
           />
+          <Collapse in={openAlertEmail}>
+            <Alert severity="error" sx={{ margin: "0.5em" }}>
+              Invalid email
+            </Alert>
+          </Collapse>
           <TextField
             onChange={(e) => {
               setPassword(e.target.value);
+              setOpenAlertPassword(false);
             }}
             value={password}
-            autoFocus
             margin="dense"
             id="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             fullWidth
-            variant="standard"
             required
+            error={password.length === 0}
+            helperText={
+              password.length === 0 ? "This is a required field." : ""
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleTogglePasswordVisibility}>
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
+          <Collapse in={openAlertPassword}>
+            <Alert severity="error" sx={{ margin: "0.5em" }}>
+              Invalid password
+            </Alert>
+          </Collapse>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleLogIn}>Sign in</Button>
-          <Button onClick={handleRegistration}>registration</Button>
+          <Button variant="contained" sx={styleButton} onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" sx={styleButton} onClick={handleLogIn}>
+            Sign in
+          </Button>
+          <Button
+            variant="contained"
+            sx={styleButton}
+            onClick={handleRegistration}
+          >
+            Don't have a user account?
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

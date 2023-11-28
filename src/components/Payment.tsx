@@ -10,32 +10,20 @@ import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { SendCartProduct, removeCart } from "../rtk/cartSlice";
-import axios from "axios";
 import { SendOrderDetails, Total } from "../interfaces/payment";
 import { setOpen as openLogin } from "../rtk/flagLogInSlice";
 import { sendOrderDetails } from "../function";
+import { stylePayment } from "../style/payment";
+import { styleButton } from "../style/login&Signin";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-
- const Payment: React.FC<Total>= ({total})=>  {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const [contactNumber, setContactNumber] = useState("");
-    const [address, setAddress] = useState("");
-    const { userId, products } = useAppSelector((state) => state.cart)
-    const dispatch = useAppDispatch()
+const Payment: React.FC<Total> = ({ total }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [contactNumber, setContactNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const { userId, products } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const temp: SendCartProduct[] = products.map((p) => {
     const temp = {
@@ -58,41 +46,21 @@ const style = {
     },
   };
 
-  // function sendOrderDetails(order: SendOrderDetails) {
-  //   const fetchOrder = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         `https://store-back-3.onrender.com/api/orders`,
-  //         order
-  //       );
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchOrder();
-  // }
-  
-  const flag = useAppSelector((state) => state.userName.flag)
+  const flag = useAppSelector((state) => state.userName.flag);
 
   const handelSendOrder = () => {
-    if(flag){
-      dispatch(removeCart())
-      handleClose()
+    if (flag) {
+      dispatch(removeCart());
+      handleClose();
       sendOrderDetails(orderDetails);
-    }else{
-      dispatch(openLogin(true))
+    } else {
+      dispatch(openLogin(true));
     }
   };
 
-
   return (
     <Box>
-      <Button
-        variant="contained"
-        onClick={handleOpen}
-        sx={{ color: "white", backgroundColor: "#37474f" }}
-      >
+      <Button variant="contained" onClick={handleOpen} sx={styleButton}>
         to make an order
       </Button>
       <Modal
@@ -101,7 +69,7 @@ const style = {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={stylePayment}>
           <DialogTitle variant="h3" color={"black"}>
             Order Details
           </DialogTitle>
@@ -120,7 +88,6 @@ const style = {
               label="Phone Number"
               type="string"
               fullWidth
-              variant="standard"
               required
             />
             <TextField
@@ -134,15 +101,20 @@ const style = {
               label="Address"
               type="address"
               fullWidth
-              variant="standard"
               required
             />
           </DialogContent>
-          <Button onClick={handelSendOrder}>for payment</Button>
+          <Button
+            variant="contained"
+            sx={styleButton}
+            onClick={handelSendOrder}
+          >
+            for payment
+          </Button>
         </Box>
       </Modal>
     </Box>
   );
-}
+};
 
 export default Payment;

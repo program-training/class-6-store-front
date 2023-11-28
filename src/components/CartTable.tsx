@@ -1,7 +1,5 @@
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -18,40 +16,32 @@ import { Product } from "../interfaces/product";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import { useEffect } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Payment from "./Payment";
 import { useNavigate } from "react-router-dom";
+import {
+  StyledTableCell,
+  StyledTableRow,
+  styleDivBottom,
+  stylePaper,
+} from "../style/cart";
+import { styleButton } from "../style/login&Signin";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+interface CartProps {
+  props: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
-
-export default function CartTable() {
-  const [productForCart, setProductForCart] = React.useState<CartProduct[]>([]);
-  const [productsCartFromData, setProductsCartFromData] = React.useState<
-    Product[]
-  >([]);
-  const navigate = useNavigate()
-  const [totalPrice, setTotalPrice] = React.useState<number | null>(null);
+const CartTable: React.FC<CartProps> = ({ props }) => {
+  const [productForCart, setProductForCart] = useState<CartProduct[]>([]);
+  const [productsCartFromData, setProductsCartFromData] = useState<Product[]>(
+    []
+  );
+  const [totalPrice, setTotalPrice] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const dataProduct = useAppSelector((state) => state.products.products);
+  const setOpenCart = props;
 
   const flag = useAppSelector((state) => state.userName.flag);
   const productFromRtk: CartProduct[] = useAppSelector(
@@ -165,25 +155,16 @@ export default function CartTable() {
               })}
             </TableBody>
           </Table>
-          <div
-            style={{
-              backgroundColor: "#f0f0f0",
-              padding: "10px",
-              borderRadius: "5px",
-              marginTop: "10px",
-              display: "flex",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <Typography variant="h3" style={{ color: "#333" }}>
+          <div style={styleDivBottom}>
+            <Typography variant="h3" color="#333">
               TOTAL PRICE: {totalPrice}$
             </Typography>
             <Payment total={totalPrice} />
           </div>
         </TableContainer>
       ) : (
-        <Paper sx={{ padding: 2, width: 300, margin: "auto", marginTop: 4 }}>
-          <Typography variant="h5" align="center">
+        <Paper sx={stylePaper}>
+          <Typography variant="h4" align="center">
             Your cart is looking a little lonely...
           </Typography>
 
@@ -192,12 +173,13 @@ export default function CartTable() {
             today! We have lots of amazing options to suit your style.
           </Typography>
 
-          <div style={{textAlign: "center"}}>
+          <div style={{ textAlign: "center" }}>
             <Button
+              sx={styleButton}
               variant="contained"
-              color="primary"
-              onClick={()=> {
-                navigate("/")
+              onClick={() => {
+                navigate("/");
+                setOpenCart(false);
               }}
             >
               Start Shopping
@@ -207,4 +189,5 @@ export default function CartTable() {
       )}
     </>
   );
-}
+};
+export default CartTable;

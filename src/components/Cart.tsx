@@ -16,7 +16,7 @@ const Cart: React.FC<CartProps> = ({ props }) => {
         onClose={() => setOpenCart(false)}
         role="presentation"
       >
-        <CartTable />
+        <CartTable  props={setOpenCart}/>
       </Drawer>
     </React.Fragment>
   );

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { getCartFromServer } from "../functions";
+import { getCartFromServer } from "../functionsForDB";
 
 export interface SendCartProduct {
   name: string;
@@ -46,11 +46,28 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    fetchDataBasedOnLogin: () => async (dispatch, getState) => {
+        const { userId } = getState().cart;
+  
+        if (userId) {
+          try {
+            const serverData = await getCartFromServer(userId);
+            dispatch(setCart(serverData));
+          } catch (error) {
+            console.error("Error fetching data from server:", error);
+          }
+        } else {
+          const localStorageData = getItemFromLocalStorage();
+          dispatch(setCart(localStorageData));
+        }
+      },
+
     setUserNameInCart: (state, action: PayloadAction<string>) => {
       state.userId = action.payload;
     },
-    addProductToCart: (state, action: PayloadAction<CartProduct>) => {
-      state.products = getItemFromLocalStorage();
+    addProductToCart: (state, action: PayloadAction<CartProduct>) => async (dispatch, getState) => {
+      await dispatch(fetchDataBasedOnLogin()); 
+    //   state.products = getItemFromLocalStorage();
 
       // state.products = await getCartFromServer();
       const {
@@ -149,6 +166,7 @@ const cartSlice = createSlice({
 });
 
 export const {
+    fetchDataBasedOnLogin,
   setUserNameInCart,
   setCart,
   increment,
@@ -159,4 +177,5 @@ export const {
   removeCart,
   render,
 } = cartSlice.actions;
+export const cartActions = { ...cartSlice.actions, fetchDataBasedOnLogin };
 export default cartSlice.reducer;

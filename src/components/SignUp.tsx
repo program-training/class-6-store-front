@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -10,14 +10,30 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
+import { IconButton, InputAdornment } from "@mui/material";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import { styleButton } from "../style/login&Signin";
 
 export default function SignIn() {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [passwordVerification, setPasswordVerification] = React.useState("");
-  const [userName, setUserName] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordVerification, setPasswordVerification] = useState("");
+  const [userName, setUserName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const handleToggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(
+      (prevShowConfirmPassword) => !prevShowConfirmPassword
+    );
+  };
 
   const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.openSignUp.flag);
@@ -60,6 +76,7 @@ export default function SignIn() {
           setUserName("");
           setFirstName("");
           setLastName("");
+          setPasswordVerification("");
           dispatch(setOpenSignUp(false));
           dispatch(setOpenLogIn(true));
         }
@@ -91,7 +108,6 @@ export default function SignIn() {
             label="first name"
             type="name"
             fullWidth
-            variant="standard"
             required
           />
           <TextField
@@ -99,13 +115,11 @@ export default function SignIn() {
               setLastName(e.target.value);
             }}
             value={lastName}
-            autoFocus
             margin="dense"
             id="name"
             label="last name"
             type="name"
             fullWidth
-            variant="standard"
             required
           />
           <TextField
@@ -113,13 +127,11 @@ export default function SignIn() {
               setUserName(e.target.value);
             }}
             value={userName}
-            autoFocus
             margin="dense"
             id="name"
             label="user name"
             type="name"
             fullWidth
-            variant="standard"
             required
           />
           <TextField
@@ -127,13 +139,11 @@ export default function SignIn() {
               setEmail(e.target.value);
             }}
             value={email}
-            autoFocus
             margin="dense"
             id="email"
             label="Email Address"
             type="email"
             fullWidth
-            variant="standard"
             required
           />
           <TextField
@@ -141,33 +151,67 @@ export default function SignIn() {
               setPassword(e.target.value);
             }}
             value={password}
-            autoFocus
             margin="dense"
             id="password"
-            label="Enter a password"
-            type="password"
+            label="Password"
+            type={showPassword ? "text" : "password"}
             fullWidth
-            variant="standard"
             required
+            error={password.length === 0}
+            helperText={
+              password.length === 0 ? "This is a required field." : ""
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleTogglePasswordVisibility}>
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             onChange={(e) => {
               setPasswordVerification(e.target.value);
             }}
             value={passwordVerification}
-            autoFocus
             margin="dense"
             id="password"
             label="Please confirm the password"
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             fullWidth
-            variant="standard"
             required
+            error={password.length === 0}
+            helperText={
+              password.length === 0 ? "This is a required field." : ""
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleToggleConfirmPasswordVisibility}>
+                    {showConfirmPassword ? (
+                      <VisibilityOffIcon />
+                    ) : (
+                      <VisibilityIcon />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleRegistration}>Sign up</Button>
+          <Button variant="contained" sx={styleButton} onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            sx={styleButton}
+            onClick={handleRegistration}
+          >
+            Sign up
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
