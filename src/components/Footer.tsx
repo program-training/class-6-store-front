@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
             <Typography variant="h2" color="color: 'rgb(255,255,255)'" gutterBottom>
             QuadBros Market
             </Typography>
-            <img src="../../public/footer-icon.svg" alt="Logo" width="120" />
+            <img src="/footer-icon.svg" alt="Logo" width="120" />
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
             <Typography variant="subtitle1" color="color: 'rgb(255,255,255)'" gutterBottom>

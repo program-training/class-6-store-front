@@ -10,6 +10,9 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
+import { IconButton, InputAdornment } from "@mui/material";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 export default function SignIn() {
   const [email, setEmail] = React.useState("");
@@ -18,6 +21,18 @@ export default function SignIn() {
   const [userName, setUserName] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const handleToggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(
+      (prevShowConfirmPassword) => !prevShowConfirmPassword
+    );
+  };
 
   const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.openSignUp.flag);
@@ -92,7 +107,6 @@ export default function SignIn() {
             label="first name"
             type="name"
             fullWidth
-            variant="standard"
             required
           />
           <TextField
@@ -100,13 +114,11 @@ export default function SignIn() {
               setLastName(e.target.value);
             }}
             value={lastName}
-            autoFocus
             margin="dense"
             id="name"
             label="last name"
             type="name"
             fullWidth
-            variant="standard"
             required
           />
           <TextField
@@ -114,13 +126,11 @@ export default function SignIn() {
               setUserName(e.target.value);
             }}
             value={userName}
-            autoFocus
             margin="dense"
             id="name"
             label="user name"
             type="name"
             fullWidth
-            variant="standard"
             required
           />
           <TextField
@@ -128,13 +138,11 @@ export default function SignIn() {
               setEmail(e.target.value);
             }}
             value={email}
-            autoFocus
             margin="dense"
             id="email"
             label="Email Address"
             type="email"
             fullWidth
-            variant="standard"
             required
           />
           <TextField
@@ -142,28 +150,54 @@ export default function SignIn() {
               setPassword(e.target.value);
             }}
             value={password}
-            autoFocus
             margin="dense"
             id="password"
-            label="Enter a password"
-            type="password"
+            label="Password"
+            type={showPassword ? "text" : "password"}
             fullWidth
-            variant="standard"
             required
+            error={password.length === 0}
+            helperText={
+              password.length === 0 ? "This is a required field." : ""
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleTogglePasswordVisibility}>
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             onChange={(e) => {
               setPasswordVerification(e.target.value);
             }}
             value={passwordVerification}
-            autoFocus
             margin="dense"
             id="password"
             label="Please confirm the password"
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             fullWidth
-            variant="standard"
             required
+            error={password.length === 0}
+            helperText={
+              password.length === 0 ? "This is a required field." : ""
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleToggleConfirmPasswordVisibility}>
+                    {showConfirmPassword ? (
+                      <VisibilityOffIcon />
+                    ) : (
+                      <VisibilityIcon />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </DialogContent>
         <DialogActions>

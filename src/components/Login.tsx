@@ -12,10 +12,14 @@ import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { setUserName } from "../rtk/userNameSlice";
 import { setUserNameInCart } from "../rtk/cartSlice";
+import { IconButton, InputAdornment } from "@mui/material";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const LogIn = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useAppDispatch();
 
   const open = useAppSelector((state) => state.openLogIn.flag);
@@ -32,6 +36,10 @@ const LogIn = () => {
       /\d/.test(password) &&
       /[!@#$%^&*(),.?":{}|<>]/.test(password)
     );
+  };
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const handleClickOpen = () => {
@@ -103,34 +111,43 @@ const LogIn = () => {
             label="Email Address"
             type="email"
             fullWidth
-            variant="standard"
             required
             error={email.length === 0}
-            helperText={email.length === 0 ? "This is a required field.": ""}
-
+            helperText={email.length === 0 ? "This is a required field." : ""}
           />
+
           <TextField
             onChange={(e) => {
               setPassword(e.target.value);
             }}
             value={password}
-            autoFocus
             margin="dense"
             id="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             fullWidth
-            variant="standard"
             required
             error={password.length === 0}
-            helperText={password.length === 0 ? "This is a required field.": ""}
-
+            helperText={
+              password.length === 0 ? "This is a required field." : ""
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleTogglePasswordVisibility}>
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleLogIn}>Sign in</Button>
-          <Button onClick={handleRegistration}>registration</Button>
+          <Button onClick={handleRegistration}>
+            Don't have a user account?
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

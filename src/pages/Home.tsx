@@ -35,11 +35,14 @@ const Home = () => {
         console.log(error);
       }
     })();
-  }, []);
-  
+
+    }, [baseURL]);
+    
   useEffect(() => {
     dispatch(render())
      }, []);
+
+
 
   const clickToCard = (cat: string) => {
     navigate(`/products/${cat}`);

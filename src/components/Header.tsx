@@ -79,6 +79,7 @@ export default function PrimarySearchAppBar() {
   React.useEffect(() => {
     setUserName(userNameInLogin);
   }, [userNameInLogin]);
+  
 
   React.useEffect(() => {
     setNumOfItemsInCart(newNum);
@@ -225,8 +226,11 @@ export default function PrimarySearchAppBar() {
               }}
             />
           </Search>
+          
+
           <Login />
           <SignUp />
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton

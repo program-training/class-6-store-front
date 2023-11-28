@@ -5,6 +5,8 @@ import { setProducts } from "./rtk/productsSlice";
 import { CartProduct } from "./rtk/cartSlice";
 import { store } from "./rtk/store";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setCart } from "./rtk/cartSlice2";
 
 export function connectToData() {
   const dispatch = useAppDispatch();
@@ -24,34 +26,36 @@ export function connectToData() {
 }
 
 
-export const getCartFromServer = async () => {
-  const userId = useAppSelector((state) => state.userName.userId);
-  const [data, setData] = useState<CartProduct[]>([]);
-
-  useEffect(() => {
-    const getData = async () => {
+export const getCartFromServer = async (userId) => {
+  // const userId = useAppSelector((state) => state.userName.userId);
+  // const [data, setData] = useState<CartProduct[]>([]);
+const dispatch = useAppDispatch();
+  // useEffect(() => {
+    // const getData = async () => {
       try {
         if (userId) {
           const response = await axios.get(
             `https://store-back-3.onrender.com/api/cart/${userId}`
           );
           if (response.data) {
-            setData(response.data);
+            dispatch(setCart(response.data));
+            // setData(response.data);
           }
-        } else {
-          const item = localStorage.getItem("cart");
-          setData(item ? JSON.parse(item) : []);
         }
+        //  else {
+        //   const item = localStorage.getItem("cart");
+        //   setData(item ? JSON.parse(item) : []);
+        // }
       } catch (error) {
         console.error("Error fetching cart data", error);
       }
     };
 
-    getData();
-  }, [userId]);
+    // getData();
+  // }, [userId]);
 
-  return data;
-};
+  // return data;
+// };
 
 
 
