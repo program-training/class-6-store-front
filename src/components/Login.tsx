@@ -13,8 +13,8 @@ import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { setUserName } from "../rtk/userNameSlice";
 import { setUserNameInCart } from "../rtk/cartSlice";
 import { Alert, Collapse, IconButton, InputAdornment } from "@mui/material";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import Visibility from '@mui/icons-material/Visibility'; 
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { styleButton } from "../style/login&Signin";
 
 const LogIn = () => {
@@ -146,7 +146,7 @@ const LogIn = () => {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={handleTogglePasswordVisibility}>
-                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
               ),

@@ -11,8 +11,8 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { setOpen as setOpenSignUp } from "../rtk/flagSignUpSlice";
 import { setOpen as setOpenLogIn } from "../rtk/flagLogInSlice";
 import { IconButton, InputAdornment } from "@mui/material";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import Visibility from '@mui/icons-material/Visibility'; 
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { styleButton } from "../style/login&Signin";
 
 export default function SignIn() {
@@ -165,7 +165,7 @@ export default function SignIn() {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={handleTogglePasswordVisibility}>
-                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -191,9 +191,9 @@ export default function SignIn() {
                 <InputAdornment position="end">
                   <IconButton onClick={handleToggleConfirmPasswordVisibility}>
                     {showConfirmPassword ? (
-                      <VisibilityOffIcon />
+                      <VisibilityOff />
                     ) : (
-                      <VisibilityIcon />
+                      <Visibility />
                     )}
                   </IconButton>
                 </InputAdornment>
