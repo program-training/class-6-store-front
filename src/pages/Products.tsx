@@ -17,14 +17,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { filterProducts } from "../function";
+import { filterProducts } from "../utils/function";
 import { addProductToCart, render } from "../rtk/cartSlice";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
-import { getUniqueAttributes } from "../function";
+import { getUniqueAttributes } from "../utils/function";
 import PlusOneIcon from "@mui/icons-material/PlusOne";
 import ProductSkeleton from "../components/ProductSkeleton";
 import { Product, Prices } from "../interfaces/product";
-import { connectToData } from "../function";
+import { connectToData } from "../utils/function";
 import {
   buttonAddToCart,
   cardStyle,
@@ -119,6 +119,20 @@ const Products = () => {
   };
 
   const productInCart = useAppSelector((state) => state.cart.products);
+  const prices = [
+    {
+      value: minPrice,
+      label: minPrice,
+    },
+    {
+      value: maxPrice,
+      label: maxPrice,
+    },
+    {
+      value: (minPrice + maxPrice) / 2,
+      label: (minPrice + maxPrice) / 2,
+    },
+  ];
 
   return (
     <Stack spacing={2} direction="row">
@@ -133,6 +147,7 @@ const Products = () => {
               handleAttributeToggle("price", value as number)
             }
             aria-labelledby="dynamic-range-slider"
+            marks={prices}
             valueLabelDisplay="auto"
           />
         </Box>

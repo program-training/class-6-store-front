@@ -1,18 +1,14 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
+import { styleNotFound } from "../style/notFound";
 
 export default function NotFound() {
+
   const navigate = useNavigate();
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-      }}
-    >
+    <Box sx={styleNotFound}>
       <Container maxWidth="md">
         <Grid container spacing={2}>
           <Grid xs={6}>

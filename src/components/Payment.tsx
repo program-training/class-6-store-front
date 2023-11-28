@@ -12,7 +12,7 @@ import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { SendCartProduct, removeCart } from "../rtk/cartSlice";
 import { SendOrderDetails, Total } from "../interfaces/payment";
 import { setOpen as openLogin } from "../rtk/flagLogInSlice";
-import { sendOrderDetails } from "../function";
+import { sendOrderDetails } from "../utils/function";
 import { stylePayment } from "../style/payment";
 import { styleButton } from "../style/login&Signin";
 

@@ -8,7 +8,7 @@ import { themeSettings } from "./palette/theme";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { ThemeProvider } from "@mui/material";
-import { connectToData } from "./functionsForDB";
+import { connectToData } from "./utils/functionsForDB";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="*" element={<NotFound/>}/>
+            <Route path="*" element={<NotFound />} />
             <Route element={<Layout />}>
               <Route path="*" element={<NotFound />} />
               <Route path="/" element={<Home />} />
