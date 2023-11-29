@@ -1,3 +1,4 @@
+import "./home.css"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Category } from "../interfaces/category";
@@ -9,7 +10,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useAppDispatch } from "../rtk/hooks";
+import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { render } from "../rtk/cartSlice";
 import { useNavigate } from "react-router-dom";
 import HomeSkeleton from "../components/HomeSkeleton";
@@ -38,9 +39,6 @@ const Home = () => {
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_SERVER_API;
 
-
-
-
   useEffect(() => {
     (async () => {
       try {
@@ -57,7 +55,9 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const resp = await axios.get(`https://serverbanners.onrender.com/api/banners`);
+        const resp = await axios.get(
+          `https://serverbanners.onrender.com/api/banners`
+        );
         const { data } = resp;
         console.log(resp);
 
@@ -80,66 +80,57 @@ const Home = () => {
     navigate(`/product/${productId}`);
   };
 
-  const imageStyle = {
-    width: '200px',
-    height: '200px',
-    borderRadius: '5px',
-    cursor: 'pointer', // Changes the cursor to indicate it's clickable
-    transition: 'transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease', // Smooth transition for effects
-    ':hover': {
-      transform: 'scale(1.05)', // Slightly enlarges the image
-      opacity: 0.9, // Slightly reduces the opacity
-      boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', // Adds a shadow effect
-    }
-  };
+  const userName = useAppSelector((state) => state.userName.userName)
 
+ 
+ 
 
   return (
     <>
+       {userName && <Typography variant="h1" align="center" gutterBottom style={pHello}>
+        Hello {userName}
+      </Typography>}
       {banners && banners.length > 0 && (
         <>
-          <style>
-            {`@keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-80%); } /* Adjust the value based on the total width of the images */
-            }
+         
 
-            .scrolling-container {
-            animation: scroll 120s linear infinite; /* Adjust time as needed */
-            }`}
-            {`
-            .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-            }
-            `}
-          </style>
-          <div className="hide-scrollbar" style={{
-            display: 'flex',
-            overflowX: 'auto',
-            backgroundColor: "#E0E0E0",
-            border: '2px solid #B3B3B3', 
-            padding: '10px',
-            boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
-          }}>
-            <div className="scrolling-container" style={{
-              display: 'flex',
-              flexWrap: 'nowrap'
-            }}>
+          <div
+            className="hide-scrollbar"
+            style={{
+              display: "flex",
+              overflowX: "auto",
+              backgroundColor: "#E0E0E0",
+              border: "2px solid #B3B3B3",
+              padding: "1.2rem",
+              marginBottom: "2rem",
+              boxShadow: "0px 3px 5px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <div
+              className="scrolling-container"
+              style={{
+                display: "flex",
+                flexWrap: "nowrap",
+              }}
+            >
               {banners.map((banner, index) => (
-                <div key={index} style={{
-                  minWidth: '300px',
-                  flexShrink: 0,
-                  margin: '5px',
-                  position: 'relative',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center'
-                }}>
+                <div
+                  key={index}
+                  style={{
+                    minWidth: "300px",
+                    flexShrink: 0,
+                    margin: "5px",
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                  }}
+                >
                   <img
+                    className="banner-image"
                     src={banner.image.url}
                     alt={banner.image.alt}
-                    style={imageStyle}
                     onClick={() => handleClick(banner.productID.toString())}
                   />
                 </div>
@@ -149,10 +140,6 @@ const Home = () => {
         </>
       )}
 
-
-      <Typography variant="h1" align="center" gutterBottom style={pHello}>
-        Hello
-      </Typography>
       <Grid container spacing={2}>
         {loading ? (
           <HomeSkeleton />
