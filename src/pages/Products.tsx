@@ -165,7 +165,7 @@ const Products = () => {
           />
         </Box>
         <Box
-          key={Date.now() * Math.random()}
+          key={Date.now()}
           justifyContent="flex-end"
           alignItems="flex-start"
         >

@@ -35,6 +35,8 @@ export function filterProducts(
   return newFilteredProducts ?? null;
 }
 
+
+
 export function getUniqueAttributes(
   products: Product[]
 ): Record<string, (string | number)[]> {

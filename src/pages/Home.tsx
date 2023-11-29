@@ -1,5 +1,6 @@
+import "./home.css"
 // import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Category } from "../interfaces/category";
 import {
   Card,
@@ -14,7 +15,21 @@ import { render } from "../rtk/cartSlice";
 import { useNavigate } from "react-router-dom";
 import HomeSkeleton from "../components/HomeSkeleton";
 import { cardCategory, pHello } from "../style/home";
-
+interface Banner {
+  author: string;
+  category: string;
+  createdAt: string;
+  id: number;
+  image: {
+    alt: string;
+    url: string;
+  };
+  productID: number;
+  rating: number;
+  sale: number;
+  text: string;
+  _id: string;
+}
 
 const Home = () => {
   // const [categories, setCategories] = useState([]);
@@ -22,13 +37,38 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  // const baseURL = import.meta.env.VITE_SERVER_API;
+  // const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-const categories:Category[] = useAppSelector((state) => state.categoryAndBanners.category)
-const banners :Banner[]= useAppSelector((state) => state.categoryAndBanners.banners)
+  const categories:Category[] = useAppSelector((state) => state.categoryAndBanners.category)
+  const banners :Banner[]= useAppSelector((state) => state.categoryAndBanners.banners)
+  
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const resp = await axios.get(`${baseURL}/api/categories`);
+  //       const { data } = resp;
+  //       setCategories(data);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, [baseURL]);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const resp = await axios.get(`${baseURL}/api/banners`);
+  //       const { data } = resp;
+  //       console.log(resp);
 
-
+  //       setBanners(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, [baseURL]);
   console.log(banners);
 
   useEffect(() => {
@@ -42,61 +82,66 @@ const banners :Banner[]= useAppSelector((state) => state.categoryAndBanners.bann
     navigate(`/product/${productId}`);
   };
 
-  const imageStyle = {
-    width: '200px',
-    height: '200px',
-    borderRadius: '5px',
-    cursor: 'pointer', // Changes the cursor to indicate it's clickable
-    transition: 'transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease', // Smooth transition for effects
-    ':hover': {
-      transform: 'scale(1.05)', // Slightly enlarges the image
-      opacity: 0.9, // Slightly reduces the opacity
-      boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', // Adds a shadow effect
-    }
-  };
   const userName = useAppSelector((state) => state.userName.userName)
+
+ 
+ 
 
   return (
     <>
-      {userName && <Typography variant="h1" align="center" gutterBottom style={pHello}>
+       {userName && <Typography variant="h1" align="center" gutterBottom style={pHello}>
         Hello {userName}
       </Typography>}
       {banners && banners.length > 0 && (
-        <div style={{
-          display: 'flex',
-          overflowX: 'auto',
-          backgroundColor: "#E0E0E0",
-          border: '2px solid #B3B3B3', // מסגרת בגוון אפור בהיר יותר
-          padding: '10px',
-          boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'
-        }}>
-          <div ref={scrollContainerRef} style={{
-            display: 'flex',
-            flexWrap: 'nowrap'
-          }}>
-            {banners.map((banner, index) => (
-              <div key={index} style={{
-                minWidth: '300px',
-                flexShrink: 0,
-                margin: '5px',
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center'
-              }}>
-                <img
-                  src={banner.image.url}
-                  alt={banner.image.alt}
-                  style={imageStyle}
-                  onClick={() => handleClick(banner.productID.toString())}
-                />
+        <>
+         
 
-              </div>
-            ))}
+          <div
+            className="hide-scrollbar"
+            style={{
+              display: "flex",
+              overflowX: "auto",
+              backgroundColor: "#E0E0E0",
+              border: "2px solid #B3B3B3",
+              padding: "1.2rem",
+              marginBottom: "2rem",
+              boxShadow: "0px 3px 5px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <div
+              className="scrolling-container"
+              style={{
+                display: "flex",
+                flexWrap: "nowrap",
+              }}
+            >
+              {banners.map((banner, index) => (
+                <div
+                  key={index}
+                  style={{
+                    minWidth: "300px",
+                    flexShrink: 0,
+                    margin: "5px",
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                  }}
+                >
+                  <img
+                    className="banner-image"
+                    src={banner.image.url}
+                    alt={banner.image.alt}
+                    onClick={() => handleClick(banner.productID.toString())}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
+
       <Grid container spacing={2}>
         {loading ? (
           <HomeSkeleton />
