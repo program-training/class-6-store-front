@@ -9,11 +9,12 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useAppDispatch } from "../rtk/hooks";
+import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { render } from "../rtk/cartSlice";
 import { useNavigate } from "react-router-dom";
 import HomeSkeleton from "../components/HomeSkeleton";
 import { cardCategory, pHello } from "../style/home";
+import EditDetails from "../components/EditDiatels";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -58,11 +59,14 @@ const Home = () => {
     navigate(`/products/${cat}`);
   };
 
+  const userName = useAppSelector((state) => state.userName.userName)
+
   return (
     <>
-      <Typography variant="h1" align="center" gutterBottom style={pHello}>
-        Hello
-      </Typography>
+     {userName && <Typography variant="h1" align="center" gutterBottom style={pHello}>
+        Hello {userName}
+      </Typography>}
+      <EditDetails/>
       <Grid container spacing={2}>
         {loading ? (
           <HomeSkeleton />

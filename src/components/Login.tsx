@@ -79,6 +79,8 @@ const LogIn = () => {
           dispatch(
             setUserNameInCart(`${userName.firstName} ${userName.lastName}`)
           );
+          localStorage.setItem('email', email)
+          localStorage.setItem('password', password)
           notify()
         }
       } catch (error) {
@@ -116,9 +118,9 @@ const LogIn = () => {
           <VpnKeyOutlinedIcon/>
         </IconButton>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Log in</DialogTitle>
+        <DialogTitle style={{textAlign: 'center'}}>Log in</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText style={{textAlign: 'center'}}>
             To log in, please enter your email and password.
           </DialogContentText>
           <TextField
