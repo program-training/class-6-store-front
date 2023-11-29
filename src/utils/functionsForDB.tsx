@@ -8,7 +8,7 @@ import { setProducts } from "../rtk/productsSlice";
 // import { useDispatch } from "react-redux";
 // import { setCart } from "../rtk/cartSlice2";
 
-export function connectToData() {
+export function ConnectToData() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const fetchData = async () => {
