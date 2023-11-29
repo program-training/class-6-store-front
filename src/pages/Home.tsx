@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Category } from "../interfaces/category";
 import {
   Card,
@@ -23,7 +23,8 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_SERVER_API;
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+
 
 
   useEffect(() => {
@@ -85,35 +86,60 @@ const Home = () => {
         Hello {userName}
       </Typography>}
       {banners && banners.length > 0 && (
-        <div style={{
-          display: 'flex',
-          overflowX: 'auto',
-          backgroundColor: "#E0E0E0",
-          border: '2px solid #B3B3B3', // מסגרת בגוון אפור בהיר יותר
-          padding: '10px',
-          boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'
-        }}>
-          <div ref={scrollContainerRef} style={{
+
+        <>
+          <style>
+            {`@keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-80%); } /* Adjust the value based on the total width of the images */
+            }
+
+            .scrolling-container {
+            animation: scroll 120s linear infinite; /* Adjust time as needed */
+            }`}
+            {`
+            .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+            }
+            `}
+          </style>
+          <div className="hide-scrollbar" style={{
             display: 'flex',
-            flexWrap: 'nowrap'
+            overflowX: 'auto',
+            backgroundColor: "#E0E0E0",
+            border: '2px solid #B3B3B3', // מסגרת בגוון אפור בהיר יותר
+            padding: '10px',
+            boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
           }}>
-            {banners.map((banner, index) => (
-              <div key={index} style={{
-                minWidth: '300px',
-                flexShrink: 0,
-                margin: '5px',
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center'
-              }}>
-                <img
-                  src={banner.image.url}
-                  alt={banner.image.alt}
-                  style={imageStyle}
-                  onClick={() => handleClick(banner.productID.toString())}
-                />
+            <div className="scrolling-container" style={{
+              display: 'flex',
+              flexWrap: 'nowrap'
+            }}>
+              {banners.map((banner, index) => (
+                <div key={index} style={{
+                  minWidth: '300px',
+                  flexShrink: 0,
+                  margin: '5px',
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center'
+                }}>
+                  <img
+                    src={banner.image.url}
+                    alt={banner.image.alt}
+                    style={imageStyle}
+                    onClick={() => handleClick(banner.productID.toString())}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+
 
               </div>
             ))}
