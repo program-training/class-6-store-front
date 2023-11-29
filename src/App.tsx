@@ -8,13 +8,15 @@ import { themeSettings } from "./palette/theme";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { ThemeProvider } from "@mui/material";
-import { connectToData } from "./utils/functionsForDB";
+import { connectBanners, connectCategory, connectToData } from "./utils/functionsForDB";
 import NotFound from "./pages/NotFound";
 import automaticLogIn from "./utils/automaticLogIn";
 
 function App() {
   connectToData();
   automaticLogIn();
+  connectCategory()
+  connectBanners()
   const theme = useMemo(() => createTheme(themeSettings), []);
   return (
     <>

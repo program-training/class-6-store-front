@@ -21,6 +21,7 @@ import SignUp from "./SignUp";
 import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { resetUserName } from "../rtk/userNameSlice";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import EditDetails from "./EditDiatels";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -148,6 +149,10 @@ export default function PrimarySearchAppBar() {
           <LockOutlinedIcon />
         </IconButton>
         Log Out
+      </MenuItem>
+      <MenuItem>
+        <EditDetails />
+        Edit Details
       </MenuItem>
     </Menu>
   );

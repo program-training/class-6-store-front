@@ -1,12 +1,18 @@
-import {  useAppDispatch } from "../rtk/hooks";
+import { useAppDispatch } from "../rtk/hooks";
 import axios from "axios";
 import { useEffect } from "react";
 import { setProducts } from "../rtk/productsSlice";
+import { setBanners, setCategory } from "../rtk/category&banners";
 // import { CartProduct } from "../rtk/cartSlice";
 // import { store } from "../rtk/store";
 // import { useState } from "react";
 // import { useDispatch } from "react-redux";
 // import { setCart } from "../rtk/cartSlice2";
+
+
+const baseURL = import.meta.env.VITE_SERVER_API;
+
+
 
 export function connectToData() {
   const dispatch = useAppDispatch();
@@ -23,6 +29,35 @@ export function connectToData() {
     };
     fetchData();
   }, []);
+}
+
+
+export const connectBanners = async () => {
+
+  const dispatch = useAppDispatch();
+
+  try {
+    const resp = await axios.get(`${baseURL}/api/banners`);
+    const { data } = resp;
+    console.log(resp);
+    dispatch(setBanners(data))
+    // setBanners(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const connectCategory = async () => {
+
+  const dispatch = useAppDispatch();
+
+  try {
+    const resp = await axios.get(`${baseURL}/api/categories`);
+    const { data } = resp;
+    dispatch(setCategory(data))
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 

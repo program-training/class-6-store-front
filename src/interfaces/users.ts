@@ -6,3 +6,11 @@
     email: string;
     password: string;
   }
+
+  export interface Edit {
+    firstName: null | string,
+    lastName: null | string,
+    userName: null | string,
+    email: null | string,
+    password: string
+}

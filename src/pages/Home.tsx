@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Category } from "../interfaces/category";
 import {
@@ -17,41 +17,18 @@ import { cardCategory, pHello } from "../style/home";
 
 
 const Home = () => {
-  const [categories, setCategories] = useState([]);
-  const [banners, setBanners] = useState<Banner[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [categories, setCategories] = useState([]);
+  // const [banners, setBanners] = useState<Banner[]>([]);
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const baseURL = import.meta.env.VITE_SERVER_API;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+const categories:Category[] = useAppSelector((state) => state.categoryAndBanners.category)
+const banners :Banner[]= useAppSelector((state) => state.categoryAndBanners.banners)
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const resp = await axios.get(`${baseURL}/api/categories`);
-        const { data } = resp;
-        setCategories(data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [baseURL]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const resp = await axios.get(`${baseURL}/api/banners`);
-        const { data } = resp;
-        console.log(resp);
 
-        setBanners(data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [baseURL]);
   console.log(banners);
 
   useEffect(() => {
