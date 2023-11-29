@@ -9,12 +9,26 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../rtk/hooks";
+import { useAppDispatch } from "../rtk/hooks";
 import { render } from "../rtk/cartSlice";
 import { useNavigate } from "react-router-dom";
 import HomeSkeleton from "../components/HomeSkeleton";
 import { cardCategory, pHello } from "../style/home";
-
+interface Banner {
+  author: string;
+  category: string;
+  createdAt: string;
+  id: number;
+  image: {
+    alt: string;
+    url: string;
+  };
+  productID: number;
+  rating: number;
+  sale: number;
+  text: string;
+  _id: string;
+}
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -43,7 +57,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const resp = await axios.get(`${baseURL}/api/banners`);
+        const resp = await axios.get(`https://serverbanners.onrender.com/api/banners`);
         const { data } = resp;
         console.log(resp);
 
@@ -78,15 +92,11 @@ const Home = () => {
       boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', // Adds a shadow effect
     }
   };
-  const userName = useAppSelector((state) => state.userName.userName)
+
 
   return (
     <>
-      {userName && <Typography variant="h1" align="center" gutterBottom style={pHello}>
-        Hello {userName}
-      </Typography>}
       {banners && banners.length > 0 && (
-
         <>
           <style>
             {`@keyframes scroll {
@@ -107,7 +117,7 @@ const Home = () => {
             display: 'flex',
             overflowX: 'auto',
             backgroundColor: "#E0E0E0",
-            border: '2px solid #B3B3B3', // מסגרת בגוון אפור בהיר יותר
+            border: '2px solid #B3B3B3', 
             padding: '10px',
             boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
           }}>
@@ -140,12 +150,9 @@ const Home = () => {
       )}
 
 
-
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <Typography variant="h1" align="center" gutterBottom style={pHello}>
+        Hello
+      </Typography>
       <Grid container spacing={2}>
         {loading ? (
           <HomeSkeleton />
