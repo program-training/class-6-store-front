@@ -39,6 +39,18 @@ const Home = () => {
   const baseURL = import.meta.env.VITE_SERVER_API;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const moveBanner = () => {
+      if (scrollContainerRef.current) {
+        const newScrollPosition = scrollContainerRef.current.scrollLeft + 1; // עדכון קטן של המיקום
+        scrollContainerRef.current.scrollLeft = newScrollPosition;
+      }
+    };
+
+    const interval = setInterval(moveBanner, 150); // כאן אתה יכול לשנות את המהירות
+
+    return () => clearInterval(interval); // ניקוי הטיימר כאשר הקומפוננטה לא קיימת יותר
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -95,41 +107,49 @@ const Home = () => {
 
   return (
     <>
-      {banners && banners.length > 0 && (
-  <div style={{
-    display: 'flex',
-    overflowX: 'auto',
-    backgroundColor:"#E0E0E0",
-    border: '2px solid #B3B3B3', // מסגרת בגוון אפור בהיר יותר
-    padding: '10px',
-    boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'
-  }}>
-    <div ref={scrollContainerRef} style={{
-      display: 'flex', 
-      flexWrap: 'nowrap'
+     {banners && banners.length > 0 && (
+  <>
+    <style>
+      {`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}
+    </style>
+    <div className="hide-scrollbar" style={{
+      display: 'flex',
+      overflowX: 'auto',
+      backgroundColor: "#E0E0E0",
+      border: '2px solid #B3B3B3', // מסגרת בגוון אפור בהיר יותר
+      padding: '10px',
+      boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
     }}>
-      {banners.map((banner, index) => (
-        <div key={index} style={{
-          minWidth: '300px',
-          flexShrink: 0,
-          margin: '5px',
-          position: 'relative', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          textAlign: 'center'
-        }}>
-          <img 
-            src={banner.image.url} 
-            alt={banner.image.alt}  
-            style={imageStyle}  
-            onClick={() => handleClick(banner.productID.toString())}
-          />
-       
-        </div>
-      ))}
+      <div ref={scrollContainerRef} style={{
+        display: 'flex',
+        flexWrap: 'nowrap'
+      }}>
+        {banners.map((banner, index) => (
+          <div key={index} style={{
+            minWidth: '300px',
+            flexShrink: 0,
+            margin: '5px',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center'
+          }}>
+            <img
+              src={banner.image.url}
+              alt={banner.image.alt}
+              style={imageStyle}
+              onClick={() => handleClick(banner.productID.toString())}
+            />
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
+  </>
 )}
 
 
