@@ -181,7 +181,7 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      <MenuItem onClick={() => navigate("/")}>
+      <MenuItem onClick={() => navigate("/store")}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -214,7 +214,7 @@ export default function PrimarySearchAppBar() {
         sx={{ background: "rgb(35,47,62)", color: "rgb(255,255,255)" }}
       >
         <Toolbar>
-          <div onClick={() => navigate("/")}>
+          <div onClick={() => navigate("/store")}>
             <Typography
               variant="h2"
               noWrap
@@ -246,7 +246,7 @@ export default function PrimarySearchAppBar() {
             <IconButton
               size="large"
               color="inherit"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/store")}
             >
               <CottageOutlinedIcon />
             </IconButton>

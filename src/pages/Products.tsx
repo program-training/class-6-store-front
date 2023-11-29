@@ -88,7 +88,7 @@ const Products = () => {
   }, []);
 
   const handleClick = (productId: string) => {
-    navigate(`/product/${productId}`);
+    navigate(`/store/product/${productId}`);
   };
 
   const { minPrice, maxPrice }: Prices = products?.reduce(

@@ -66,7 +66,7 @@ const Home = () => {
         console.log(error);
       }
     })();
-  }, [baseURL]);
+  }, []);
   console.log(banners);
 
   useEffect(() => {
@@ -74,10 +74,10 @@ const Home = () => {
   }, [dispatch]);
 
   const clickToCard = (cat: string) => {
-    navigate(`/products/${cat}`);
+    navigate(`/store/products/${cat}`);
   };
   const handleClick = (productId: string) => {
-    navigate(`/product/${productId}`);
+    navigate(`/store/product/${productId}`);
   };
 
   const userName = useAppSelector((state) => state.userName.userName)
