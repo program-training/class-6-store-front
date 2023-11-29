@@ -59,8 +59,6 @@ const Home = () => {
           `https://serverbanners.onrender.com/api/banners`
         );
         const { data } = resp;
-        console.log(resp);
-
         setBanners(data);
       } catch (error) {
         console.log(error);
