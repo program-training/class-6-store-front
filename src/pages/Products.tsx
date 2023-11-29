@@ -78,6 +78,7 @@ const Products = () => {
 
   useEffect(() => {
     dispatch(render());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = (productId: string) => {
@@ -118,7 +119,7 @@ const Products = () => {
     );
   };
 
-  const productInCart = useAppSelector((state) => state.cart.products);
+  const productInCart = useAppSelector((state: { cart: { products: unknown }; }) => state.cart.products);
   const prices = [
     {
       value: minPrice,
