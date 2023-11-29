@@ -9,26 +9,12 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useAppDispatch } from "../rtk/hooks";
+import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { render } from "../rtk/cartSlice";
 import { useNavigate } from "react-router-dom";
 import HomeSkeleton from "../components/HomeSkeleton";
 import { cardCategory, pHello } from "../style/home";
-interface Banner {
-  author: string;
-  category: string;
-  createdAt: string;
-  id: number;
-  image: {
-    alt: string;
-    url: string;
-  };
-  productID: number;
-  rating: number;
-  sale: number;
-  text: string;
-  _id: string;
-}
+
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -57,7 +43,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const resp = await axios.get(`https://serverbanners.onrender.com/api/banners`);
+        const resp = await axios.get(`${baseURL}/api/banners`);
         const { data } = resp;
         console.log(resp);
 
@@ -92,11 +78,15 @@ const Home = () => {
       boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)', // Adds a shadow effect
     }
   };
-
+  const userName = useAppSelector((state) => state.userName.userName)
 
   return (
     <>
+      {userName && <Typography variant="h1" align="center" gutterBottom style={pHello}>
+        Hello {userName}
+      </Typography>}
       {banners && banners.length > 0 && (
+
         <>
           <style>
             {`@keyframes scroll {
@@ -150,9 +140,12 @@ const Home = () => {
       )}
 
 
-      <Typography variant="h1" align="center" gutterBottom style={pHello}>
-        Hello
-      </Typography>
+
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <Grid container spacing={2}>
         {loading ? (
           <HomeSkeleton />

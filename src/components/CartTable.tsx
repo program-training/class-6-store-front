@@ -4,7 +4,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Button, CardMedia, Typography } from "@mui/material";
+import { Box, Button, CardMedia, IconButton, Typography } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import {
   CartProduct,
@@ -26,6 +26,7 @@ import {
   stylePaper,
 } from "../style/cart";
 import { styleButton } from "../style/login&Signin";
+import { buttonAddToCart } from "../style/products";
 
 interface CartProps {
   props: React.Dispatch<React.SetStateAction<boolean>>;
@@ -140,15 +141,15 @@ const CartTable: React.FC<CartProps> = ({ props }) => {
                       </StyledTableCell>
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      <Button onClick={() => removeProductFromCart(product)}>
+                      <IconButton sx={buttonAddToCart} onClick={() => removeProductFromCart(product)}>
                         <DeleteTwoToneIcon />
-                      </Button>
-                      <Button onClick={() => incrementQuantity(product)}>
+                      </IconButton>
+                      <IconButton sx={buttonAddToCart} onClick={() => incrementQuantity(product)}>
                         <AddIcon />
-                      </Button>
-                      <Button onClick={() => decrementQuantity(product)}>
+                      </IconButton>
+                      <IconButton sx={buttonAddToCart} onClick={() => decrementQuantity(product)}>
                         <RemoveIcon />
-                      </Button>
+                      </IconButton>
                     </StyledTableCell>
                   </StyledTableRow>
                 );

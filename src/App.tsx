@@ -10,9 +10,11 @@ import { useMemo } from "react";
 import { ThemeProvider } from "@mui/material";
 import { connectToData } from "./utils/functionsForDB";
 import NotFound from "./pages/NotFound";
+import automaticLogIn from "./utils/automaticLogIn";
 
 function App() {
   connectToData();
+  automaticLogIn();
   const theme = useMemo(() => createTheme(themeSettings), []);
   return (
     <>

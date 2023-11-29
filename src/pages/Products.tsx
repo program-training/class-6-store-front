@@ -11,6 +11,11 @@ import {
   Slider,
   CardActionArea,
 } from "@mui/material";
+import {
+  decrement,
+  increment,
+} from "../rtk/cartSlice";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { useEffect, useState, useReducer } from "react";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useNavigate, useParams } from "react-router-dom";
@@ -21,13 +26,14 @@ import { filterProducts } from "../utils/function";
 import { addProductToCart, render } from "../rtk/cartSlice";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { getUniqueAttributes } from "../utils/function";
-import PlusOneIcon from "@mui/icons-material/PlusOne";
+import AddIcon from "@mui/icons-material/Add";
 import ProductSkeleton from "../components/ProductSkeleton";
 import { Product, Prices } from "../interfaces/product";
 import { connectToData } from "../utils/function";
 import {
   buttonAddToCart,
   cardStyle,
+  quantityOnCard,
   stackBottom,
   typographyH2Style,
   typographyH3PriceStyle,
@@ -118,6 +124,12 @@ const Products = () => {
       })
     );
   };
+  const incrementQuantity = (product: Product) => {
+    dispatch(increment(product.id));
+  };
+  const decrementQuantity = (product: Product) => {
+    dispatch(decrement(product.id));
+  };
 
   const productInCart = useAppSelector((state: { cart: { products: unknown }; }) => state.cart.products);
   const prices = [
@@ -131,7 +143,7 @@ const Products = () => {
     },
     {
       value: (minPrice + maxPrice) / 2,
-      label: (minPrice + maxPrice) / 2,
+      label: Math.ceil((minPrice + maxPrice) / 2),
     },
   ];
 
@@ -188,9 +200,8 @@ const Products = () => {
           <ProductSkeleton />
         ) : (
           filteredProducts?.map((product) => {
-            const addedToCart =
-              Array.isArray(productInCart) &&
-              productInCart.some((item) => item.name === product.id);
+            const itemInCart = Array.isArray(productInCart) && productInCart.find((item) => item.name === product.id);
+            const addedToCart = itemInCart ? true : false;
             return (
               <Grid key={product.id}>
                 <Card sx={cardStyle}>
@@ -221,13 +232,17 @@ const Products = () => {
                     <Typography variant="h3" sx={typographyH3PriceStyle}>
                       ${product.price}
                     </Typography>
-                    <IconButton
-                      onClick={() => addToCart(product)}
-                      sx={buttonAddToCart}
-                    >
-                      {!addedToCart && <AddShoppingCartIcon />}
-                      {addedToCart && <PlusOneIcon />}
-                    </IconButton>
+                    {!addedToCart && <IconButton sx={buttonAddToCart} > <AddShoppingCartIcon sx={buttonAddToCart} onClick={() => addToCart(product)} /></IconButton>}
+                    {addedToCart &&
+                      <Box>
+                        <IconButton sx={buttonAddToCart} onClick={() => incrementQuantity(product)}>
+                          <AddIcon />
+                        </IconButton>
+                        {itemInCart && <IconButton sx={quantityOnCard}>{itemInCart.quantity}</IconButton>}
+                        <IconButton sx={buttonAddToCart} onClick={() => decrementQuantity(product)}>
+                          <RemoveIcon />
+                        </IconButton>
+                      </Box>}
                   </Stack>
                 </Card>
               </Grid>
@@ -235,7 +250,7 @@ const Products = () => {
           })
         )}
       </Box>
-    </Stack>
+    </Stack >
   );
 };
 export default Products;
