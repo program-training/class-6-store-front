@@ -88,9 +88,9 @@ export default function SignIn() {
           <HowToRegOutlinedIcon/>
         </IconButton>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>registration</DialogTitle>
+        <DialogTitle style={{textAlign: 'center'}}>registration</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText style={{textAlign: 'center'}}>
             To register please enter email and password.
           </DialogContentText>
           <TextField
