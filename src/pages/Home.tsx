@@ -99,6 +99,8 @@ const Home = () => {
   <div style={{
     display: 'flex',
     overflowX: 'auto',
+    backgroundColor:"#E0E0E0",
+    border: '2px solid #B3B3B3', // מסגרת בגוון אפור בהיר יותר
     padding: '10px',
     boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'
   }}>
@@ -123,14 +125,12 @@ const Home = () => {
             style={imageStyle}  
             onClick={() => handleClick(banner.productID.toString())}
           />
-         
+       
         </div>
       ))}
     </div>
   </div>
 )}
-
-
 
 
       <Typography variant="h1" align="center" gutterBottom style={pHello}>
