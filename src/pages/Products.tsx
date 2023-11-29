@@ -84,6 +84,7 @@ const Products = () => {
 
   useEffect(() => {
     dispatch(render());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = (productId: string) => {
@@ -130,7 +131,7 @@ const Products = () => {
     dispatch(decrement(product.id));
   };
 
-  const productsInCart = useAppSelector((state) => state.cart.products);
+  const productInCart = useAppSelector((state: { cart: { products: unknown }; }) => state.cart.products);
   const prices = [
     {
       value: minPrice,
@@ -199,7 +200,7 @@ const Products = () => {
           <ProductSkeleton />
         ) : (
           filteredProducts?.map((product) => {
-            const itemInCart = Array.isArray(productsInCart) && productsInCart.find((item) => item.name === product.id);
+            const itemInCart = Array.isArray(productInCart) && productInCart.find((item) => item.name === product.id);
             const addedToCart = itemInCart ? true : false;
             return (
               <Grid key={product.id}>

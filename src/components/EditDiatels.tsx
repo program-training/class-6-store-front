@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 
 
 interface Edit {
+    _id: null | string
     firstName: null | string,
     lastName: null | string,
     userName: null | string,
@@ -21,6 +22,7 @@ const EditDetails = () => {
 
     const [open, setOpen] = useState(false);
     const [details, setDetails] = useState<Edit>({
+        _id: null,
         firstName: null,
         lastName: null,
         userName: null,
@@ -34,6 +36,7 @@ const EditDetails = () => {
     const userFromRTK = useAppSelector((state) => state.userName)
 
     useEffect(() => {
+        setDetails((prev) => ({ ...prev, _id: userFromRTK.userId }))
         setDetails((prev) => ({ ...prev, firstName: userFromRTK.firstName }))
         setDetails((prev) => ({ ...prev, lastName: userFromRTK.lastName, }))
         setDetails((prev) => ({ ...prev, userName: userFromRTK.userName }))
@@ -57,22 +60,23 @@ const EditDetails = () => {
     const handelSubmit = async () => {
         if (details.email && validateEmail(details.email)) {
             const editUser = [
-
+                userFromRTK,
+                details
             ]
             try {
                 const response = await axios.post(
                     `${baseURL}/api/users/edit`,
-                    // userData
+                    editUser
                 );
                 if (response.data) {
                     const userName = response.data.user;
                     dispatch(setUserName(userName));
                     localStorage.setItem('email', details.email)
                     notify()
+                    setOpen(false)
                 }
             } catch (error) {
                 console.error("Error during registration:", error);
-
             }
         }
         if (details.email && !validateEmail(details.email)) {
