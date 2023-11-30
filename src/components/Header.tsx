@@ -201,7 +201,7 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      <MenuItem onClick={() => navigate("/")}>
+      <MenuItem onClick={() => navigate("/store")}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -278,7 +278,7 @@ export default function PrimarySearchAppBar() {
             <IconButton
               size="large"
               color="inherit"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/store")}
             >
               <CottageOutlinedIcon />
             </IconButton>

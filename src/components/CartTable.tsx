@@ -179,7 +179,7 @@ const CartTable: React.FC<CartProps> = ({ props }) => {
               sx={styleButton}
               variant="contained"
               onClick={() => {
-                navigate("/");
+                navigate("/store");
                 setOpenCart(false);
               }}
             >
