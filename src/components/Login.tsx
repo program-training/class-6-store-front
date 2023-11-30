@@ -68,7 +68,7 @@ const LogIn = () => {
           password: password,
         };
         const response = await axios.post(
-          `${baseURL}/api/users/login`,
+          `${baseURL}/store/api/users/login`,
           userData
         );
         if (response.data) {

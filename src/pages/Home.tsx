@@ -42,7 +42,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const resp = await axios.get(`${baseURL}/api/categories`);
+        const resp = await axios.get(`${baseURL}/store/api/categories`);
         const { data } = resp;
         setCategories(data);
         setLoading(false);
@@ -56,7 +56,7 @@ const Home = () => {
     (async () => {
       try {
         const resp = await axios.get(
-          `https://serverbanners.onrender.com/api/banners`
+          `https://serverbanners.onrender.com/banner/api/banners`
         );
         const { data } = resp;
         setBanners(data);

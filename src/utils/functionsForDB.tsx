@@ -8,13 +8,15 @@ import { setProducts } from "../rtk/productsSlice";
 // import { useDispatch } from "react-redux";
 // import { setCart } from "../rtk/cartSlice2";
 
+const baseUrl = import.meta.env.BASE_URL
+
 export function ConnectToData() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://api-store-f2id.onrender.com/api/products"
+          `${baseUrl}/store/api/products`
         );
         dispatch(setProducts(response.data));
       } catch (error) {
