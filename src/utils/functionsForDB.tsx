@@ -28,11 +28,12 @@ export function ConnectToData() {
       }
     };
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
 
 
-export const connectBanners = async () => {
+export const ConnectBanners = async () => {
   const dispatch = useAppDispatch();
 
   try {
@@ -47,7 +48,7 @@ export const connectBanners = async () => {
 };
 
 
-export const connectCategory = async () => {
+export const ConnectCategory = async () => {
   const dispatch = useAppDispatch();
   
   try {
