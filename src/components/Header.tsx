@@ -166,7 +166,7 @@ export default function PrimarySearchAppBar() {
       </MenuItem>}
       {flagUser &&
         <MenuItem>
-          <EditDetails />
+          <EditDetails close={handleMenuClose}/>
           Edit Details
         </MenuItem>}
     </Menu>
