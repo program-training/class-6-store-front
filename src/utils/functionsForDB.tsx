@@ -8,7 +8,7 @@ import { setProducts } from "../rtk/productsSlice";
 // import { useDispatch } from "react-redux";
 // import { setCart } from "../rtk/cartSlice2";
 
-const baseUrl = import.meta.env.BASE_URL
+const baseUrl = import.meta.env.VITE_SERVER_API || "https://store-back-3.onrender.com"
 
 export function ConnectToData() {
   const dispatch = useAppDispatch();
