@@ -20,7 +20,7 @@ export function connectToData() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://api-store-f2id.onrender.com/api/products"
+          `${baseURL}/store/api/products`
         );
         dispatch(setProducts(response.data));
       } catch (error) {
@@ -33,26 +33,43 @@ export function connectToData() {
 
 
 export const connectBanners = async () => {
-
   const dispatch = useAppDispatch();
 
   try {
-    const resp = await axios.get(`${baseURL}/api/banners`);
+    const resp = await axios.get(`${baseURL}/store/api/banners`);
     const { data } = resp;
     console.log(resp);
-    dispatch(setBanners(data))
-    // setBanners(data);
+    try {
+      dispatch(setBanners(data));
+    } catch (dispatchError) {
+      console.error('Error dispatching action:', dispatchError);
+    }
   } catch (error) {
-    console.log(error);
+    console.error('Error fetching data:', error);
   }
-}
+};
+
+// export const connectBanners = async () => {
+
+//   const dispatch = useAppDispatch();
+
+//   try {
+//     const resp = await axios.get(`${baseURL}/store/api/banners`);
+//     const { data } =  resp;
+//     console.log(resp);
+//      dispatch(setBanners(data))
+//     // setBanners(data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 export const connectCategory = async () => {
 
   const dispatch = useAppDispatch();
 
   try {
-    const resp = await axios.get(`${baseURL}/api/categories`);
+    const resp = await axios.get(`${baseURL}/store/api/categories`);
     const { data } = resp;
     dispatch(setCategory(data))
   } catch (error) {

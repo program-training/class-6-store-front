@@ -16,7 +16,7 @@ const automaticLogIn = async () => {
         email,
         password,
       };
-      const response = await axios.post(`${baseURL}/api/users/login`, userData);
+      const response = await axios.post(`${baseURL}/store/api/users/login`, userData);
       if (response.data) {
         const userName = response.data.user;
         dispatch(setUserName(userName));

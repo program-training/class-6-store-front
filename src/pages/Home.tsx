@@ -15,6 +15,7 @@ import { render } from "../rtk/cartSlice";
 import { useNavigate } from "react-router-dom";
 import HomeSkeleton from "../components/HomeSkeleton";
 import { cardCategory, pHello } from "../style/home";
+import axios from "axios";
 interface Banner {
   author: string;
   category: string;
@@ -30,6 +31,7 @@ interface Banner {
   text: string;
   _id: string;
 }
+const baseURL = import.meta.env.VITE_SERVER_API;
 
 const Home = () => {
   // const [categories, setCategories] = useState([]);
@@ -59,27 +61,28 @@ const Home = () => {
   // useEffect(() => {
   //   (async () => {
   //     try {
-  //       const resp = await axios.get(`${baseURL}/api/banners`);
+  //       const resp = await axios.get(
+  //         `${baseURL}/store/api/banners`
+  //       );
   //       const { data } = resp;
-  //       console.log(resp);
-
   //       setBanners(data);
   //     } catch (error) {
   //       console.log(error);
   //     }
   //   })();
-  // }, [baseURL]);
-  console.log(banners);
+  // }, []);
+  useEffect(()=>{  console.log(banners);},[banners])
+
 
   useEffect(() => {
     dispatch(render());
   }, [dispatch]);
 
   const clickToCard = (cat: string) => {
-    navigate(`/products/${cat}`);
+    navigate(`/store/products/${cat}`);
   };
   const handleClick = (productId: string) => {
-    navigate(`/product/${productId}`);
+    navigate(`/store/product/${productId}`);
   };
 
   const userName = useAppSelector((state) => state.userName.userName)

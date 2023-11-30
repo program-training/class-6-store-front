@@ -8,7 +8,7 @@ import { themeSettings } from "./palette/theme";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { ThemeProvider } from "@mui/material";
-import { connectBanners, connectCategory, connectToData } from "./utils/functionsForDB";
+import { connectToData, connectBanners, connectCategory } from "./utils/functionsForDB";
 import NotFound from "./pages/NotFound";
 import automaticLogIn from "./utils/automaticLogIn";
 
@@ -26,9 +26,9 @@ function App() {
             <Route path="*" element={<NotFound />} />
             <Route element={<Layout />}>
               <Route path="*" element={<NotFound />} />
-              <Route path="/" element={<Home />} />
-              <Route path="/products/:category" element={<Products />} />
-              <Route path="/product/:id" element={<Product />} />
+              <Route path="/store" element={<Home />} />
+              <Route path="/store/products/:category" element={<Products />} />
+              <Route path="/store/product/:id" element={<Product />} />
             </Route>
           </Routes>
         </ThemeProvider>
