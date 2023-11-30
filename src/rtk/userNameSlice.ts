@@ -38,6 +38,8 @@ export const userNameSlice = createSlice({
       state.firstName = null
       state.lastName = null
       state.email = null
+      localStorage.removeItem('email')
+      localStorage.removeItem('password')
     },
   },
 });

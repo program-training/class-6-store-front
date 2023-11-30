@@ -22,6 +22,9 @@ import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { resetUserName } from "../rtk/userNameSlice";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import EditDetails from "./EditDiatels";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -78,6 +81,13 @@ export default function PrimarySearchAppBar() {
   const newNum = useAppSelector((state) => state.cart.products.length);
   const userNameInLogin = useAppSelector((state) => state.userName.userName);
 
+
+  const notify = () => {
+    toast.warn("You are not logged in. To register click on log in", {
+      theme: "colored"
+    })
+  }
+
   React.useEffect(() => {
     setUserName(userNameInLogin);
   }, [userNameInLogin]);
@@ -106,7 +116,7 @@ export default function PrimarySearchAppBar() {
   const logOut = () => {
     if (flagUser) {
       dispatch(resetUserName());
-      localStorage.removeItem("cart");
+      // localStorage.removeItem("cart");
     }
     handleMenuClose();
   };
@@ -114,6 +124,7 @@ export default function PrimarySearchAppBar() {
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+  console.log(flagUser);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -136,24 +147,29 @@ export default function PrimarySearchAppBar() {
         fontSize: "0.5rem",
       }}
     >
-      <MenuItem>
+      {!flagUser && <MenuItem>
         <Login />
         Login
-      </MenuItem>
-      <MenuItem>
-        <SignUp />
-        SignUp
-      </MenuItem>
-      <MenuItem onClick={logOut}>
+      </MenuItem>}
+      {!flagUser &&
+        <MenuItem>
+          <SignUp />
+          SignUp
+        </MenuItem>}
+      {flagUser && <MenuItem onClick={() => {
+        logOut();
+        notify()
+      }}>
         <IconButton>
           <LockOutlinedIcon />
         </IconButton>
         Log Out
-      </MenuItem>
-      <MenuItem>
-        <EditDetails />
-        Edit Details
-      </MenuItem>
+      </MenuItem>}
+      {flagUser &&
+        <MenuItem>
+          <EditDetails />
+          Edit Details
+        </MenuItem>}
     </Menu>
   );
 
