@@ -26,9 +26,9 @@ function App() {
             <Route path="*" element={<NotFound />} />
             <Route element={<Layout />}>
               <Route path="*" element={<NotFound />} />
-              <Route path="/store" element={<Home />} />
-              <Route path="/store/products/:category" element={<Products />} />
-              <Route path="/store/product/:id" element={<Product />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/products/:category" element={<Products />} />
+              <Route path="/product/:id" element={<Product />} />
             </Route>
           </Routes>
         </ThemeProvider>

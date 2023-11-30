@@ -43,11 +43,11 @@ const Home = () => {
   }, [dispatch]);
 
   const clickToCard = (cat: string) => {
-    navigate(`/store/products/${cat}`);
+    navigate(`/products/${cat}`);
   };
 
   const handleClick = (productId: string) => {
-    navigate(`/store/product/${productId}`);
+    navigate(`/product/${productId}`);
   };
 
   const userName = useAppSelector((state) => state.userName.userName)
