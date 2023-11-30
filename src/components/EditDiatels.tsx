@@ -13,10 +13,10 @@ const EditDetails = () => {
 
     const [open, setOpen] = useState(false);
     const [details, setDetails] = useState<Edit>({
-        firstName: null,
-        lastName: null,
-        userName: null,
-        email: null,
+        firstName: '',
+        lastName: '',
+        userName: '',
+        email: '',
         password: '',
     })
 
@@ -66,6 +66,7 @@ const EditDetails = () => {
                 );
                 if (response.data) {
                     const userName = response.data.user;
+                    Object.assign(userName, { _id: userFromRTK.userId })
                     dispatch(setUserName(userName));
                     localStorage.setItem('email', details.email)
                     notify()
@@ -82,10 +83,9 @@ const EditDetails = () => {
 
     return (
         <>
-            {/* <Button variant="contained" sx={styleButton} onClick={() => setOpen(true)}>click me</Button> */}
             <IconButton onClick={() => setOpen(true)} >
-          <EditNoteIcon />
-        </IconButton>
+                <EditNoteIcon />
+            </IconButton>
             <Dialog open={open} onClose={() => setOpen(false)}>
                 <DialogTitle style={{ textAlign: 'center' }}>EDIT DETAILS</DialogTitle>
                 <DialogContent>
@@ -99,9 +99,9 @@ const EditDetails = () => {
                         type="name"
                         fullWidth
                         required
-                        error={details.firstName === null || details.firstName.length === 0}
+                        error={!details.firstName}
                         helperText={
-                            details.firstName === null || details.firstName.length === 0 ? "This is a required field." : ""
+                            !details.firstName ? "This is a required field." : ""
                         }
                     />
                     <TextField
@@ -113,9 +113,9 @@ const EditDetails = () => {
                         type="name"
                         fullWidth
                         required
-                        error={details.lastName === null || details.lastName.length === 0}
+                        error={!details.lastName}
                         helperText={
-                            details.lastName === null || details.lastName.length === 0 ? "This is a required field." : ""
+                            !details.lastName ? "This is a required field." : ""
                         }
                     />
                     <TextField
@@ -127,9 +127,9 @@ const EditDetails = () => {
                         type="name"
                         fullWidth
                         required
-                        error={details.userName === null || details.userName.length === 0}
+                        error={!details.userName}
                         helperText={
-                            details.userName === null || details.userName.length === 0 ? "This is a required field." : ""
+                            !details.userName  ? "This is a required field." : ""
                         }
                     />
                     <TextField
@@ -144,8 +144,8 @@ const EditDetails = () => {
                         type="email"
                         fullWidth
                         required
-                        error={details.email === null || details.email.length === 0}
-                        helperText={details.email === null || details.email.length === 0 ? "This is a required field." : ""}
+                        error={!details.email}
+                        helperText={!details.email ? "This is a required field." : ""}
                     />
                     <Collapse in={openAlertEmail}>
                         <Alert severity="error" sx={{ margin: "0.5em" }}>
