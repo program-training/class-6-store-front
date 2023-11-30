@@ -9,20 +9,20 @@ import { setBanners, setCategory } from "../rtk/category&banners";
 // import { useDispatch } from "react-redux";
 // import { setCart } from "../rtk/cartSlice2";
 
+const baseUrl = import.meta.env.VITE_SERVER_API || "https://store-back-3.onrender.com"
 
-const baseURL = import.meta.env.VITE_SERVER_API;
-
-
-
-export function connectToData() {
+export function ConnectToData() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${baseURL}/store/api/products`
+          `${baseUrl}/store/api/products`
         );
-        dispatch(setProducts(response.data));
+        if(response.data){
+          const { data } = response;
+          dispatch(setProducts(data));
+        }
       } catch (error) {
         console.error(error);
       }
@@ -36,40 +36,22 @@ export const connectBanners = async () => {
   const dispatch = useAppDispatch();
 
   try {
-    const resp = await axios.get(`${baseURL}/store/api/banners`);
-    const { data } = resp;
-    console.log(resp);
-    try {
+    const resp = await axios.get(`https://serverbanners.onrender.com/banner/api/banners`);
+    if(resp.data){
+      const { data } = resp;
       dispatch(setBanners(data));
-    } catch (dispatchError) {
-      console.error('Error dispatching action:', dispatchError);
     }
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 };
 
-// export const connectBanners = async () => {
-
-//   const dispatch = useAppDispatch();
-
-//   try {
-//     const resp = await axios.get(`${baseURL}/store/api/banners`);
-//     const { data } =  resp;
-//     console.log(resp);
-//      dispatch(setBanners(data))
-//     // setBanners(data);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 export const connectCategory = async () => {
-
   const dispatch = useAppDispatch();
-
+  
   try {
-    const resp = await axios.get(`${baseURL}/store/api/categories`);
+    const resp = await axios.get(`${baseUrl}/store/api/categories`);
     const { data } = resp;
     dispatch(setCategory(data))
   } catch (error) {

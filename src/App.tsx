@@ -8,12 +8,12 @@ import { themeSettings } from "./palette/theme";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { ThemeProvider } from "@mui/material";
-import { connectToData, connectBanners, connectCategory } from "./utils/functionsForDB";
+import { ConnectToData, connectBanners, connectCategory } from "./utils/functionsForDB";
 import NotFound from "./pages/NotFound";
 import automaticLogIn from "./utils/automaticLogIn";
 
 function App() {
-  connectToData();
+  ConnectToData();
   automaticLogIn();
   connectCategory()
   connectBanners()

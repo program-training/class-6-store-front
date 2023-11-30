@@ -61,7 +61,7 @@ const EditDetails = () => {
             ]
             try {
                 const response = await axios.post(
-                    `${baseURL}/api/users/edit`,
+                    `${baseURL}/store/api/users/edit`,
                     editUser
                 );
                 if (response.data) {

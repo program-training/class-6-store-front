@@ -260,9 +260,21 @@ export default function PrimarySearchAppBar() {
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Login />
+            {!flagUser && <Login />}
             <div style={{ width: "8px" }}></div>
-            <SignUp />
+            {!flagUser && <SignUp />}
+            {flagUser && <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={() => {
+                logOut();
+                notify()
+              }}>
+              <LockOutlinedIcon />
+            </IconButton>}
             <IconButton
               size="large"
               color="inherit"
@@ -310,6 +322,6 @@ export default function PrimarySearchAppBar() {
       {renderMobileMenu}
       {renderMenu}
       {openCart && <Cart props={[openCart, setOpenCart]} />}
-    </Box>
+    </Box >
   );
 }

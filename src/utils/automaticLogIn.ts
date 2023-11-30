@@ -3,7 +3,7 @@ import axios from "axios";
 import { setUserName } from "../rtk/userNameSlice";
 import { setUserNameInCart } from "../rtk/cartSlice";
 
-const automaticLogIn = async () => {
+const AutomaticLogIn = async () => {
   const dispatch = useAppDispatch();
   const baseURL = import.meta.env.VITE_SERVER_API;
 
@@ -30,4 +30,4 @@ const automaticLogIn = async () => {
   }
 };
 
-export default automaticLogIn;
+export default AutomaticLogIn;

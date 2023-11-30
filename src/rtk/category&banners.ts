@@ -21,7 +21,7 @@ export const categoryAndBanners = createSlice({
       state.category = action.payload;
     },
     setBanners: (state, action: PayloadAction<[]>) => {
-      state.category = action.payload;
+      state.banners = action.payload;
     },
   },
 });
