@@ -21,6 +21,10 @@ import SignUp from "./SignUp";
 import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { resetUserName } from "../rtk/userNameSlice";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import EditDetails from "./EditDiatels";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -77,6 +81,13 @@ export default function PrimarySearchAppBar() {
   const newNum = useAppSelector((state) => state.cart.products.length);
   const userNameInLogin = useAppSelector((state) => state.userName.userName);
 
+
+  const notify = () => {
+    toast.warn("You are not logged in. To register click on log in", {
+      theme: "colored"
+    })
+  }
+
   React.useEffect(() => {
     setUserName(userNameInLogin);
   }, [userNameInLogin]);
@@ -105,7 +116,7 @@ export default function PrimarySearchAppBar() {
   const logOut = () => {
     if (flagUser) {
       dispatch(resetUserName());
-      localStorage.removeItem("cart");
+      // localStorage.removeItem("cart");
     }
     handleMenuClose();
   };
@@ -135,20 +146,29 @@ export default function PrimarySearchAppBar() {
         fontSize: "0.5rem",
       }}
     >
-      <MenuItem>
+      {!flagUser && <MenuItem>
         <Login />
         Login
-      </MenuItem>
-      <MenuItem>
-        <SignUp />
-        SignUp
-      </MenuItem>
-      <MenuItem onClick={logOut}>
+      </MenuItem>}
+      {!flagUser &&
+        <MenuItem>
+          <SignUp />
+          SignUp
+        </MenuItem>}
+      {flagUser && <MenuItem onClick={() => {
+        logOut();
+        notify()
+      }}>
         <IconButton>
           <LockOutlinedIcon />
         </IconButton>
         Log Out
-      </MenuItem>
+      </MenuItem>}
+      {flagUser &&
+        <MenuItem>
+          <EditDetails />
+          Edit Details
+        </MenuItem>}
     </Menu>
   );
 
@@ -240,9 +260,21 @@ export default function PrimarySearchAppBar() {
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Login />
+            {!flagUser && <Login />}
             <div style={{ width: "8px" }}></div>
-            <SignUp />
+            {!flagUser && <SignUp />}
+            {flagUser && <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={() => {
+                logOut();
+                notify()
+              }}>
+              <LockOutlinedIcon />
+            </IconButton>}
             <IconButton
               size="large"
               color="inherit"
@@ -290,6 +322,18 @@ export default function PrimarySearchAppBar() {
       {renderMobileMenu}
       {renderMenu}
       {openCart && <Cart props={[openCart, setOpenCart]} />}
-    </Box>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </Box >
   );
 }

@@ -1,7 +1,8 @@
-import {  useAppDispatch } from "../rtk/hooks";
+import { useAppDispatch } from "../rtk/hooks";
 import axios from "axios";
 import { useEffect } from "react";
 import { setProducts } from "../rtk/productsSlice";
+import { setBanners, setCategory } from "../rtk/category&banners";
 // import { CartProduct } from "../rtk/cartSlice";
 // import { store } from "../rtk/store";
 // import { useState } from "react";
@@ -18,13 +19,44 @@ export function ConnectToData() {
         const response = await axios.get(
           `${baseUrl}/store/api/products`
         );
-        dispatch(setProducts(response.data));
+        if(response.data){
+          const { data } = response;
+          dispatch(setProducts(data));
+        }
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
   }, []);
+}
+
+
+export const connectBanners = async () => {
+  const dispatch = useAppDispatch();
+
+  try {
+    const resp = await axios.get(`https://serverbanners.onrender.com/banner/api/banners`);
+    if(resp.data){
+      const { data } = resp;
+      dispatch(setBanners(data));
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+
+export const connectCategory = async () => {
+  const dispatch = useAppDispatch();
+  
+  try {
+    const resp = await axios.get(`${baseUrl}/store/api/categories`);
+    const { data } = resp;
+    dispatch(setCategory(data))
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
