@@ -22,9 +22,12 @@ import { useAppSelector, useAppDispatch } from "../rtk/hooks";
 import { resetUserName } from "../rtk/userNameSlice";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import EditDetails from "./EditDiatels";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import SearchResults from "./SearchResults";
+import SearchResult from "./SearchResult";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -65,34 +68,40 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+export interface Result {
+  label: string;
+  id: string;
+}
+
 export default function PrimarySearchAppBar() {
-  const [openCart, setOpenCart] = React.useState(false);
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [openCart, setOpenCart] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
-
-  const [numOfItemsInCart, setNumOfItemsInCart] = React.useState<number>(
+    useState<null | HTMLElement>(null);
+  const [searchResults, setSearchResults] = useState<Result[] | null>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [numOfItemsInCart, setNumOfItemsInCart] = useState<number>(
     useAppSelector((state) => state.cart.products.length)
   );
-  const [userName, setUserName] = React.useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const newNum = useAppSelector((state) => state.cart.products.length);
   const userNameInLogin = useAppSelector((state) => state.userName.userName);
 
+  const baseUrl = import.meta.env.VITE_SERVER_API || "https://store-back-3.onrender.com"
 
   const notify = () => {
     toast.warn("You are not logged in. To register click on log in", {
-      theme: "colored"
-    })
-  }
+      theme: "colored",
+    });
+  };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setUserName(userNameInLogin);
   }, [userNameInLogin]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setNumOfItemsInCart(newNum);
   }, [newNum]);
 
@@ -146,29 +155,37 @@ export default function PrimarySearchAppBar() {
         fontSize: "0.5rem",
       }}
     >
-      {!flagUser && <MenuItem>
-        <Login />
-        Login
-      </MenuItem>}
-      {!flagUser &&
+      {!flagUser && (
+        <MenuItem>
+          <Login />
+          Login
+        </MenuItem>
+      )}
+      {!flagUser && (
         <MenuItem>
           <SignUp />
           SignUp
-        </MenuItem>}
-      {flagUser && <MenuItem onClick={() => {
-        logOut();
-        notify()
-      }}>
-        <IconButton>
-          <LockOutlinedIcon />
-        </IconButton>
-        Log Out
-      </MenuItem>}
-      {flagUser &&
+        </MenuItem>
+      )}
+      {flagUser && (
+        <MenuItem
+          onClick={() => {
+            logOut();
+            notify();
+          }}
+        >
+          <IconButton>
+            <LockOutlinedIcon />
+          </IconButton>
+          Log Out
+        </MenuItem>
+      )}
+      {flagUser && (
         <MenuItem>
-          <EditDetails close={handleMenuClose}/>
+          <EditDetails close={handleMenuClose} />
           Edit Details
-        </MenuItem>}
+        </MenuItem>
+      )}
     </Menu>
   );
 
@@ -226,6 +243,38 @@ export default function PrimarySearchAppBar() {
     </Menu>
   );
 
+  const handleSearch = async (searchQuery: string) => {
+    setSearchTerm(searchQuery);
+    console.log("Sending search request for:", searchQuery);
+    try {
+      const response = await axios.get(
+        `${baseUrl}/products`
+      );
+      console.log("Response from the server:", response);
+
+      if (!Array.isArray(response.data)) {
+        throw new Error("Response is not an array");
+      }
+
+      console.log("Processing response...");
+      const searchItems = response.data.map((product) => ({
+        label: product.title,
+        id: product.id,
+      }));
+      console.log("Processed search items:", searchItems);
+      // const handleResultSelect = (result: Result) => {
+      //     console.log(result);
+      //   };
+      setSearchResults(searchItems);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+
+  // const handleResultSelect = (result: Result) => {
+  //   console.log(result);
+  // };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -252,10 +301,23 @@ export default function PrimarySearchAppBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
               sx={{
                 fontFamily: "Fira Sans",
               }}
             />
+            {searchResults && searchResults.length > 0 && (
+              <SearchResults>
+                {searchResults.map((result) => (
+                  <SearchResult
+                    key={result.id}
+                    result={result}
+                    // onClick={() => handleResultSelect(result)}
+                  />
+                ))}
+              </SearchResults>
+            )}
           </Search>
 
           <Box sx={{ flexGrow: 1 }} />
@@ -263,18 +325,21 @@ export default function PrimarySearchAppBar() {
             {!flagUser && <Login />}
             <div style={{ width: "8px" }}></div>
             {!flagUser && <SignUp />}
-            {flagUser && <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={() => {
-                logOut();
-                notify()
-              }}>
-              <LockOutlinedIcon />
-            </IconButton>}
+            {flagUser && (
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="primary-search-account-menu"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={() => {
+                  logOut();
+                  notify();
+                }}
+              >
+                <LockOutlinedIcon />
+              </IconButton>
+            )}
             <IconButton
               size="large"
               color="inherit"
@@ -334,6 +399,6 @@ export default function PrimarySearchAppBar() {
         pauseOnHover
         theme="light"
       />
-    </Box >
+    </Box>
   );
 }

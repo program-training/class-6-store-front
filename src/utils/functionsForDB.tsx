@@ -10,7 +10,6 @@ import { setBanners, setCategory } from "../rtk/category&banners";
 // import { setCart } from "../rtk/cartSlice2";
 
 const baseUrl = import.meta.env.VITE_SERVER_API || "https://store-back-3.onrender.com"
-
 export function ConnectToData() {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -37,7 +36,7 @@ export const ConnectBanners = async () => {
   const dispatch = useAppDispatch();
 
   try {
-    const resp = await axios.get(`https://serverbanners.onrender.com/banners`);
+    const resp = await axios.get(`${baseUrl}/banners`);
     if(resp.data){
       const { data } = resp;
       dispatch(setBanners(data));
