@@ -39,7 +39,7 @@ pipeline {
                 echo 'Linting passed. You may now merge.'
                 setGitHubPullRequestStatus(
                     state: 'SUCCESS',
-                    context: 'store_front',
+                    context: 'class6 pipelines  /  store-front',
                     message: 'lint passed',
                 )
             }
@@ -49,7 +49,7 @@ pipeline {
                 echo 'Pipeline failed. Blocking pull request merge.'
                 setGitHubPullRequestStatus(
                     state: 'FAILURE',
-                    context: 'store_front',
+                    context: 'class6 pipelines  /  store-front',
                     message: 'lint failed. Run npm run lint to see errors',
                 )
             }
