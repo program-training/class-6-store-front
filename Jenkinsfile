@@ -8,7 +8,7 @@ pipeline {
                     checkout([$class: 'GitSCM', branches: [[name: "*/${pullRequestBranch}"]], userRemoteConfigs: [[url: 'https://github.com/program-training/class-6-store-front.git']]])
                 }
             }
-        } 
+        }
         stage('clean work space'){
             steps{
                 script {
