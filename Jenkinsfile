@@ -1,10 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Checkout') {  
             steps {
                 script {
-                    def pullRequestBranch = env.GITHUB_PR_SOURCE_BRANCH 
+                    def pullRequestBranch = env.GITHUB_PR_SOURCE_BRANCH
                     checkout([$class: 'GitSCM', branches: [[name: "*/${pullRequestBranch}"]], userRemoteConfigs: [[url: 'https://github.com/program-training/class-6-store-front.git']]])
                 }
             }
