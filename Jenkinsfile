@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Checkout') {  
             steps {
                 script { 
                     def pullRequestBranch = env.GITHUB_PR_SOURCE_BRANCH
