@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                script {
+                script { 
                     echo '--------------Installing dependencies...--------------'
                     sh 'npm i -D @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint'
                 }
