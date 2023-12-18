@@ -19,7 +19,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    echo 'Installing dependencies...'
+                    echo '--------------Installing dependencies...--------------'
                     sh 'npm i -D @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint'
                 }
             }
@@ -27,7 +27,7 @@ pipeline {
         stage('client lint') {
             steps {
                 script {
-                    sh 'echo "linting..."'
+                    sh '--------------echo "linting...--------------"'
                     sh 'npm run lint'
                 }
             }
@@ -36,7 +36,7 @@ pipeline {
     post {
         success {
             script {
-                echo 'Linting passed. You may now merge.'
+                echo '--------------Linting passed. You may now merge.--------------'
                 setGitHubPullRequestStatus(
                     state: 'SUCCESS',
                     context: 'class6 pipelines  /  store-front',
@@ -46,7 +46,7 @@ pipeline {
         }
         failure {
             script {
-                echo 'Pipeline failed. Blocking pull request merge.'
+                echo '--------------Pipeline failed. Blocking pull request merge.--------------'
                 setGitHubPullRequestStatus(
                     state: 'FAILURE',
                     context: 'class6 pipelines  /  store-front',
