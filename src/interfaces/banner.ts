@@ -1,4 +1,4 @@
-export interface Banner {
+interface Banner {
     author: string;
     category: string;
     createdAt: string;
