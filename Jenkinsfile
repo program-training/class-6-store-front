@@ -25,9 +25,9 @@ pipeline {
             }
         }
         stage('client lint') {
-            steps {
+            steps { 
                 script {
-                    sh '--------------echo "linting...--------------"'
+                    sh 'echo "--------------linting...--------------"'
                     sh 'npm run lint'
                 }
             }
