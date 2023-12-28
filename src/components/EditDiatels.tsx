@@ -7,7 +7,11 @@ import { setUserName } from "../rtk/userNameSlice";
 import { useAppDispatch, useAppSelector } from "../rtk/hooks";
 import { Edit } from '../interfaces/users'
 import EditNoteIcon from '@mui/icons-material/EditNote';
+<<<<<<< HEAD
 
+=======
+import { baseUrl } from "../utils/functionsForDB";
+>>>>>>> 9a568b7 (window env)
 interface Props {
     close: () => void
 }
@@ -36,7 +40,12 @@ const EditDetails:FC<Props> = ({close}) => {
         setDetails((prev) => ({ ...prev, email: userFromRTK.email }))
     }, [userFromRTK])
 
+<<<<<<< HEAD
     const baseURL = import.meta.env.VITE_SERVER_API;
+=======
+    const baseURL = baseUrl;
+    // const baseURL = import.meta.env.VITE_SERVER_API;
+>>>>>>> 9a568b7 (window env)
 
     const validateEmail = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

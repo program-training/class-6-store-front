@@ -15,6 +15,10 @@ import { useNavigate } from "react-router-dom";
 import HomeSkeleton from "../components/HomeSkeleton";
 import { cardCategory, pHello } from "../style/home";
 import { bannerCard, class_scrolling_container, hide_scrollbar } from "../style/banners";
+<<<<<<< HEAD
+=======
+import { Banner } from "../interfaces/banner";
+>>>>>>> 9a568b7 (window env)
 
 
 const Home = () => {

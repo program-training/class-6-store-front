@@ -1,6 +1,10 @@
 import axios from "axios";
 import { Product } from "../interfaces/product";
 import { SendOrderDetails } from "../interfaces/payment";
+<<<<<<< HEAD
+=======
+import { baseUrl } from "./functionsForDB";
+>>>>>>> 9a568b7 (window env)
 
 export function filterProducts(
   name: string,
@@ -55,7 +59,12 @@ export function getUniqueAttributes(
   return groupedAttributes;
 }
 
+<<<<<<< HEAD
 const baseURL = import.meta.env.VITE_SERVER_API;
+=======
+const baseURL = baseUrl;
+// const baseURL = import.meta.env.VITE_SERVER_API;
+>>>>>>> 9a568b7 (window env)
 
 export function connectToData(category: string | undefined, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setProducts: React.Dispatch<React.SetStateAction<Product[] | null | undefined>>) {
   const fetchData = async () => {

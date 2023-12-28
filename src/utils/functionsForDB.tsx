@@ -9,7 +9,20 @@ import { setBanners, setCategory } from "../rtk/category&banners";
 // import { useDispatch } from "react-redux";
 // import { setCart } from "../rtk/cartSlice2";
 
+<<<<<<< HEAD
 const baseUrl = import.meta.env.VITE_SERVER_API || "https://store-back-3.onrender.com"
+=======
+interface Window {
+  _STORE_SERVER_URL_: string;
+}
+const url = (window as unknown as Window)._STORE_SERVER_URL_;
+
+export const baseUrl = url !== "BASE_URL_PLACEHOLDER" ? url : "http://localhost:3000";
+
+
+
+// const baseUrl = import.meta.env.VITE_SERVER_API || "https://store-back-3.onrender.com"
+>>>>>>> 9a568b7 (window env)
 export function ConnectToData() {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -18,7 +31,11 @@ export function ConnectToData() {
         const response = await axios.get(
           `${baseUrl}/products`
         );
+<<<<<<< HEAD
         if(response.data){
+=======
+        if (response.data) {
+>>>>>>> 9a568b7 (window env)
           const { data } = response;
           dispatch(setProducts(data));
         }
@@ -27,7 +44,11 @@ export function ConnectToData() {
       }
     };
     fetchData();
+<<<<<<< HEAD
   // eslint-disable-next-line react-hooks/exhaustive-deps
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 9a568b7 (window env)
   }, []);
 }
 
@@ -37,7 +58,11 @@ export const ConnectBanners = async () => {
 
   try {
     const resp = await axios.get(`${baseUrl}/banners`);
+<<<<<<< HEAD
     if(resp.data){
+=======
+    if (resp.data) {
+>>>>>>> 9a568b7 (window env)
       const { data } = resp;
       dispatch(setBanners(data));
     }
@@ -49,7 +74,11 @@ export const ConnectBanners = async () => {
 
 export const ConnectCategory = async () => {
   const dispatch = useAppDispatch();
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 9a568b7 (window env)
   try {
     const resp = await axios.get(`${baseUrl}/categories`);
     const { data } = resp;

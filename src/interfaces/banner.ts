@@ -12,4 +12,8 @@ export interface Banner {
     sale: number;
     text: string;
     _id: string;
+<<<<<<< HEAD
   }
+=======
+  }
+>>>>>>> 9a568b7 (window env)

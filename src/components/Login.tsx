@@ -19,6 +19,11 @@ import { styleButton } from "../style/login&Signin";
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+<<<<<<< HEAD
+=======
+import { baseUrl } from "../utils/functionsForDB";
+
+>>>>>>> 9a568b7 (window env)
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -58,7 +63,12 @@ const LogIn = () => {
     })
   }
 
+<<<<<<< HEAD
   const baseURL = import.meta.env.VITE_SERVER_API;
+=======
+  const baseURL = baseUrl;
+  // const baseURL = import.meta.env.VITE_SERVER_API;
+>>>>>>> 9a568b7 (window env)
 
   const handleLogIn = async () => {
     if (validateEmail(email) && validatePassword(password)) {
