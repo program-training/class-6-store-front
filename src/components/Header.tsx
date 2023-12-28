@@ -28,10 +28,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchResults from "./SearchResults";
 import SearchResult from "./SearchResult";
-<<<<<<< HEAD
-=======
 import { baseUrl } from "../utils/functionsForDB";
->>>>>>> 9a568b7 (window env)
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -93,12 +90,8 @@ export default function PrimarySearchAppBar() {
   const newNum = useAppSelector((state) => state.cart.products.length);
   const userNameInLogin = useAppSelector((state) => state.userName.userName);
 
-<<<<<<< HEAD
-  const baseUrl = import.meta.env.VITE_SERVER_API || "https://store-back-3.onrender.com"
-=======
   
   // const baseUrl = import.meta.env.VITE_SERVER_API || "https://store-back-3.onrender.com"
->>>>>>> 9a568b7 (window env)
 
   const notify = () => {
     toast.warn("You are not logged in. To register click on log in", {

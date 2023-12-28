@@ -15,10 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { styleButton } from "../style/login&Signin";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
-<<<<<<< HEAD
-=======
 import { baseUrl } from "../utils/functionsForDB";
->>>>>>> 9a568b7 (window env)
 
 export default function SignIn() {
   const [details, setDetails] = useState({
@@ -43,12 +40,8 @@ export default function SignIn() {
     dispatch(setOpenSignUp(false));
   };
 
-<<<<<<< HEAD
-  const baseURL = import.meta.env.VITE_SERVER_API;
-=======
   const baseURL = baseUrl;
   // const baseURL = import.meta.env.VITE_SERVER_API;
->>>>>>> 9a568b7 (window env)
 
   const handleRegistration = async () => {
     const { email, password, confirmPassword, userName, firstName, lastName } = details;
